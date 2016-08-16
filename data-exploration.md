@@ -75,17 +75,16 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 --- 
 下面的3个例子，从measurement`h20_feet`返回所有数据。虽然它们返回的结果相同，但是方式有点区别，理解这些有助于理解`SELECT`语法。
 
-
-The following: Select everything from `h2o_feet` with `*`: 
+通过`*`从`h2o_feet`中查询所有数据：
 	
-	```
-	sql > SELECT * FROM h2o_feet 
+	```sql 
+> SELECT * FROM h2o_feet 
 	``` 
+
+从`h2o_feet`中通过指定tag key和field key查询数据：
 	
-	Select everything from `h2o_feet` by specifying each tag key and field key: 
-	
-	```
-	sql > SELECT "level description",location,water_level FROM h2o_feet 
+	```sql 
+> SELECT "level description",location,water_level FROM h2o_feet 
 	``` 
 	
 	* Separate multiple fields and tags of interest with a comma. Note that you must specify at least one field in the `SELECT` statement. 
