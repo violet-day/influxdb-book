@@ -43,21 +43,21 @@ General tips on query syntax:
 
  measurement `h2o_feet`一段数据: 
 	
-	``` 
-	name: h2o_feet 
-	-------------- 
-	time                 level description      location     water_level 
-	2015-08-18T00:00:00Z between 6 and 9 feet   coyote_creek 8.12 
-	2015-08-18T00:00:00Z below 3 feet           santa_monica 2.064 
-	2015-08-18T00:06:00Z between 6 and 9 feet   coyote_creek 8.005 
-	2015-08-18T00:06:00Z below 3 feet           santa_monica 2.116 
-	2015-08-18T00:12:00Z between 6 and 9 feet   coyote_creek 7.887 
-	2015-08-18T00:12:00Z below 3 feet           santa_monica 2.028 
-	2015-08-18T00:18:00Z between 6 and 9 feet   coyote_creek 7.762 
-	2015-08-18T00:18:00Z below 3 feet           santa_monica 2.126 
-	2015-08-18T00:24:00Z between 6 and 9 feet   coyote_creek 7.635 
-	2015-08-18T00:24:00Z below 3 feet           santa_monica 2.041 
-	``` 
+``` 
+name: h2o_feet 
+-------------- 
+time                 level description      location     water_level 
+2015-08-18T00:00:00Z between 6 and 9 feet   coyote_creek 8.12 
+2015-08-18T00:00:00Z below 3 feet           santa_monica 2.064 
+2015-08-18T00:06:00Z between 6 and 9 feet   coyote_creek 8.005 
+2015-08-18T00:06:00Z below 3 feet           santa_monica 2.116 
+2015-08-18T00:12:00Z between 6 and 9 feet   coyote_creek 7.887 
+2015-08-18T00:12:00Z below 3 feet           santa_monica 2.028 
+2015-08-18T00:18:00Z between 6 and 9 feet   coyote_creek 7.762 
+2015-08-18T00:18:00Z below 3 feet           santa_monica 2.126 
+2015-08-18T00:24:00Z between 6 and 9 feet   coyote_creek 7.635 
+2015-08-18T00:24:00Z below 3 feet           santa_monica 2.041 
+``` 
 	
 这个[series](/influxdb/v0.13/concepts/glossary/#series) 由 [measurement](/influxdb/v0.13/concepts/glossary/#measurement) `h2o_feet` 和 [tag key](/influxdb/v0.13/concepts/glossary/#tag-key) `location` 和 [tag values](/influxdb/v0.13/concepts/glossary/#tag-value) `santa_monica` 和 `coyote_creek`组成。有两个字段： [fields](/influxdb/v0.13/concepts/glossary/#field): `water_level` 存储为floats，`level description` 存储为string。所有的数据在 `NOAA_water_database` database中。
 	
@@ -83,77 +83,77 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 
 从`h2o_feet`中通过指定tag key和field key查询数据：
 	
-	```sql 
+```sql 
 > SELECT "level description",location,water_level FROM h2o_feet 
-	``` 
+``` 
 	
 * 通过逗号分隔你所需要的field和tag。注意，在`SELECT`声明中，至少包含一个字段。
 * Leave identifiers unquoted unless they start with a digit, contain characters other than `[A-z,0-9,_]`, or if they are an [InfluxQL keyword](https://github.com/influxdb/influxdb/blob/master/influxql/README.md#keywords) - then you need to double quote them. Identifiers are database names, retention policy names, user names, measurement names, tag keys, and field keys. 通过全名查询 `h2o_feet` : 
 
-	```sql 
+```sql 
 > SELECT * FROM NOAA_water_database."default".h2o_feet 
-	``` 
+``` 
 
 * 如果你想从不同的database或者retention policy，需要指定measurement的全名。全名的形式如下：
 
-	``` 
-	"<database>"."<retention policy>"."<measurement>" 
-	``` 
+``` 
+"<database>"."<retention policy>"."<measurement>" 
+``` 
 	
 The CLI response for all three queries: 
 	
-	``` 
-	name: h2o_feet 
-	-------------- 
-	time                 level description    location     water_level 
-	2015-08-18T00:00:00Z between 6 and 9 feet coyote_creek 8.12 
-	2015-08-18T00:00:00Z below 3 feet         santa_monica 2.064 
-	2015-08-18T00:06:00Z between 6 and 9 feet coyote_creek 8.005 
-	2015-08-18T00:06:00Z below 3 feet         santa_monica 2.116 
-	[...] 
-	2015-09-18T21:24:00Z between 3 and 6 feet santa_monica 5.013 
-	2015-09-18T21:30:00Z between 3 and 6 feet santa_monica 5.01 
-	2015-09-18T21:36:00Z between 3 and 6 feet santa_monica 5.066 
-	2015-09-18T21:42:00Z between 3 and 6 feet santa_monica 4.938 
-	``` 
+``` 
+name: h2o_feet 
+-------------- 
+time                 level description    location     water_level 
+2015-08-18T00:00:00Z between 6 and 9 feet coyote_creek 8.12 
+2015-08-18T00:00:00Z below 3 feet         santa_monica 2.064 	
+2015-08-18T00:06:00Z between 6 and 9 feet coyote_creek 8.005 
+2015-08-18T00:06:00Z below 3 feet         santa_monica 2.116 
+[...] 
+2015-09-18T21:24:00Z between 3 and 6 feet santa_monica 5.013 
+2015-09-18T21:30:00Z between 3 and 6 feet santa_monica 5.01 
+2015-09-18T21:36:00Z between 3 and 6 feet santa_monica 5.066 
+2015-09-18T21:42:00Z between 3 and 6 feet santa_monica 4.938 
+``` 
 	
 ### The `SELECT` statement and arithmetic 
 --- 
 对于存储为float或者integer的字段做一些基本算法。对`water_level`加2: 
 	
-	```sql 
+```sql 
 > SELECT water_level + 2 FROM h2o_feet 
-	``` 
+``` 
 	
 CLI 响应: 
 	
-	```bash 
-	name: h2o_feet 
-	-------------- 
-	time 
-	2015-08-18T00:00:00Z 10.12 
-	2015-08-18T00:00:00Z 4.064 
-	[...] 
-	2015-09-18T21:36:00Z 7.066 
-	2015-09-18T21:42:00Z 6.938 
-	``` 
+```bash 
+name: h2o_feet 
+-------------- 
+time 
+2015-08-18T00:00:00Z 10.12 
+2015-08-18T00:00:00Z 4.064 
+[...] 
+2015-09-18T21:36:00Z 7.066 
+2015-09-18T21:42:00Z 6.938 
+``` 
 	
 另外一个例子: 
 	
-	```sql 
+```sql 
 > SELECT (water_level * 2) + 4 from h2o_feet 
-	``` 
+``` 
 	
 CLI 响应: 
 	
-	```bash 
-	name: h2o_feet 
-	-------------- 
-	time 2015-08-18T00:00:00Z 20.24 
-	2015-08-18T00:00:00Z 8.128 [...] 
-	2015-09-18T21:36:00Z 14.132 
-	2015-09-18T21:42:00Z 13.876 
-	``` 
+```bash 
+name: h2o_feet 
+-------------- 
+time 2015-08-18T00:00:00Z 20.24 
+2015-08-18T00:00:00Z 8.128 [...] 
+2015-09-18T21:36:00Z 14.132 
+2015-09-18T21:42:00Z 13.876 
+``` 
 	
 > **Note:** 在存储为integer的field上做数学计算时，integer类型会被转换为float。对于某些数字可能会导致溢出问题。
 	
@@ -201,21 +201,21 @@ CLI 响应:
 
 返回 tag `location`值为`coyote_creek`并且field `water_level`大于8 feet：
 	
-	```sql 
+```sql 
 > SELECT * FROM h2o_feet WHERE location = 'coyote_creek' AND water_level > 8 
-	``` 
+``` 
 	
 返回 tag `location`值为`santa_monica`，field `level description` 等于 `'below 3 feet'`: 
 	
-	```sql 
+```sql 
 > SELECT * FROM h2o_feet WHERE location = 'santa_monica' AND "level description" = 'below 3 feet' 
-	```
+```
 	
 返回`water_level`乘以2大于`11.9`:
 	
-	``` 
-	> SELECT * FROM h2o_feet WHERE water_level + 2 > 11.9 
-	``` 
+``` 
+> SELECT * FROM h2o_feet WHERE water_level + 2 > 11.9 
+``` 
 	
 * field值为string类型时，永远使用单引号。注意，双引号不会起任何作用，并且会导致静默的错误。
 	
@@ -241,9 +241,9 @@ InfluxQL的`WHERE`更多用法如下:
 	
 > **Note:** If your query includes both a `WHERE` clause and a `GROUP BY` clause, the `GROUP BY` clause must come after the `WHERE` clause. ### GROUP BY tag values Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
 	
-	```sql 
+```sql 
 > SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
-	``` 
+``` 
 	
 CLI response: 
 	
