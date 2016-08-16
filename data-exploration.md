@@ -119,13 +119,13 @@ The CLI response for all three queries:
 	
 ### The `SELECT` statement and arithmetic 
 --- 
-Perform basic arithmetic operations on fields that store floats and integers. Add two to the field `water_level`: 
+对于存储为float或者integer的字段做一些基本算法。对`water_level`加2: 
 	
 	```sql 
 > SELECT water_level + 2 FROM h2o_feet 
 	``` 
 	
-CLI response: 
+CLI 响应: 
 	
 	```bash 
 	name: h2o_feet 
@@ -138,13 +138,13 @@ CLI response:
 	2015-09-18T21:42:00Z 6.938 
 	``` 
 	
-Another example that works: 
+另外一个例子: 
 	
 	```
 	sql > SELECT (water_level * 2) + 4 from h2o_feet 
 	``` 
 	
-	CLI response: 
+CLI 响应: 
 	
 	```bash 
 	name: h2o_feet 
