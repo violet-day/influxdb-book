@@ -239,7 +239,11 @@ InfluxQL的`WHERE`更多用法如下:
 
 使用 `GROUP BY` 子句根据 tag 或者 time intervals对数据分组. 正确使用 `GROUP BY`的姿势为将 `GROUP BY` 添加至 `SELECT` 声明后，并对 `SELECT` 声明使用 InfluxQL的 [functions](/influxdb/v0.13/query_language/functions/): 
 	
-> **Note:** If your query includes both a `WHERE` clause and a `GROUP BY` clause, the `GROUP BY` clause must come after the `WHERE` clause. ### GROUP BY tag values Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
+> **Note:** 如果你的query同时包含 `WHERE` 和 `GROUP BY` , `GROUP BY` 必须在 `WHERE` 之后。
+
+### GROUP BY tag values 
+
+Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
 	
 ```sql 
 > SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
@@ -247,20 +251,20 @@ InfluxQL的`WHERE`更多用法如下:
 	
 CLI response: 
 	
-	```bash 
-	> SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
-	name: h2o_feet 
-	tags: location=coyote_creek 
-	time mean 
-	---- ---- 
-	1970-01-01T00:00:00Z 5.359342451341401 
+```bash 
+> SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
+name: h2o_feet 
+tags: location=coyote_creek 
+time mean 
+---- ---- 
+1970-01-01T00:00:00Z 5.359342451341401 
 	
-	name: h2o_feet 
-	tags: location=santa_monica 
-	time mean 
-	---- ---- 
-	1970-01-01T00:00:00Z 3.530863470081006 
-	``` 
+name: h2o_feet 
+tags: location=santa_monica 
+time mean 
+---- ---- 
+1970-01-01T00:00:00Z 3.530863470081006 
+``` 
 	
 >**Note:** In InfluxDB, [epoch 0](https://en.wikipedia.org/wiki/Unix_time) (`1970-01-01T00:00:00Z`) is often used as a null timestamp equivalent.
 If you request a query that has no timestamp to return, such as an aggregation function with an unbounded time range, InfluxDB returns epoch 0 as the timestamp.
