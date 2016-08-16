@@ -329,24 +329,23 @@ SELECT <function>(<field_key>) FROM <measurement_name> WHERE <time_range> GROUP 
 
 如果使用在InfluxQL中使用 `GROUP BY` 和 `time()`，就需要添加 `WHERE` 字句。注意，除非你指定时间范围的上下界，否则使用`epoch 0`作为下界，`now()`作为上界
 
-Valid units for `time()` are:  
-<br>
-    `u` microseconds    
-    `ms` milliseconds  
-    `s` seconds  
-    `m` minutes  
-    `h` hours  
-    `d` days  
-    `w` weeks  
+`time()` 的有效单位：  
+
+* `u` microseconds    
+* `ms` milliseconds  
+* `s` seconds  
+* `m` minutes  
+* `h` hours  
+* `d` days  
+* `w` weeks  
 
 #### Rounded `GROUP BY time()` boundaries
 
-By default, `GROUP BY time()` returns results that fall on rounded calendar time
-boundaries.
+默认的， `GROUP BY time()` 返回落在时间范围内的结果。
 
 Example:
 
-[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) the number of `water_level` points between August 19, 2015 at midnight and August 27 at 5:00pm at three day intervals:
+以3d为间隔，[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) 位于2015-08-19凌晨和2015-08-27下午5点之前的 `water_level` point 数量
 
 ```sql
 > SELECT COUNT(water_level) FROM h2o_feet WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND location='coyote_creek' GROUP BY time(3d)
@@ -364,12 +363,10 @@ time			 count
 2015-08-27T00:00:00Z	 171
 ```
 
-Each timestamp represents a three day interval and the value in the `count` field is the number of `water_level` points that occur in that three day interval.
+每个时间戳表现为3天一个间隔，`count`字段的值表示`water_level`出现在3d间隔中的point数量。
 You could get the same results by querying the data four times - that is, one `COUNT()` query for every three days between August 19, 2015 at midnight and August 27, 2015 at 5:00pm - but that could take a while.
 
-Notice that the first timestamp in the CLI response (`2015-08-18T00:00:00Z`) occurs before the lower bound of the query's time range (`2015-08-19T00:00:00Z`).
-This is because default `GROUP BY time()` intervals fall on rounded
-calendar time boundaries.
+注意到，在CLI response (`2015-08-18T00:00:00Z`) 的出现是比时间范围 (`2015-08-19T00:00:00Z`)小的。这是因为默认 `GROUP BY time()` 落在完整的日历区间中。虽然
 The `count` results where `time` is `2015-08-18T00:00:00Z`, however, only
 include data from `2015-08-19T00:00:00Z`.
 See [Frequently Encountered Issues](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#understanding-the-time-intervals-returned-from-group-by-time-queries) for more detailed explanation of the default
