@@ -100,7 +100,7 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 	"<database>"."<retention policy>"."<measurement>" 
 	``` 
 	
-	The CLI response for all three queries: 
+The CLI response for all three queries: 
 	
 	``` 
 	name: h2o_feet 
@@ -138,7 +138,7 @@ CLI response:
 	2015-09-18T21:42:00Z 6.938 
 	``` 
 	
-	Another example that works: 
+Another example that works: 
 	
 	```
 	sql > SELECT (water_level * 2) + 4 from h2o_feet 
