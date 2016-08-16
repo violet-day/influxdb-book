@@ -61,7 +61,7 @@ General tips on query syntax:
 	
 这个[series](/influxdb/v0.13/concepts/glossary/#series) 由 [measurement](/influxdb/v0.13/concepts/glossary/#measurement) `h2o_feet` 和 [tag key](/influxdb/v0.13/concepts/glossary/#tag-key) `location` 和 [tag values](/influxdb/v0.13/concepts/glossary/#tag-value) `santa_monica` 和 `coyote_creek`组成。有两个字段： [fields](/influxdb/v0.13/concepts/glossary/#field): `water_level` 存储为floats，`level description` 存储为string。所有的数据在 `NOAA_water_database` database中。
 	
-	> **Disclaimer:** `level description` 字段不是NOAA的数据一部分 - 我们偷偷的放在这里的是为了加一个以sting存储的key
+> **Disclaimer:** `level description` 字段不是NOAA的数据一部分 - 我们偷偷的放在这里的是为了加一个以sting存储的key
 	
 ## The SELECT statement and the `WHERE` clause 
 	
@@ -155,11 +155,11 @@ CLI 响应:
 	2015-09-18T21:42:00Z 13.876 
 	``` 
 	
-	> **Note:** When performing arithmetic on fields that store integers be aware that InfluxDB casts those integers to floats for all mathematical operations. This can lead to [overflow issues](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#working-with-really-big-or-really-small-integers) for some numbers. 
+> **Note:** 在存储为integer的field上做数学计算时，integer类型会被转换为float。对于某些数字可能会导致溢出问题。
 	
-	### The `WHERE` clause 
-	--- 
-	Use a `WHERE` clause to filter your data based on tags, time ranges, and/or field values. > **Note:** The quoting syntax for queries differs from the [line protocol](/influxdb/v0.13/concepts/glossary/#line-protocol). Please review the [rules for single and double-quoting](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#single-quoting-and-double-quoting-in-queries) in queries. 
+### The `WHERE` clause 
+--- 
+Use a `WHERE` clause to filter your data based on tags, time ranges, and/or field values. > **Note:** The quoting syntax for queries differs from the [line protocol](/influxdb/v0.13/concepts/glossary/#line-protocol). Please review the [rules for single and double-quoting](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#single-quoting-and-double-quoting-in-queries) in queries. 
 	
 	**Tags** 
 	Return data where the tag key `location` has the tag value `santa_monica`: ```sql > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' ``` * Always single quote tag values in queries - they are strings. Note that double quotes do not work when specifying tag values and can cause queries to silently fail. 
