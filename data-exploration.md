@@ -175,7 +175,13 @@ CLI 响应:
 	
 > **Note:** Tags是建立了索引的，所以在上面执行的查询比在field上更高效。
 
-Return data where the tag key `location` has no tag value (more on regular expressions [later](#regular-expressions-in-queries)): ```sql > SELECT * FROM h2o_feet WHERE location !~ /./ ``` Return data where the tag key `location` has a value: ```sql > SELECT * FROM h2o_feet WHERE location =~ /./ ``` 
+返回`location`不包含值的数据（更多参见[later](#regular-expressions-in-queries)）
+
+```sql 
+> SELECT * FROM h2o_feet WHERE location !~ /./ 
+``` 
+
+Return data where the tag key `location` has a value: ```sql > SELECT * FROM h2o_feet WHERE location =~ /./ ``` 
 	
 **Time ranges** 
 	
