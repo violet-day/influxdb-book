@@ -1,5 +1,6 @@
-InfluxQL is an SQL-like query language for interacting with data in InfluxDB. The following sections cover useful query syntax for exploring your data. 
-The basics: 
+InfluxQL是与InfluxDB数据交互使用的类SQL的查询语言。这节讲会介绍一些查询语法来获取数据。
+
+基本的: 
 
 * [The `SELECT` statement and the `WHERE` clause](#the-select-statement-and-the-where-clause) 
     * [The basic `SELECT` statement](#the-basic-select-statement) 
@@ -36,7 +37,7 @@ General tips on query syntax:
 
 	The examples below query data using [InfluxDB's Command Line Interface (CLI)](/influxdb/v0.13/tools/shell/). See the [Querying Data](/influxdb/v0.13/guides/querying_data/) guide for how to query data directly using the HTTP API. 
 	
-	#### Sample data <br> 
+#### Sample data <br> 
 	
 	If you'd like to follow along with the queries in this document, see [Sample Data](/influxdb/v0.13/sample_data/data_download/) for how to download and write the data to InfluxDB. This document uses publicly available data from the [National Oceanic and Atmospheric Administration's (NOAA) Center for Operational Oceanographic Products and Services](http://tidesandcurrents.noaa.gov/stations.html?type=Water+Levels). The data include water levels (ft) collected every six seconds at two stations (Santa Monica, CA (ID 9410840) and Coyote Creek, CA (ID 9414575)) over the period from August 18, 2015 through September 18, 2015. A subsample of the data in the measurement `h2o_feet`: 
 	
