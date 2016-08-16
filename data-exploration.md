@@ -366,11 +366,8 @@ time			 count
 每个时间戳表现为3天一个间隔，`count`字段的值表示`water_level`出现在3d间隔中的point数量。
 You could get the same results by querying the data four times - that is, one `COUNT()` query for every three days between August 19, 2015 at midnight and August 27, 2015 at 5:00pm - but that could take a while.
 
-注意到，在CLI response (`2015-08-18T00:00:00Z`) 的出现是比时间范围 (`2015-08-19T00:00:00Z`)小的。这是因为默认 `GROUP BY time()` 落在完整的日历区间中。虽然
-The `count` results where `time` is `2015-08-18T00:00:00Z`, however, only
-include data from `2015-08-19T00:00:00Z`.
-See [Frequently Encountered Issues](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#understanding-the-time-intervals-returned-from-group-by-time-queries) for more detailed explanation of the default
-`GROUP BY time()` behavior.
+注意到，在CLI response (`2015-08-18T00:00:00Z`) 的出现是比时间范围 (`2015-08-19T00:00:00Z`)小的。这是因为默认 `GROUP BY time()` 落在完整的日历区间中。虽然`count`的结果显示的时间是`2015-08-18T00:00:00Z`，但是也仅包含了`2015-08-19T00:00:00Z`范围内的数据。参见 [Frequently Encountered Issues](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#understanding-the-time-intervals-returned-from-group-by-time-queries) 了解更详细的
+`GROUP BY time()` 默认行为。
 
 #### Configured `GROUP BY time()` boundaries
 
