@@ -46,34 +46,34 @@ General tips on query syntax:
 	``` 
 	name: h2o_feet 
 	-------------- 
-	time level description location water_level 
-	2015-08-18T00:00:00Z between 6 and 9 feet coyote_creek 8.12 
-	2015-08-18T00:00:00Z below 3 feet santa_monica 2.064 
-	2015-08-18T00:06:00Z between 6 and 9 feet coyote_creek 8.005 
-	2015-08-18T00:06:00Z below 3 feet santa_monica 2.116 
-	2015-08-18T00:12:00Z between 6 and 9 feet coyote_creek 7.887 
-	2015-08-18T00:12:00Z below 3 feet santa_monica 2.028 
-	2015-08-18T00:18:00Z between 6 and 9 feet coyote_creek 7.762 
-	2015-08-18T00:18:00Z below 3 feet santa_monica 2.126 
-	2015-08-18T00:24:00Z between 6 and 9 feet coyote_creek 7.635 
-	2015-08-18T00:24:00Z below 3 feet santa_monica 2.041 
+	time                 level description      location     water_level 
+	2015-08-18T00:00:00Z between 6 and 9 feet   coyote_creek 8.12 
+	2015-08-18T00:00:00Z below 3 feet           santa_monica 2.064 
+	2015-08-18T00:06:00Z between 6 and 9 feet   coyote_creek 8.005 
+	2015-08-18T00:06:00Z below 3 feet           santa_monica 2.116 
+	2015-08-18T00:12:00Z between 6 and 9 feet   coyote_creek 7.887 
+	2015-08-18T00:12:00Z below 3 feet           santa_monica 2.028 
+	2015-08-18T00:18:00Z between 6 and 9 feet   coyote_creek 7.762 
+	2015-08-18T00:18:00Z below 3 feet           santa_monica 2.126 
+	2015-08-18T00:24:00Z between 6 and 9 feet   coyote_creek 7.635 
+	2015-08-18T00:24:00Z below 3 feet           santa_monica 2.041 
 	``` 
 	
 这个[series](/influxdb/v0.13/concepts/glossary/#series) 由 [measurement](/influxdb/v0.13/concepts/glossary/#measurement) `h2o_feet` 和 [tag key](/influxdb/v0.13/concepts/glossary/#tag-key) `location` 和 [tag values](/influxdb/v0.13/concepts/glossary/#tag-value) `santa_monica` 和 `coyote_creek`组成。有两个字段： [fields](/influxdb/v0.13/concepts/glossary/#field): `water_level` 存储为floats，`level description` 存储为string。所有的数据在 `NOAA_water_database` database中。
 	
-	> **Disclaimer:** The `level description` field isn't part of the original NOAA data - we snuck it in there for the sake of having a field key with a special character and string [field values](/influxdb/v0.13/concepts/glossary/#field-value). 
+	> **Disclaimer:** `level description` 字段不是NOAA的数据一部分 - 我们偷偷的放在这里的是为了加一个以sting存储的key
 	
 ## The SELECT statement and the `WHERE` clause 
 	
-	InfluxQL's `SELECT` statement follows the form of an SQL `SELECT` statement where the `WHERE` clause is optional: 
+InfluxQL的`SELECT`声明和SQL中的`SELECT`声明一致，`WHERE`：
 	
-	```
-	sql SELECT <stuff> FROM <measurement_name> WHERE <some_conditions> 
+	```sql 
+        SELECT <stuff> FROM <measurement_name> WHERE <some_conditions> 
 	``` 
 	
-	### The basic `SELECT` statement 
-	--- 
-	The following three examples return everything from the measurement `h2o_feet` (see the CLI response at the end of this section). While they all return the same result, they get to that result in slightly different ways and serve to introduce some of the specifics of the `SELECT` syntax: Select everything from `h2o_feet` with `*`: 
+### The basic `SELECT` statement 
+--- 
+The following three examples return everything from the measurement `h2o_feet` (see the CLI response at the end of this section). While they all return the same result, they get to that result in slightly different ways and serve to introduce some of the specifics of the `SELECT` syntax: Select everything from `h2o_feet` with `*`: 
 	
 	```
 	sql > SELECT * FROM h2o_feet 
