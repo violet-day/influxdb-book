@@ -266,10 +266,9 @@ time mean
 1970-01-01T00:00:00Z 3.530863470081006 
 ``` 
 	
->**Note:** In InfluxDB, [epoch 0](https://en.wikipedia.org/wiki/Unix_time) (`1970-01-01T00:00:00Z`) is often used as a null timestamp equivalent.
-If you request a query that has no timestamp to return, such as an aggregation function with an unbounded time range, InfluxDB returns epoch 0 as the timestamp.
+>**Note:** 在InfluxDB中, [epoch 0](https://en.wikipedia.org/wiki/Unix_time) (`1970-01-01T00:00:00Z`) 通常用来表示空时间戳。如果你请求的查询没有时间戳反悔，比如没有指定时间返回的聚合返回，InfluxDB会返回`epoch 0`作为时间戳。
 
-Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `index` for every tag set in `h2o_quality`:
+为`h2o_quality`中的每个tag set计算 [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `index` ：
 
 ```sql
 > SELECT MEAN(index) FROM h2o_quality GROUP BY *
@@ -322,14 +321,13 @@ time			               mean
 
 ### GROUP BY time intervals
 
-Users can group data by a given time interval with `GROUP BY time()`:
+用户可以通过给定的time interval 使用 `GROUP BY time()`对数据进行分组:
 
 ```
 SELECT <function>(<field_key>) FROM <measurement_name> WHERE <time_range> GROUP BY time(<time_interval>[,<offset_interval>])
 ```
 
-InfluxQL requires a `WHERE` clause if you're using `GROUP BY` with `time()`.
-Note that unless you specify a different upper and lower bound for the time range, `GROUP BY` uses `epoch 0` as the lower bound and `now()` as the upper bound for the query.
+如果使用在InfluxQL中使用 `GROUP BY` 和 `time()`，就需要添加 `WHERE` 字句。注意，除非你指定时间范围的上下界，否则使用`epoch 0`作为下界，`now()`作为上界
 
 Valid units for `time()` are:  
 <br>
