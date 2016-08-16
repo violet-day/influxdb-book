@@ -117,15 +117,15 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 	2015-09-18T21:42:00Z between 3 and 6 feet santa_monica 4.938 
 	``` 
 	
-	### The `SELECT` statement and arithmetic 
-	--- 
-	Perform basic arithmetic operations on fields that store floats and integers. Add two to the field `water_level`: 
+### The `SELECT` statement and arithmetic 
+--- 
+Perform basic arithmetic operations on fields that store floats and integers. Add two to the field `water_level`: 
 	
-	```
-	sql > SELECT water_level + 2 FROM h2o_feet 
+	```sql 
+> SELECT water_level + 2 FROM h2o_feet 
 	``` 
 	
-	CLI response: 
+CLI response: 
 	
 	```bash 
 	name: h2o_feet 
