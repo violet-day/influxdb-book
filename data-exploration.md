@@ -239,11 +239,11 @@ InfluxQL的`WHERE`更多用法如下:
 
 使用 `GROUP BY` 子句根据 tag 或者 time intervals对数据分组. 正确使用 `GROUP BY`的姿势为将 `GROUP BY` 添加至 `SELECT` 声明后，并对 `SELECT` 声明使用 InfluxQL的 [functions](/influxdb/v0.13/query_language/functions/): 
 	
-> **Note:** 如果你的query同时包含 `WHERE` 和 `GROUP BY` , `GROUP BY` 必须在 `WHERE` 之后。
+> **Note:** 如果你的查询同时包含 `WHERE` 和 `GROUP BY` , `GROUP BY` 必须在 `WHERE` 之后。
 
 ### GROUP BY tag values 
 
-Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
+对于不同的`location` 计算 [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level`: 
 	
 ```sql 
 > SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
