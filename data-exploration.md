@@ -35,11 +35,13 @@ General tips on query syntax:
 	* [Regular expressions and selecting measurements](#regular-expressions-and-selecting-measurements) 
 	* [Regular expressions and specifying tags](#regular-expressions-and-specifying-tags) 
 
-	The examples below query data using [InfluxDB's Command Line Interface (CLI)](/influxdb/v0.13/tools/shell/). See the [Querying Data](/influxdb/v0.13/guides/querying_data/) guide for how to query data directly using the HTTP API. 
+示例使用 [InfluxDB's Command Line Interface (CLI)](/influxdb/v0.13/tools/shell/)。同时可以通过 HTTP API 来 [Querying Data](/influxdb/v0.13/guides/querying_data/) 
 	
 #### Sample data <br> 
 	
-	If you'd like to follow along with the queries in this document, see [Sample Data](/influxdb/v0.13/sample_data/data_download/) for how to download and write the data to InfluxDB. This document uses publicly available data from the [National Oceanic and Atmospheric Administration's (NOAA) Center for Operational Oceanographic Products and Services](http://tidesandcurrents.noaa.gov/stations.html?type=Water+Levels). The data include water levels (ft) collected every six seconds at two stations (Santa Monica, CA (ID 9410840) and Coyote Creek, CA (ID 9414575)) over the period from August 18, 2015 through September 18, 2015. A subsample of the data in the measurement `h2o_feet`: 
+如果你想尝试这篇文章中的查询，查看[Sample Data](/influxdb/v0.13/sample_data/data_download/) 下载和导入数据至InfluxDB. 这篇文章使用[National Oceanic and Atmospheric Administration's (NOAA) Center for Operational Oceanographic Products and Services](http://tidesandcurrents.noaa.gov/stations.html?type=Water+Levels)的公开可用数据。数据包含了从 August 18, 2015 到 September 18, 2015期间，两个站点((Santa Monica, CA (ID 9410840) and Coyote Creek, CA (ID 9414575)))，water levels(ft)，每六秒收集1次
+
+A subsample of the data in the measurement `h2o_feet`: 
 	
 	``` 
 	name: h2o_feet 
