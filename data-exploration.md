@@ -105,11 +105,11 @@ The CLI response for all three queries:
 	``` 
 	name: h2o_feet 
 	-------------- 
-	time level description location water_level 
+	time                 level description    location     water_level 
 	2015-08-18T00:00:00Z between 6 and 9 feet coyote_creek 8.12 
-	2015-08-18T00:00:00Z below 3 feet santa_monica 2.064 
+	2015-08-18T00:00:00Z below 3 feet         santa_monica 2.064 
 	2015-08-18T00:06:00Z between 6 and 9 feet coyote_creek 8.005 
-	2015-08-18T00:06:00Z below 3 feet santa_monica 2.116 
+	2015-08-18T00:06:00Z below 3 feet         santa_monica 2.116 
 	[...] 
 	2015-09-18T21:24:00Z between 3 and 6 feet santa_monica 5.013 
 	2015-09-18T21:30:00Z between 3 and 6 feet santa_monica 5.01 
@@ -205,33 +205,34 @@ CLI 响应:
 > SELECT * FROM h2o_feet WHERE location = 'coyote_creek' AND water_level > 8 
 	``` 
 	
-
-Return data where the tag key `location` has the tag value `santa_monica` and the field `level description` equals `'below 3 feet'`: 
+返回 tag `location`值为`santa_monica`，field `level description` 等于 `'below 3 feet'`: 
 	
 	```sql 
 > SELECT * FROM h2o_feet WHERE location = 'santa_monica' AND "level description" = 'below 3 feet' 
-	``` 
+	```
 	
-Return data where the field values in `water_level` plus `2` are greater than `11.9`: 
+返回`water_level`乘以2大于`11.9`:
 	
 	``` 
 	> SELECT * FROM h2o_feet WHERE water_level + 2 > 11.9 
 	``` 
 	
-	* Always single quote field values that are strings. Note that double quotes do not work when specifying string field values and can cause queries to silently fail. 
+* field值为string类型时，永远使用单引号。注意，双引号不会起任何作用，并且会导致静默的错误。
 	
-	> **Note:** Fields are not indexed; queries on fields are not as performant as those on tags. More on the `WHERE` clause in InfluxQL: \
-	
-	* The `WHERE` clause supports comparisons against strings, booleans, floats, integers, and against the `time` of the timestamp. It supports using regular expressions to match tags, but not to match fields. 
-	* Chain logic together using `AND` and `OR`, and separate using `(` and `)`. 
-	* Acceptable comparators include: 
-		* `=` equal to 
-		* `<>` not equal to 
-		* `!=` not equal to 
-		* `>` greater than 
-		* `<` less than 
-		* `=~` matches against 
-		* `!~` doesn't match against 
+> **Note:** Fields上没有构建索引；查询效率不如tags。
+
+InfluxQL的`WHERE`更多用法如下:
+ 	
+* `WHERE`字句中支持对strings、booleans、floats、integers比较，`time`通过timestamp比较。支持郑泽表达式匹配tag，但是field不支持。
+* 链式逻辑使用 `AND` 和 `OR`, 分隔符使用 `(` 和 `)`. 
+* 支持的比较符: 
+  * `=` 等于
+  * `<>` 不等于
+  * `!=` 不等于
+  * `>` 大于
+  * `<` 小于
+  * `=~` 匹配
+  * `!~` 不匹配
 
 		## The GROUP BY clause 
 		Use the `GROUP BY` clause to group data by tags and/or time intervals. To successfully implement `GROUP BY`, append the`GROUP BY` clause to a `SELECT` statement and pair the `SELECT` statement with one of InfluxQL's [functions](/influxdb/v0.13/query_language/functions/): 
