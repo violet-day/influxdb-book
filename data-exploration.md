@@ -160,13 +160,18 @@ CLI 响应:
 ### The `WHERE` clause 
 --- 
 使用`WHERE`基于tags、时间范围或者field来过滤数据。
-Use a `WHERE` clause to filter your data based on tags, time ranges, and/or field values. 
 
 > **Note:** 引号的语法和 [line protocol](/influxdb/v0.13/concepts/glossary/#line-protocol)和有区别。 参见 [rules for single and double-quoting](/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#single-quoting-and-double-quoting-in-queries) 
 	
 **Tags** 
 	
-Return data where the tag key `location` has the tag value `santa_monica`: ```sql > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' ``` * Always single quote tag values in queries - they are strings. Note that double quotes do not work when specifying tag values and can cause queries to silently fail. 
+返回tag `location`值为`santa_monica`的数据：
+
+```sql 
+> SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' 
+``` 
+
+* Always single quote tag values in queries - they are strings. Note that double quotes do not work when specifying tag values and can cause queries to silently fail. 
 	
 > **Note:** Tags are indexed so queries on tag keys or tag values are more performant than queries on fields. Return data where the tag key `location` has no tag value (more on regular expressions [later](#regular-expressions-in-queries)): ```sql > SELECT * FROM h2o_feet WHERE location !~ /./ ``` Return data where the tag key `location` has a value: ```sql > SELECT * FROM h2o_feet WHERE location =~ /./ ``` 
 	
