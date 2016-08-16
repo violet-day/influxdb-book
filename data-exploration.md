@@ -371,13 +371,11 @@ You could get the same results by querying the data four times - that is, one `C
 
 #### Configured `GROUP BY time()` boundaries
 
-`GROUP BY time()` also allows you to alter the default rounded calendar time
-boundaries by including an offset interval.
+`GROUP BY time()` 同样允许你通过设置offset interval来更改默认的日历区间。
 
 Examples:
 
-[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) the number of `water_level` points between August 19, 2015 at midnight and August 27 at 5:00pm at three day intervals, and offset
-the time boundary by one day:
+以3d为间隔，偏移1d，[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) 位于2015-08-19凌晨和2015-08-27下午5点之前的 `water_level` point 数量
 
 ```sql
 > SELECT COUNT(water_level) FROM h2o_feet WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND location='coyote_creek' GROUP BY time(3d,1d)
@@ -394,23 +392,17 @@ time			               count
 2015-08-25T00:00:00Z	 651
 ```
 
-The `1d` offset interval alters the default three day time interval boundaries  
-from:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to:
+`1d` 偏移间隔修改了默认3d时间间隔的日历边界为
 
 ```
+from                          to
 August 18 - August 20         August 19 - August 21
 August 21 - August 23         August 22 - August 24
 August 24 - August 26         August 25 - August 27
 August 27 - August 29         
 ```
 
-[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) the number of
-`water_level` points between August 19, 2015 at midnight and August 27 at 5:00pm
-at three day intervals, and offset
-the time boundary by -2 days:
+以3d为间隔，偏移-2d，[`COUNT()`](/influxdb/v0.13/query_language/functions/#count) 位于2015-08-19凌晨和2015-08-27下午5点之前的 `water_level` point 数量
 
 ```
 > SELECT COUNT(water_level) FROM h2o_feet WHERE time >= '2015-08-19T00:00:00Z' AND time <= '2015-08-27T17:00:00Z' AND location='coyote_creek' GROUP BY time(3d,-2d)
@@ -427,11 +419,7 @@ time			               count
 2015-08-25T00:00:00Z	 651
 ```
 
-The  `-2d` offset interval alters the default three day time interval boundaries  
-from:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to:
+`-2d` 偏移间隔修改了默认3d时间间隔的日历边界为
 
 ```
 August 18 - August 20         August 16 - August 18
@@ -439,9 +427,8 @@ August 21 - August 23         August 19 - August 21
 August 24 - August 26         August 22 - August 24
 August 27 - August 29         August 25 - August 27
 ```
-InfluxDB does not return results for the first time interval
-(August 16 - August 18), because it is completely outside the time range in the
-query's `WHERE` clause.
+
+InfluxDB 不返回第一个时间间隔(August 16 - August 18)中的结果，因为它不在`WHERE`子句范围内。
 
 ### GROUP BY tag values AND a time interval
 
