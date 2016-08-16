@@ -41,7 +41,7 @@ General tips on query syntax:
 	
 如果你想尝试这篇文章中的查询，查看[Sample Data](/influxdb/v0.13/sample_data/data_download/) 下载和导入数据至InfluxDB. 这篇文章使用[National Oceanic and Atmospheric Administration's (NOAA) Center for Operational Oceanographic Products and Services](http://tidesandcurrents.noaa.gov/stations.html?type=Water+Levels)的公开可用数据。数据包含了从 August 18, 2015 到 September 18, 2015期间，两个站点((Santa Monica, CA (ID 9410840) and Coyote Creek, CA (ID 9414575)))，water levels(ft)，每六秒收集1次
 
-A subsample of the data in the measurement `h2o_feet`: 
+ measurement `h2o_feet`一段数据: 
 	
 	``` 
 	name: h2o_feet 
