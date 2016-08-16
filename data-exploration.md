@@ -171,9 +171,11 @@ CLI 响应:
 > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' 
 ``` 
 
-* Always single quote tag values in queries - they are strings. Note that double quotes do not work when specifying tag values and can cause queries to silently fail. 
+* 在tag查询中，使用单引号，因为它们是string。注意，使用双引号查询tag时不会起任何作用，并且会导致静默的错误。
 	
-> **Note:** Tags are indexed so queries on tag keys or tag values are more performant than queries on fields. Return data where the tag key `location` has no tag value (more on regular expressions [later](#regular-expressions-in-queries)): ```sql > SELECT * FROM h2o_feet WHERE location !~ /./ ``` Return data where the tag key `location` has a value: ```sql > SELECT * FROM h2o_feet WHERE location =~ /./ ``` 
+> **Note:** Tags是建立了索引的，所以在上面执行的查询比在field上更高效。
+
+Return data where the tag key `location` has no tag value (more on regular expressions [later](#regular-expressions-in-queries)): ```sql > SELECT * FROM h2o_feet WHERE location !~ /./ ``` Return data where the tag key `location` has a value: ```sql > SELECT * FROM h2o_feet WHERE location =~ /./ ``` 
 	
 **Time ranges** 
 	
