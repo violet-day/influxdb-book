@@ -73,7 +73,10 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 	
 ### The basic `SELECT` statement 
 --- 
-The following three examples return everything from the measurement `h2o_feet` (see the CLI response at the end of this section). While they all return the same result, they get to that result in slightly different ways and serve to introduce some of the specifics of the `SELECT` syntax: Select everything from `h2o_feet` with `*`: 
+下面的3个例子，从measurement`h20_feet`返回所有数据。虽然它们返回的结果相同，但是方式有点区别，理解这些有助于理解`SELECT`语法。
+
+
+The following: Select everything from `h2o_feet` with `*`: 
 	
 	```
 	sql > SELECT * FROM h2o_feet 
