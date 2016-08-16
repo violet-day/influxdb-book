@@ -188,25 +188,31 @@ CLI 响应:
 ``` 
 	
 **Time ranges** 
+
+返回过去7天的数据：
+
+```sql 
+> SELECT * FROM h2o_feet WHERE time > now() - 7d 
+``` 
 	
-Return data from the past seven days: ```sql > SELECT * FROM h2o_feet WHERE time > now() - 7d ``` 
+* `now()` 表示server上执行query的Unix。更多关于 `now()` 其他方式的查询参见 [time syntax in queries](#time-syntax-in-queries). 
 	
-	* `now()` is the Unix time of the server at the time the query is executed on that server. For more on `now()` and other ways to specify time in queries, see [time syntax in queries](#time-syntax-in-queries). 
+**Field values** 
+
+返回 tag `location`值为`coyote_creek`并且field `water_level`大于8 feet：
 	
-	**Field values** 
-	Return data where the tag key `location` has the tag value `coyote_creek` and the field `water_level` is greater than 8 feet: 
-	
-	```
-	sql > SELECT * FROM h2o_feet WHERE location = 'coyote_creek' AND water_level > 8 
+	```sql 
+> SELECT * FROM h2o_feet WHERE location = 'coyote_creek' AND water_level > 8 
 	``` 
 	
-	Return data where the tag key `location` has the tag value `santa_monica` and the field `level description` equals `'below 3 feet'`: 
+
+Return data where the tag key `location` has the tag value `santa_monica` and the field `level description` equals `'below 3 feet'`: 
 	
-	```
-	sql > SELECT * FROM h2o_feet WHERE location = 'santa_monica' AND "level description" = 'below 3 feet' 
+	```sql 
+> SELECT * FROM h2o_feet WHERE location = 'santa_monica' AND "level description" = 'below 3 feet' 
 	``` 
 	
-	Return data where the field values in `water_level` plus `2` are greater than `11.9`: 
+Return data where the field values in `water_level` plus `2` are greater than `11.9`: 
 	
 	``` 
 	> SELECT * FROM h2o_feet WHERE water_level + 2 > 11.9 
