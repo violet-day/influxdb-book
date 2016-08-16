@@ -441,22 +441,23 @@ Calculate the average `water_level` for the different tag values of `location` i
 
 ### The `GROUP BY` clause and `fill()`
 ---
-By default, a `GROUP BY` interval with no data has `null` as its value in the output column.
-Use `fill()` to change the value reported for intervals that have no data.
-`fill()` options include:
+默认的， `GROUP BY` interval  没有数据时，使用 `null` z作为在列中的输出值。使用 `fill()` 函数来修改在没有数据时的展示。`fill()` 的选项包括：
 
-* Any numerical value
-* `null` - sets `null` as the value for intervals with no data
-* `previous` - copies the value from the previous interval for intervals with no data
-* `none` - skips intervals with no data to report
+* 任何树枝
+* `null` - 在没有数值时用 `null` 作为它的值
+* `previous` - 没有数据时，复制上一个interval的值作为值
+* `none` - 跳过这个interval
 
 Follow the ✨ in the examples below to see what `fill()` can do.
 
 **GROUP BY without fill()**
+
 ```sql
 > SELECT MEAN(water_level) FROM h2o_feet WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d)
 ```
+
 CLI response:
+
 ```bash
 name: h2o_feet
 --------------
