@@ -94,7 +94,7 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 > SELECT * FROM NOAA_water_database."default".h2o_feet 
 	``` 
 
-* Fully qualify a measurement if you wish to query data from a different database or from a retention policy other than the default [retention policy](/influxdb/v0.13/concepts/glossary/#retention-policy-rp). A fully qualified measurement takes the following form: 
+* 如果你想从不同的database或者retention policy，需要指定measurement的全名。全名的形式如下：
 
 	``` 
 	"<database>"."<retention policy>"."<measurement>" 
