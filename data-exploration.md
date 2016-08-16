@@ -88,7 +88,7 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 	``` 
 	
 * 通过逗号分隔你所需要的field和tag。注意，在`SELECT`声明中，至少包含一个字段。
-* Leave identifiers unquoted unless they start with a digit, contain characters other than `[A-z,0-9,_]`, or if they are an [InfluxQL keyword](https://github.com/influxdb/influxdb/blob/master/influxql/README.md#keywords) - then you need to double quote them. Identifiers are database names, retention policy names, user names, measurement names, tag keys, and field keys. Select everything from `h2o_feet` by fully qualifying the measurement: 
+* Leave identifiers unquoted unless they start with a digit, contain characters other than `[A-z,0-9,_]`, or if they are an [InfluxQL keyword](https://github.com/influxdb/influxdb/blob/master/influxql/README.md#keywords) - then you need to double quote them. Identifiers are database names, retention policy names, user names, measurement names, tag keys, and field keys. 通过全名查询 `h2o_feet` : 
 
 	```sql 
 > SELECT * FROM NOAA_water_database."default".h2o_feet 
