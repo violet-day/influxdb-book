@@ -235,7 +235,9 @@ InfluxQL的`WHERE`更多用法如下:
   * `!~` 不匹配
 
 ## The GROUP BY clause 
-Use the `GROUP BY` clause to group data by tags and/or time intervals. To successfully implement `GROUP BY`, append the`GROUP BY` clause to a `SELECT` statement and pair the `SELECT` statement with one of InfluxQL's [functions](/influxdb/v0.13/query_language/functions/): 
+
+
+使用 `GROUP BY` 子句根据 tag 或者 time intervals对数据分组. 正确使用 `GROUP BY`的姿势为将 `GROUP BY` 添加至 `SELECT` 声明后，并对 `SELECT` 声明使用 InfluxQL的 [functions](/influxdb/v0.13/query_language/functions/): 
 	
 > **Note:** If your query includes both a `WHERE` clause and a `GROUP BY` clause, the `GROUP BY` clause must come after the `WHERE` clause. ### GROUP BY tag values Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
 	
