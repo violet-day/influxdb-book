@@ -234,16 +234,16 @@ InfluxQL的`WHERE`更多用法如下:
   * `=~` 匹配
   * `!~` 不匹配
 
-		## The GROUP BY clause 
-		Use the `GROUP BY` clause to group data by tags and/or time intervals. To successfully implement `GROUP BY`, append the`GROUP BY` clause to a `SELECT` statement and pair the `SELECT` statement with one of InfluxQL's [functions](/influxdb/v0.13/query_language/functions/): 
+## The GROUP BY clause 
+Use the `GROUP BY` clause to group data by tags and/or time intervals. To successfully implement `GROUP BY`, append the`GROUP BY` clause to a `SELECT` statement and pair the `SELECT` statement with one of InfluxQL's [functions](/influxdb/v0.13/query_language/functions/): 
 	
-	> **Note:** If your query includes both a `WHERE` clause and a `GROUP BY` clause, the `GROUP BY` clause must come after the `WHERE` clause. ### GROUP BY tag values Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
+> **Note:** If your query includes both a `WHERE` clause and a `GROUP BY` clause, the `GROUP BY` clause must come after the `WHERE` clause. ### GROUP BY tag values Calculate the [`MEAN()`](/influxdb/v0.13/query_language/functions/#mean) `water_level` for the different tag values of `location`: 
 	
-	```
-	sql > SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
+	```sql 
+> SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
 	``` 
 	
-	CLI response: 
+CLI response: 
 	
 	```bash 
 	> SELECT MEAN(water_level) FROM h2o_feet GROUP BY location 
@@ -353,7 +353,7 @@ CLI response:
 ```bash
 name: h2o_feet
 --------------
-time			               count
+time			 count
 2015-08-18T00:00:00Z	 480
 2015-08-21T00:00:00Z	 720
 2015-08-24T00:00:00Z	 720
