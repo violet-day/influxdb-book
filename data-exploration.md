@@ -67,9 +67,9 @@ General tips on query syntax:
 	
 InfluxQL的`SELECT`声明和SQL中的`SELECT`声明一致，`WHERE`：
 	
-	```sql 
+```sql 
 SELECT <stuff> FROM <measurement_name> WHERE <some_conditions> 
-	``` 
+``` 
 	
 ### The basic `SELECT` statement 
 --- 
@@ -77,9 +77,9 @@ SELECT <stuff> FROM <measurement_name> WHERE <some_conditions>
 
 通过`*`从`h2o_feet`中查询所有数据：
 	
-	```sql 
+```sql 
 > SELECT * FROM h2o_feet 
-	``` 
+``` 
 
 从`h2o_feet`中通过指定tag key和field key查询数据：
 	
@@ -140,8 +140,8 @@ CLI 响应:
 	
 另外一个例子: 
 	
-	```
-	sql > SELECT (water_level * 2) + 4 from h2o_feet 
+	```sql 
+> SELECT (water_level * 2) + 4 from h2o_feet 
 	``` 
 	
 CLI 响应: 
