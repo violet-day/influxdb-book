@@ -59,11 +59,11 @@ General tips on query syntax:
 	2015-08-18T00:24:00Z below 3 feet santa_monica 2.041 
 	``` 
 	
-	The [series](/influxdb/v0.13/concepts/glossary/#series) are made up of the [measurement](/influxdb/v0.13/concepts/glossary/#measurement) `h2o_feet` and the [tag key](/influxdb/v0.13/concepts/glossary/#tag-key) `location` with the [tag values](/influxdb/v0.13/concepts/glossary/#tag-value) `santa_monica` and `coyote_creek`. There are two [fields](/influxdb/v0.13/concepts/glossary/#field): `water_level` which stores floats and `level description` which stores strings. All of the data are in the `NOAA_water_database` database. 
+这个[series](/influxdb/v0.13/concepts/glossary/#series) 由 [measurement](/influxdb/v0.13/concepts/glossary/#measurement) `h2o_feet` 和 [tag key](/influxdb/v0.13/concepts/glossary/#tag-key) `location` 和 [tag values](/influxdb/v0.13/concepts/glossary/#tag-value) `santa_monica` 和 `coyote_creek`组成。有两个字段： [fields](/influxdb/v0.13/concepts/glossary/#field): `water_level` 存储为floats，`level description` 存储为string。所有的数据在 `NOAA_water_database` database中。
 	
 	> **Disclaimer:** The `level description` field isn't part of the original NOAA data - we snuck it in there for the sake of having a field key with a special character and string [field values](/influxdb/v0.13/concepts/glossary/#field-value). 
 	
-	## The SELECT statement and the `WHERE` clause 
+## The SELECT statement and the `WHERE` clause 
 	
 	InfluxQL's `SELECT` statement follows the form of an SQL `SELECT` statement where the `WHERE` clause is optional: 
 	
