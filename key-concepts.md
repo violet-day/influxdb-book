@@ -88,8 +88,7 @@ time                   butterflies honeybees location scientist
 2015-08-18T00:00:00Z   1           30        1        perpetua
 ```
 
-示例中的series定义由retention policy(default)、measuremnt(census)和tag set(location=1,scientist=perpetua)组成。对应点的时间戳为2015-08-18T00:00:00Z
+示例中的series定义由retention policy\(default\)、measuremnt\(census\)和tag set\(location=1,scientist=perpetua\)组成。对应点的时间戳为2015-08-18T00:00:00Z
 
-以上我们提到的痘存储在database中，样本数据在database `my_database`中。InfluxDB中的database和关系型数据库累死，为users、retention policy和continuous query和time series data提供了逻辑存储。
-
+以上我们提到的都存储在database中，样本数据在database `my_database`中。InfluxDB中的database和关系型数据库累死，为users、retention policy和continuous query和time series data提供了逻辑存储。
 
