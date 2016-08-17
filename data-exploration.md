@@ -555,7 +555,9 @@ time			               written
 > **Note**: 如果使用 `SELECT *` with `INTO`, query 会将当前 measurment 中的 tags 转换为新 measurement 中的 fields。这会导致InfludxDB在写入时区和之前的tag值有所不同。可以使用 `GROUP BY <tag_key>` 保留tag。
 
 ### Downsample data
-Combine the `INTO` clause with an InfluxQL [function](/influxdb/v0.13/query_language/functions/) and a `GROUP BY` clause to write the lower precision query results to a different measurement:
+
+使用 `INTO`、InfluxQL [function](/influxdb/v0.13/query_language/functions/) 和 `GROUP BY` 将查询结果写入另外一个measurement：
+
 ```sql
 SELECT <function>(<field_key>) INTO <different_measurement> FROM <current_measurement> WHERE <stuff> GROUP BY <stuff>
 ```
@@ -563,12 +565,15 @@ SELECT <function>(<field_key>) INTO <different_measurement> FROM <current_measur
 > **Note:** The `INTO` queries in this section downsample old data, that is, data that have already been written to InfluxDB.
 If you want InfluxDB to automatically query and downsample all future data see [Continuous Queries](/influxdb/v0.13/query_language/continuous_queries/).
 
-Calculate the average `water_level` in `santa_monica`, and write the results to a new measurement (`average`) in the same database:
+
+计算`santa_monica`中的 `water_level`对应的average，并将结果写入位于相同database中新的measurement(`average`)：
+
 ```sql
 > SELECT mean(water_level) INTO average FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:30:00Z' GROUP BY time(12m)
 ```
 
-The CLI response shows the number of points that InfluxDB wrote to the new measurement:
+The CLI response 返回了写入的point的数量:
+
 ```bash
 name: result
 ------------
@@ -576,7 +581,8 @@ time			               written
 1970-01-01T00:00:00Z	 3
 ```
 
-To see the query results, select everything from the new measurement `average` in `NOAA_water_database`:
+要查看结果的话，select `average`全部即可：
+
 ```bash
 > SELECT * FROM average
 name: average
@@ -587,7 +593,8 @@ time			               mean
 2015-08-18T00:24:00Z	 2.0460000000000003
 ```
 
-Calculate the average `water_level` and the max `water_level` in `santa_monica`, and write the results to a new measurement (`aggregates`) in a different database (`where_else`):
+在`santa_monica`计算`water_level`的平均值和最大值，并写入另一个database(`where_eles`)中新的`aggreates`：
+
 ```sql
 > SELECT mean(water_level), max(water_level) INTO where_else."default".aggregates FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:30:00Z' GROUP BY time(12m)
 ```
@@ -600,7 +607,8 @@ time			               written
 1970-01-01T00:00:00Z	 3
 ```
 
-Select everything from the new measurement `aggregates` in the database `where_else`:
+在database `where_else`中查看新的measurement `aggregates`：
+
 ```bash
 > SELECT * FROM where_else."default".aggregates
 name: aggregates
@@ -611,13 +619,14 @@ time			               max	   mean
 2015-08-18T00:24:00Z	 2.051	 2.0460000000000003
 ```
 
-Calculate the average `degrees` for all temperature measurements (`h2o_temperature` and `average_temperature`) in the `NOAA_water_database` and write the results to new measurements with the same names in a different database (`where_else`).
-`:MEASUREMENT` tells InfluxDB to write the query results to measurements with the same names as those targeted by the query:
+对于`NOAA_water_database`中的所有的temperature measurements (`h2o_temperature`和`average_temperature`) 计算`degrees`的平均值，使用相同的measurement name将结果写至另一个database。`:MEASUREMENT` 告诉InfluxDB使用相同measurement name：
+
 ```sql
 > SELECT mean(degrees) INTO where_else."default".:MEASUREMENT FROM /temperature/ WHERE time >= '2015-08-18T00:00:00Z' AND time <= '2015-08-18T00:30:00Z' GROUP BY time(12m)
 ```
 
 CLI response:
+
 ```bash
 name: result
 ------------
@@ -625,7 +634,8 @@ time			               written
 1970-01-01T00:00:00Z	 6
 ```
 
-Select the `mean` field from all new temperature measurements in the database `where_else`.
+在写入的database `where_else`中查询结果:
+
 ```bash
 > SELECT mean FROM where_else."default"./temperature/
 name: average_temperature
