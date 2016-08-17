@@ -1029,24 +1029,23 @@ Examples:
 
 ## Regular expressions in queries
 
-Regular expressions are surrounded by `/` characters and use [Golang's regular expression syntax](http://golang.org/pkg/regexp/syntax/).
-Use regular expressions when selecting measurements and tags.
+正则表达式使用 `/`声明，并且使用 [Golang's regular expression syntax](http://golang.org/pkg/regexp/syntax/)。可以在查询measurment和tag的时候使用正则表达式
 
-> **Note:** You cannot use regular expressions to match databases, retention policies, or fields.
-You can only use regular expressions to match measurements and tags.
+> **Note:** 不能用正则表达式匹配databases、 retention policies 或者 fields，仅能在匹配measurement和tag。
 
-In this section we'll be using all of the measurements in the [sample data](/influxdb/v0.13/query_language/data_exploration/#sample-data):
-`h2o_feet`, `h2o_quality`, `h2o_pH`, `average_temperature`, and `h2o_temperature`.
-Please note that every measurement besides `h2o_feet` is fictional and contains fictional data.
+这节中，我们会使用 [sample data](/influxdb/v0.13/query_language/data_exploration/#sample-data) 中的所有measurement：
+`h2o_feet`, `h2o_quality`, `h2o_pH`, `average_temperature` 和 `h2o_temperature`。请注意，所有measurement中，只有`h2o_feet`是数据虚构。
 
 ### Regular expressions and selecting measurements
 ---
-Select the oldest point from every measurement in the `NOAA_water_database` database:
+在`NOAA_water_database`中，从所有的measurement中查询最早的点：
+
 ```sql
 > SELECT * FROM /.*/ LIMIT 1
 ```
 
 CLI response:
+
 ```bash
 name: average_temperature
 -------------------------
@@ -1078,22 +1077,25 @@ time			               degrees	 index	 level description	    location	     pH	 ra
 2015-08-18T00:00:00Z	 60					                               coyote_creek
 ```
 
-* Alternatively, `SELECT` all of the measurements in `NOAA_water_database` by typing them out and separating each name with a comma , but that could get tedious:
+* 另外, `SELECT` `NOAA_water_database`中的所有 measurements 可以全部输出它们的名字，以逗号分隔，但是这样会显得很冗长：
 
-    ```sql
+```sql
 > SELECT * FROM average_temperature,h2o_feet,h2o_pH,h2o_quality,h2o_temperature LIMIT 1
-    ```
+```
 
-Select the first three points from every measurement whose name starts with `h2o`:  
+查询name以`h2o`开头的measurement的3个point：
+
 ```sql
 > SELECT * FROM /^h2o/ LIMIT 3
 ```
+
 CLI response:  
+
 ```bash
 name: h2o_feet
 --------------
 time			               degrees	 index	 level description	    location	     pH	randtag	water_level
-2015-08-18T00:00:00Z			               between 6 and 9 feet	 coyote_creek			          8.12
+2015-08-18T00:00:00Z			                 between 6 and 9 feet	 coyote_creek			          8.12
 2015-08-18T00:00:00Z			               below 3 feet		        santa_monica			          2.064
 2015-08-18T00:06:00Z			               between 6 and 9 feet	 coyote_creek			          8.005
 
@@ -1123,13 +1125,14 @@ time			               degrees	 index	 level description	    location	     pH	ran
 
 ```
 
-Select the first 5 points from every measurement whose name contains `temperature`:
+查询name包含`temperature` measurement的前5个点：
 
 ```sql
 > SELECT * FROM /.*temperature.*/ LIMIT 5
 ```
 
 CLI response:
+
 ```bash
 name: average_temperature
 -------------------------
@@ -1152,17 +1155,18 @@ time			              degrees	location
 
 ### Regular expressions and specifying tags
 ---
-Use regular expressions to specify tags in the `WHERE` clause.
-The relevant comparators include:  
-`=~` matches against  
-`!~` doesn't match against
+在`WHERE`字句中可以使用最tag使用正则表达式，相应的比较符：
+* `=~` 匹配
+* `!~` 不匹配
 
-Select the oldest four points from the measurement `h2o_feet` where the value of the tag `location` does not include an `a`:
+查询measurement `h2o_feet`中tag `location`中不包含`a`的最早的4个point：
+
 ```sql
 > SELECT * FROM h2o_feet WHERE location !~ /.*a.*/ LIMIT 4
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 --------------
@@ -1173,18 +1177,20 @@ time			               level description	    location	     water_level
 2015-08-18T00:18:00Z	 between 6 and 9 feet	 coyote_creek	 7.762
 ```
 
-Select the oldest four points from the measurement `h2o_feet` where the value of the tag `location` includes a `y` or an `m` and `water_level` is greater than zero:
+查询measurement `h2o_feet`中tag `location`包含`y`或`m`并且`water_level`大于0的最早的4个点：
+
 ```sql
 > SELECT * FROM h2o_feet WHERE (location =~ /.*y.*/ OR location =~ /.*m.*/) AND water_level > 0 LIMIT 4
 ```
-or
-<br>
-<br>
+
+或者
+
 ```sql
 > SELECT * FROM h2o_feet WHERE location =~ /[ym]/ AND water_level > 0 LIMIT 4
 ```
 
 CLI response:
+
 ```
 name: h2o_feet
 --------------
@@ -1195,5 +1201,5 @@ time			               level description	    location	     water_level
 2015-08-18T00:06:00Z	 below 3 feet		        santa_monica	 2.116
 ```
 
-See [the WHERE clause](/influxdb/v0.13/query_language/data_exploration/#the-where-clause) section for an example of how to return data where a tag key has a value and an example of how to return data where a tag key has no value using regular expressions.
+可以在[the WHERE clause](/influxdb/v0.13/query_language/data_exploration/#the-where-clause) 看到如何通过正则表达式查询tag有值和没有值的例子。
 
