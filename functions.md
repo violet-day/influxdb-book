@@ -15,8 +15,8 @@
 Useful InfluxQL for functions:
 
 * [Include multiple functions in a single query](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#include-multiple-functions-in-a-single-query)
-* [Change the value reported for intervals with no data with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#change-the-value-reported-for-intervals-with-no-data-with-fill)[`fill()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#change-the-value-reported-for-intervals-with-no-data-with-fill)
-* [Rename the output column's title with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#rename-the-output-column-s-title-with-as)[`AS`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#rename-the-output-column-s-title-with-as)
+* [Change the value reported for intervals with no data with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#change-the-value-reported-for-intervals-with-no-data-with-fill)`fill()`
+* [Rename the output column's title with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#rename-the-output-column-s-title-with-as)`AS`
 
 The examples below query data using [InfluxDB's Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/tools/shell). See the [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) guide for how to query data directly using the HTTP API.
 
@@ -78,11 +78,9 @@ time                           count
 
 > #### `COUNT()`** and controlling the values reported for intervals with no data**
 > 
+> 其他的 InfluxQL functions 在interval内没有数据时返回 `null` ，并且通过追加 `fill(<stuff>)` 并用 `<stuff>` 替换`null`  。然而 `COUNT()`在interval内没有数据时，返回为 `0` ，所以使用在 `COUNT()` 时使用 `fill(<stuff>)` 来讲 `0` 替换 为`<stuff>。`
 > 
-> 
-> Other InfluxQL functions report `null` values for intervals with no data, and appending `fill(<stuff>)` to queries with those functions replaces `null` values in the output with `<stuff>`. `COUNT()`, however, reports `0`s for intervals with no data, so appending `fill(<stuff>)` to queries with `COUNT()` replaces `0`s in the output with`<stuff>`.
-> 
-> Example: Use `fill(none)` to suppress intervals with `0` data
+> Example: 使用 `fill(none)` 取消 intervals 包含 `0` 的数据
 > 
 > `COUNT()` without `fill(none)`:
 > 
@@ -106,11 +104,11 @@ time                           count
 > 2015-09-18T21:30:00Z     1
 > ```
 > 
-> For a more general discussion of `fill()`, see [Data Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#the-group-by-clause-and-fill).
+> 更多关于 `fill()`的内容，见 [Data Exploration](/data-exploration.md).
 
 ## **DISTINCT\(\)**
 
-Returns the unique values of a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field).
+返回单个field的唯一值 [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field)
 
 ```
 SELECT DISTINCT(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -118,7 +116,7 @@ SELECT DISTINCT(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <
 
 Examples:
 
-* Select the unique field values in the `level description` field:
+* 查询 `level description` field的唯一值：
 
 ```
 > SELECT DISTINCT("level description") FROM h2o_feet
@@ -136,11 +134,11 @@ time                           distinct
 1970-01-01T00:00:00Z     at or greater than 9 feet
 ```
 
-The response shows that `level description` has four distinct field values. The timestamp reflects the first time the field value appears in the data.
+返回结果表示了 `level description` 有4个不一样的值。
 
-> **Note:** Aggregation functions return epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then they return the lower bound as the timestamp.
+> **Note:** 聚合函数的时间戳返回为 epoch 0 \(`1970-01-01T00:00:00Z`\) ，仅在指定时间范围下限的返回下限。
 
-* Select the unique field values in the `level description` field grouped by the `location` tag:
+* 根据`location` tag分组，查询`level description` field 的唯一值：
 
 ```
 > SELECT DISTINCT("level description") FROM h2o_feet GROUP BY location
@@ -168,7 +166,7 @@ time                            distinct
 1970-01-01T00:00:00Z      between 6 and 9 feet
 ```
 
-* Nest `DISTINCT()` in [`COUNT()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count) to get the number of unique field values in `level description` grouped by the`location` tag:
+* Nest `DISTINCT()` in `COUNT()` to get the number of unique field values in `level description` grouped by the`location` tag:
 
 ```
 > SELECT COUNT(DISTINCT("level description")) FROM h2o_feet GROUP BY location
@@ -194,11 +192,7 @@ time                           count
 
 `INTEGRAL()` is not yet functional.
 
-
-
 See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) for more information.
-
-
 
 ## **MEAN\(\)**
 
@@ -261,7 +255,7 @@ Returns the middle value from the sorted values in a single [field](https://gith
 SELECT MEDIAN(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
 ```
 
-> **Note:** `MEDIAN()` is nearly equivalent to [`PERCENTILE(field_key, 50)`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#percentile), except `MEDIAN()` returns the average of the two middle values if the field contains an even number of points.
+> **Note:** `MEDIAN()` is nearly equivalent to `PERCENTILE(field_key, 50)`, except `MEDIAN()` returns the average of the two middle values if the field contains an even number of points.
 
 Examples:
 
@@ -477,11 +471,7 @@ The output shows the bottom values of `water_level` for each tag value of `locat
 > SELECT BOTTOM(water_level,location,3) FROM h2o_feet
 > ```
 > 
-> CLI response: 
-> 
-> 
-> 
-> 
+> CLI response:
 > 
 > ```
 > name: h2o_feet
@@ -500,11 +490,7 @@ The output shows the bottom values of `water_level` for each tag value of `locat
 > SELECT BOTTOM(water_level,location,1) FROM h2o_feet
 > ```
 > 
-> CLI response: 
-> 
-> 
-> 
-> 
+> CLI response:
 > 
 > ```
 > name: h2o_feet
@@ -895,11 +881,7 @@ time                           percentile
 
 Notice that `PERCENTILE(<field_key>,100)` is equivalent to `MAX(<field_key>)`.
 
-
-
 Currently, `PERCENTILE(<field_key>,0)` is not equivalent to `MIN(<field_key>)`. See GitHub Issue [\#4418](https://github.com/influxdata/influxdb/issues/4418) for more information.
-
-
 
 > **Note**: `PERCENTILE(<field_key>, 50)` is nearly equivalent to `MEDIAN()`, except `MEDIAN()` returns the average of the two middle values if the field contains an even number of points.
 
@@ -971,11 +953,7 @@ The output shows the top values of `water_level` for each tag value of `location
 > SELECT TOP(water_level,location,3) FROM h2o_feet
 > ```
 > 
-> CLI response: 
-> 
-> 
-> 
-> 
+> CLI response:
 > 
 > ```
 > name: h2o_feet
@@ -993,11 +971,7 @@ The output shows the top values of `water_level` for each tag value of `location
 > SELECT TOP(water_level,location,1) FROM h2o_feet
 > ```
 > 
-> CLI response: 
-> 
-> 
-> 
-> 
+> CLI response:
 > 
 > ```
 > name: h2o_feet
@@ -1057,11 +1031,7 @@ Note that in the raw data, `water_level` equals `4.055` at `2015-08-18T04:06:00Z
 
 `CEILING()` is not yet functional.
 
-
-
 See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) for more information.
-
-
 
 ## **DERIVATIVE\(\)**
 
@@ -1115,6 +1085,7 @@ time                           water_level
 
   Calculate the rate of change per one second
 
+
 ```
 > SELECT DERIVATIVE(water_level) FROM h2o_feet WHERE location = 'santa_monica' LIMIT 5
 ```
@@ -1132,11 +1103,7 @@ time                           derivative
 2015-08-18T00:30:00Z     2.777777777777842e-05
 ```
 
-Notice that the first field value \(`0.00014`\) in the `derivative` column is **not** `0.052` \(the difference between the first two field values in the raw data: `2.116` - `2.604` = `0.052`\). Because the query does not specify the `unit` option, InfluxDB automatically calculates the rate of change per one second, not the rate of change per six minutes. The calculation of the first value in the `derivative` column looks like this: 
-
-
-
-
+Notice that the first field value \(`0.00014`\) in the `derivative` column is **not** `0.052` \(the difference between the first two field values in the raw data: `2.116` - `2.604` = `0.052`\). Because the query does not specify the `unit` option, InfluxDB automatically calculates the rate of change per one second, not the rate of change per six minutes. The calculation of the first value in the `derivative` column looks like this:
 
 ```
 (2.116 - 2.064) / (360s / 1s)
@@ -1148,6 +1115,7 @@ The numerator is the difference between chronological field values. The denomina
 * `DERIVATIVE()` with two arguments:
 
   Calculate the rate of change per six minutes
+
 
 ```
 > SELECT DERIVATIVE(water_level,6m) FROM h2o_feet WHERE location = 'santa_monica' LIMIT 5
@@ -1166,11 +1134,7 @@ time                           derivative
 2015-08-18T00:30:00Z     0.010000000000000231
 ```
 
-The calculation of the first value in the `derivative` column looks like this: 
-
-
-
-
+The calculation of the first value in the `derivative` column looks like this:
 
 ```
 (2.116 - 2.064) / (6m / 6m)
@@ -1182,6 +1146,7 @@ The numerator is the difference between chronological field values. The denomina
 * `DERIVATIVE()` with two arguments:
 
   Calculate the rate of change per 12 minutes
+
 
 ```
 > SELECT DERIVATIVE(water_level,12m) FROM h2o_feet WHERE location = 'santa_monica' LIMIT 5
@@ -1200,11 +1165,7 @@ time                           derivative
 2015-08-18T00:30:00Z     0.020000000000000462
 ```
 
-The calculation of the first value in the `derivative` column looks like this: 
-
-
-
-
+The calculation of the first value in the `derivative` column looks like this:
 
 ```
 (2.116 - 2.064 / (6m / 12m)
@@ -1218,6 +1179,7 @@ The numerator is the difference between chronological field values. The denomina
 * `DERIVATIVE()` with one argument, a function, and a `GROUP BY time()` clause:
 
   Select the `MAX()` value at 12 minute intervals and calculate the rate of change per 12 minutes
+
 
 ```
 > SELECT DERIVATIVE(MAX(water_level)) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(12m)
@@ -1244,11 +1206,7 @@ time                           max
 2015-08-18T00:24:00Z     2.051
 ```
 
-Second, InfluxDB calculates the rate of change per `12m` \(the same interval as the `GROUP BY time()` interval\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this: 
-
-
-
-
+Second, InfluxDB calculates the rate of change per `12m` \(the same interval as the `GROUP BY time()` interval\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this:
 
 ```
 (2.126 - 2.116) / (12m / 12m)
@@ -1260,6 +1218,7 @@ The numerator is the difference between chronological field values. The denomina
 * `DERIVATIVE()` with two arguments, a function, and a `GROUP BY time()` clause:
 
   Aggregate the data to 18 minute intervals and calculate the rate of change per six minutes
+
 
 ```
 > SELECT DERIVATIVE(SUM(water_level),6m) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY time(18m)
@@ -1284,11 +1243,7 @@ time                           sum
 2015-08-18T00:18:00Z     6.218
 ```
 
-Second, InfluxDB calculates the rate of change per `unit` \(`6m`\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this: 
-
-
-
-
+Second, InfluxDB calculates the rate of change per `unit` \(`6m`\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this:
 
 ```
 (6.218 - 6.208) / (18m / 6m)
@@ -1315,7 +1270,7 @@ SELECT DIFFERENCE(<function>(<field_key>)) FROM <measurement_name> WHERE <stuff>
 
 ```
 
-Functions that work with `DIFFERENCE()` include [`COUNT()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count), [`MEAN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#mean), [`MEDIAN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#median), [`SUM()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#sum), [`FIRST()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#first), [`LAST()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#last), [`MIN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#min),[`MAX()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#max), and [`PERCENTILE()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#percentile).
+Functions that work with `DIFFERENCE()` include `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`, `MIN()`,`MAX()`, and `PERCENTILE()`.
 
 Examples:
 
@@ -1464,21 +1419,13 @@ time                            elapsed
 
 `FLOOR()` is not yet functional.
 
-
-
 See GitHub Issue [\#5930](https://github.com/influxdb/influxdb/issues/5930) for more information.
-
-
 
 ## **HISTOGRAM\(\)**
 
 `HISTOGRAM()` is not yet functional.
 
-
-
 See GitHub Issue [\#5930](https://github.com/influxdb/influxdb/issues/5930) for more information.
-
-
 
 ## **MOVING\_AVERAGE\(\)**
 
@@ -1498,7 +1445,7 @@ SELECT MOVING_AVERAGE(<function>(<field_key>),<window>) FROM <measurement_name> 
 
 ```
 
-Functions that work with `MOVING_AVERAGE()` include [`COUNT()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count), [`MEAN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#mean), [`MEDIAN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#median), [`SUM()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#sum), [`FIRST()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#first), [`LAST()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#last),[`MIN()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#min), [`MAX()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#max), and [`PERCENTILE()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#percentile).
+Functions that work with `MOVING_AVERAGE()` include `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`,`MIN()`, `MAX()`, and `PERCENTILE()`.
 
 Examples:
 
@@ -1609,7 +1556,7 @@ The `NON_NEGATIVE_DERIVATIVE()` query with an aggregation function and `GROUP BY
 SELECT NON_NEGATIVE_DERIVATIVE(AGGREGATION_FUNCTION(<field_key>),[<unit>]) FROM <measurement_name> WHERE <stuff> GROUP BY time(<aggregation_interval>)
 ```
 
-See [`DERIVATIVE()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#derivative) for example queries. All query results are the same for `DERIVATIVE()` and`NON_NEGATIVE_DERIVATIVE` except that `NON_NEGATIVE_DERIVATIVE()` returns only the positive values.
+See `DERIVATIVE()` for example queries. All query results are the same for `DERIVATIVE()` and`NON_NEGATIVE_DERIVATIVE` except that `NON_NEGATIVE_DERIVATIVE()` returns only the positive values.
 
 ## **STDDEV\(\)**
 
@@ -1696,7 +1643,7 @@ time                           min     max
 
 By default, queries with an InfluxQL function report `null` values for intervals with no data. Append `fill()` to the end of your query to alter that value. For a complete discussion of `fill()`, see [Data Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#the-group-by-clause-and-fill).
 
-> **Note:** `fill()` works differently with `COUNT()`. See [the documentation on ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count-and-controlling-the-values-reported-for-intervals-with-no-data)[`COUNT()`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count-and-controlling-the-values-reported-for-intervals-with-no-data) for a function-specific use of`fill()`.
+> **Note:** `fill()` works differently with `COUNT()`. See [the documentation on ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count-and-controlling-the-values-reported-for-intervals-with-no-data)`COUNT()` for a function-specific use of`fill()`.
 
 ## **Rename the output column's title with **`AS`
 
@@ -1731,6 +1678,4 @@ name: h2o_feet
 time                           dream_name
 1970-01-01T00:00:00Z     4.442107025822521
 ```
-
-
 
