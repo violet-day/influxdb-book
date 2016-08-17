@@ -660,11 +660,11 @@ time                           last
 2015-09-18T21:42:00Z     4.938
 ```
 
-> **Note:** `LAST()` does not return points that occur after `now()` unless the `WHERE` clause specifies that time range. See [Frequently Encountered Issues](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#querying-after-now) for how to query after `now()`.
+> **Note:** `LAST()` 不会返回 `now()` 之后的point，除非 `WHERE` 字句指定了时间范围。参见 [Frequently Encountered Issues](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/troubleshooting/frequently_encountered_issues/#querying-after-now) 如何查询 `now()`之后的数据。
 
 ## **MAX\(\)**
 
-Returns the highest value in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be an int64, float64, or boolean.
+返回单个字段的最大值，字段类型必须是int64、 float64 或 boolean。
 
 ```
 SELECT MAX(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -672,7 +672,7 @@ SELECT MAX(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [
 
 Examples:
 
-* Select the maximum `water_level` in the measurement `h2o_feet`:
+* 查询 measurement `h2o_feet`中的最大 `water_level` ：
 
 ```
 > SELECT MAX(water_level) FROM h2o_feet
