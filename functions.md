@@ -735,7 +735,7 @@ time                            max
 
 ## **MIN\(\)**
 
-Returns the lowest value in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be an int64, float64, or boolean.
+返回字段的最小值，字段类型必须是 int64, float64 或 boolean.
 
 ```
 SELECT MIN(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -743,7 +743,7 @@ SELECT MIN(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [
 
 Examples:
 
-* Select the minimum `water_level` in the measurement `h2o_feet`:
+* 查询  measurement `h2o_feet`中`water_level`最小值
 
 ```
 > SELECT MIN(water_level) FROM h2o_feet
