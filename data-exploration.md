@@ -910,11 +910,11 @@ time			               water_level
 
 ## Merge series in queries
 
-In InfluxDB, queries merge series automatically.
+在InfluxDB中查询自动合并series。
 
-The `NOAA_water_database` database has two [series](/influxdb/v0.13/concepts/glossary/#series).
-The first series is made up of the measurement `h2o_feet` and the tag key `location` with the tag value `coyote_creek`.
-The second series is made of up the measurement `h2o_feet` and the tag key `location` with the tag value `santa_monica`.
+`NOAA_water_database` database 有两个 [series](/influxdb/v0.13/concepts/glossary/#series)。
+第一个series由measurement `h2o_feet`、tag key `location`和tag value `coyote_creek`组成，
+第二个由measurement `h2o_feet`、tag key `location`和tag value `santa_monica`组成。
 
 The following query automatically merges those two series when it calculates the [average](/influxdb/v0.13/query_language/functions/#mean) `water_level`:
 
