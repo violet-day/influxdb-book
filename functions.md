@@ -683,7 +683,7 @@ CLI response:
 ```
 name: h2o_feet
 --------------
-time                           max
+time                      max
 2015-08-29T07:24:00Z     9.964
 ```
 
