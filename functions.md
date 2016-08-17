@@ -297,7 +297,7 @@ time                           median
 
 ## **SPREAD\(\)**
 
-Returns the difference between the minimum and maximum values of a [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be of type int64 or float64.
+返回字段的最大值和最小值的差值，字段必须是 int64 或 float64.
 
 ```
 SELECT SPREAD(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -305,7 +305,7 @@ SELECT SPREAD(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <st
 
 Examples:
 
-* Calculate the difference between the minimum and maximum values across all values in the `water_level` field:
+* 计算 `water_level` field 最大最小的差值：
 
 ```
 > SELECT SPREAD(water_level) FROM h2o_feet
@@ -323,10 +323,9 @@ time                            spread
 
 > **Notes:**
 > 
-> * Aggregation functions return epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then they return the lower bound as the timestamp.
 > * Executing `spread()` on the same set of float64 points may yield slightly different results. InfluxDB does not sort points before it applies the function which results in those small discrepancies.
 
-* Calculate the difference between the minimum and maximum values in the field `water_level` for a specific tag and time range and at 30 minute intervals:
+* 以30min作为interval，计算指定时间区间内每个时间段`water_level`  的最大最小差值：
 
 ```
 > SELECT SPREAD(water_level) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-09-18T17:00:00Z' AND time < '2015-09-18T20:30:00Z' GROUP BY time(30m)
@@ -350,7 +349,7 @@ time                            spread
 
 ## **SUM\(\)**
 
-Returns the sum of the all values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be of type int64 or float64.
+返回字段的和，字段类型必须是 int64 或 float64.
 
 ```
 SELECT SUM(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -358,7 +357,7 @@ SELECT SUM(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff
 
 Examples:
 
-* Calculate the sum of the values in the `water_level` field:
+* 计算 `water_level` 的总和：
 
 ```
 > SELECT SUM(water_level) FROM h2o_feet
@@ -373,12 +372,7 @@ time                           sum
 1970-01-01T00:00:00Z     67777.66900000002
 ```
 
-> **Notes:**
-> 
-> * Aggregation functions return epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then they return the lower bound as the timestamp.
-> * Executing `sum()` on the same set of float64 points may yield slightly different results. InfluxDB does not sort points before it applies the function which results in those small discrepancies.
-
-* Calculate the sum of the `water_level` field grouped by five-day intervals:
+* 以5d为interval，计算 `water_level` field 的总和：
 
 ```
 > SELECT SUM(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-09-18T17:00:00Z' GROUP BY time(5d)
