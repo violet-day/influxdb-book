@@ -983,10 +983,7 @@ time durations 和 `now()` 使用时可以用的单位如下：
 ### Absolute time
 ---
 #### Date time strings
-
-Specify time with date time strings.
-Date time strings can take two formats: `YYYY-MM-DD HH:MM:SS.nnnnnnnnn` and  `YYYY-MM-DDTHH:MM:SS.nnnnnnnnnZ`, where the second specification is [RFC3339](https://www.ietf.org/rfc/rfc3339.txt).
-Nanoseconds (`nnnnnnnnn`) are optional in both formats.
+使用date time string指定time。Date time string接受两种格式`YYYY-MM-DD HH:MM:SS.nnnnnnnnn`和`YYYY-MM-DDTHH:MM:SS.nnnnnnnnnZ`, 在[RFC3339](https://www.ietf.org/rfc/rfc3339.txt)有介绍定义。上述格式中Nanoseconds (`nnnnnnnnn`) 均为可选。
 
 Examples:
 
