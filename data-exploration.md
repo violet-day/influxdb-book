@@ -1010,18 +1010,18 @@ Examples:
 * 如果仅指定了date部分, InfluxDB 设置time为`00:00:00`.
 
 #### Epoch time
-Specify time with timestamps in epoch time.
-Epoch time is the number of nanoseconds that have elapsed since 00:00:00 Coordinated Universal Time (UTC), Thursday, 1 January 1970.
-Indicate the units of the timestamp at the end of the timestamp (see the section above for a list of acceptable time units).
+
+time也可以使用时间戳，Epoch time是自1970-1-1开始计算的纳秒数。时间戳后也可以加上时间单位(上文中有可以接受的时间单位)
 
 Examples:
 
-Return all points that occur after  `2014-01-01 00:00:00`:  
+查询所有`2014-01-01 00:00:00`之后的点：  
+
 ```sql
 > SELECT * FROM h2o_feet WHERE time > 1388534400s
 ```
 
-Return all points that occur 6 minutes after `2015-09-18 21:24:00`:
+查询`2015-09-18 21:24:00` 6分钟之后的所有点:
 
 ```sql
 > SELECT * FROM h2o_feet WHERE time > 24043524m + 6m
