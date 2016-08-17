@@ -828,7 +828,7 @@ time                           percentile
 2015-09-09T11:42:00Z     1.148
 ```
 
-`1.148` 大于 `water_level` 中5% 数值 `location` equals `coyote_creek`.
+`1.148` 大于 `water_level`  `location` = `coyote_creek`条件下中5%数值
 
 * Calculate the fifth percentile of the field `water_level` and output the relevant `location` tag:
 
