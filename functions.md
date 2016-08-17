@@ -622,7 +622,7 @@ time                           last
 2015-09-18T21:42:00Z     4.938
 ```
 
-* Select the newest value of the field `water_level` between `2015-08-18T00:42:00Z` and `2015-08-18T00:54:00Z`, and output the relevant `location` tag:
+* 查询 `2015-08-18T00:42:00Z` 和 `2015-08-18T00:54:00Z`之间最新的field `water_level`值，并且显示 `location` tag:
 
 ```
 > SELECT LAST(water_level),location FROM h2o_feet WHERE time >= '2015-08-18T00:42:00Z' and time <= '2015-08-18T00:54:00Z'
@@ -638,7 +638,7 @@ time                           last   location
 
 ```
 
-* Select the newest values of the field `water_level` grouped by the `location` tag:
+* 根据`location` tag查询分组，查询最新的field `water_level` 值：
 
 ```
 > SELECT LAST(water_level) FROM h2o_feet GROUP BY location
