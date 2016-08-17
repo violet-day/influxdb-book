@@ -443,12 +443,12 @@ Calculate the average `water_level` for the different tag values of `location` i
 ---
 默认的， `GROUP BY` interval  没有数据时，使用 `null` z作为在列中的输出值。使用 `fill()` 函数来修改在没有数据时的展示。`fill()` 的选项包括：
 
-* 任何树枝
+* 任何数值
 * `null` - 在没有数值时用 `null` 作为它的值
 * `previous` - 没有数据时，复制上一个interval的值作为值
 * `none` - 跳过这个interval
 
-Follow the ✨ in the examples below to see what `fill()` can do.
+下面的例子中可以看到`fill()`可以做到的事情
 
 **GROUP BY without fill()**
 
@@ -468,12 +468,17 @@ time			                 mean
 2015-09-12T00:00:00Z   	4.69811470811633
 ✨2015-09-22T00:00:00Z
 ```
+
 **GROUP BY with fill()**  
-Use `fill()` with `-100`:  
+
+`fill(-10)`:
+ 
 ```sql
 > SELECT MEAN(water_level) FROM h2o_feet WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d) fill(-100)
 ```
+
 CLI response:  
+
 ```bash
 name: h2o_feet
 --------------
@@ -484,11 +489,15 @@ time			                 mean
 2015-09-12T00:00:00Z	   4.698114708116322
 ✨2015-09-22T00:00:00Z	 -100
 ```
-Use `fill()` with `none`:
+
+`fill(none)`:
+
 ```sql
 > SELECT MEAN(water_level) FROM h2o_feet WHERE time >= '2015-08-18' AND time < '2015-09-24' GROUP BY time(10d) fill(none)
 ```
+
 CLI response:  
+
 ```bash
 name: h2o_feet
 --------------
@@ -500,7 +509,7 @@ time			               mean
 ✨
 ```
 
-> **Note:** If you're `GROUP(ing) BY` several things (for example, both tags and a time interval) `fill()` must go at the end of the `GROUP BY` clause.
+> **Note:** 如果 `GROUP(ing) BY` 使用了多个字段(比如包含tags 和 time interval) `fill()` 必须位于 `GROUP BY` 的最后。
 
 ## The INTO clause
 ### Relocate data
