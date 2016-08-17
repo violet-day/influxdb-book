@@ -1003,11 +1003,11 @@ Examples:
 > SELECT water_level FROM h2o_feet WHERE time > '2015-09-18T21:24:00Z' + 6m
 ```
 
-Things to note about querying with date time strings:
+使用date time strings查询时需要注意:
 
-* Single quote the date time string.
-InfluxDB returns as error (`ERR: invalid operation: time and *influxql.VarRef are not compatible`) if you double quote the date time string.
-* If you only specify the date, InfluxDB sets the time to `00:00:00`.
+* date time string使用单引号
+如果使用双引号 date time string，InfluxDB返回error (`ERR: invalid operation: time and *influxql.VarRef are not compatible`) 
+* 如果仅指定了date部分, InfluxDB 设置time为`00:00:00`.
 
 #### Epoch time
 Specify time with timestamps in epoch time.
