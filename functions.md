@@ -166,7 +166,7 @@ time                            distinct
 1970-01-01T00:00:00Z      between 6 and 9 feet
 ```
 
-* Nest `DISTINCT()` in `COUNT()` to get the number of unique field values in `level description` grouped by the`location` tag:
+* 在`COUNT()` 中嵌套 `DISTINCT()` 来查询`level description` 根据`location` tag分组后的数量：
 
 ```
 > SELECT COUNT(DISTINCT("level description")) FROM h2o_feet GROUP BY location
