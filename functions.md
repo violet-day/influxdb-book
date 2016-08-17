@@ -830,7 +830,7 @@ time                           percentile
 
 `1.148` 大于 `water_level`  `location` = `coyote_creek`条件下中5%数值
 
-* Calculate the fifth percentile of the field `water_level` and output the relevant `location` tag:
+* 查询前5% `water_level` 和 `location` tag：
 
 ```
 > SELECT PERCENTILE(water_level,5),location FROM h2o_feet
@@ -846,7 +846,7 @@ time                      percentile     location
 
 ```
 
-* Calculate the 100th percentile of the field `water_level` grouped by the `location` tag:
+* 根据`location` tag分组，计算前100% field `water_level` ：
 
 ```
 > SELECT PERCENTILE(water_level, 100) FROM h2o_feet GROUP BY location
@@ -868,15 +868,13 @@ time                           percentile
 2015-08-29T03:54:00Z     7.205
 ```
 
-Notice that `PERCENTILE(<field_key>,100)` is equivalent to `MAX(<field_key>)`.
+注意 `PERCENTILE(<field_key>,100)` 和 `MAX(<field_key>)相同`
 
-Currently, `PERCENTILE(<field_key>,0)` is not equivalent to `MIN(<field_key>)`. See GitHub Issue [\#4418](https://github.com/influxdata/influxdb/issues/4418) for more information.
-
-> **Note**: `PERCENTILE(<field_key>, 50)` is nearly equivalent to `MEDIAN()`, except `MEDIAN()` returns the average of the two middle values if the field contains an even number of points.
+当前, `PERCENTILE(<field_key>,0)` 和 `MIN(<field_key>)`不相等，见 GitHub Issue [\#4418](https://github.com/influxdata/influxdb/issues/4418) 。
 
 ## **TOP\(\)**
 
-Returns the largest `N` values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field type must be int64 or float64.
+返回字段中最大的 `N` 个值，字段类型必须为int64和float64
 
 ```
 SELECT TOP(<field_key>[,<tag_keys>],<N>)[,<tag_keys>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -884,7 +882,7 @@ SELECT TOP(<field_key>[,<tag_keys>],<N>)[,<tag_keys>] FROM <measurement_name> [W
 
 Examples:
 
-* Select the largest three values of `water_level`:
+* 查询 `water_level`最大的3个值
 
 ```
 > SELECT TOP(water_level,3) FROM h2o_feet
@@ -901,7 +899,7 @@ time                           top
 2015-08-29T07:30:00Z     9.954
 ```
 
-* Select the largest three values of `water_level` and include the relevant `location` tag in the output:
+* 查询 `water_level` 最大的3个值，并且返回相应的 `location` tag ：
 
 ```
 > SELECT TOP(water_level,3),location FROM h2o_feet
