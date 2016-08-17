@@ -404,7 +404,7 @@ SELECT BOTTOM(<field_key>[,<tag_keys>],<N>)[,<tag_keys>] FROM <measurement_name>
 
 Examples:
 
-* Select the smallest three values of `water_level`:
+* 查询 `water_level`最小的3个值：
 
 ```
 > SELECT BOTTOM(water_level,3) FROM h2o_feet
@@ -421,7 +421,7 @@ time                           bottom
 2015-08-30T15:18:00Z     -0.594
 ```
 
-* Select the smallest three values of `water_level` and include the relevant `location` tag in the output:
+* 查询`water_level` 最小的3个值，并且返回相关的 `location` tag ：
 
 ```
 > SELECT BOTTOM(water_level,3),location FROM h2o_feet
@@ -430,13 +430,13 @@ time                           bottom
 ```
 name: h2o_feet
 --------------
-time                           bottom    location
+time                     bottom    location
 2015-08-29T14:30:00Z     -0.61    coyote_creek
 2015-08-29T14:36:00Z     -0.591  coyote_creek
 2015-08-30T15:18:00Z     -0.594  coyote_creek
 ```
 
-* Select the smallest value of `water_level` within each tag value of `location`:
+* 在每个 `location`中查询最小的`water_level`值
 
 ```
 > SELECT BOTTOM(water_level,location,2) FROM h2o_feet
@@ -452,9 +452,9 @@ time                           bottom    location
 2015-08-29T14:30:00Z     -0.61    coyote_creek
 ```
 
-The output shows the bottom values of `water_level` for each tag value of `location` \(`santa_monica` and`coyote_creek`\).
+返回结果展示了在每个`location` \(`santa_monica` and`coyote_creek`\)中的最小值。
 
-> **Note:** Queries with the syntax `SELECT BOTTOM(<field_key>,<tag_key>,<N>)`, where the tag has `X` distinct values, return `N` or `X` field values, whichever is smaller, and each returned point has a unique tag value. To demonstrate this behavior, see the results of the above example query where `N` equals `3` and `N` equals `1`.
+> **Note:** 使用 `SELECT BOTTOM(<field_key>,<tag_key>,<N>)`,查询语法时，如果 tag 有 `X` 个不同 values，则返回 `N` 或者 `X` 个point，看起来就像每个point都有唯一的tag值。为了演示，看下面的例子， `N` = `3` 和 `N` = `1`.
 > 
 > * `N` = `3`
 > 
@@ -473,7 +473,7 @@ The output shows the bottom values of `water_level` for each tag value of `locat
 > 
 > ```
 > 
-> InfluxDB returns two values instead of three because the `location` tag has only two values \(`santa_monica` and`coyote_creek`\).
+> 因为 `location` tag 仅有2个值 \(`santa_monica` and`coyote_creek`\)，InfluxDB 返回了两个值而不是3个
 > 
 > * `N` = `1`
 > 
@@ -490,9 +490,9 @@ The output shows the bottom values of `water_level` for each tag value of `locat
 > 2015-08-29T14:30:00Z     -0.61    coyote_creek
 > ```
 > 
-> InfluxDB compares the bottom values of `water_level` within each tag value of `location` and returns the smaller value of `water_level`.
+> InfluxDB 比较了`location` tag中的每一个最小值，通过比较，返回了更小的`water_level`
 
-* Select the smallest two values of `water_level` between August 18, 2015 at 4:00:00 and August 18, 2015 at 4:18:00 for every tag value of `location`:
+* 查询2015-08-18T04:00:00Z和2015-08-18T04:24:00Z之前每个`location`的最小的两个值：
 
 ```
 > SELECT BOTTOM(water_level,2) FROM h2o_feet WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' GROUP BY location
