@@ -661,22 +661,25 @@ Use [fill()](/influxdb/v0.13/query_language/data_exploration/#the-group-by-claus
 * The number of writes in the CLI response includes one write for every time interval in the query's time range even if there is no data for some of the time intervals.
 
 ## Limit query returns with LIMIT and SLIMIT
+
 InfluxQL supports two different clauses to limit your query results:
 
-* `LIMIT <N>` returns the first \<N> [points](/influxdb/v0.13/concepts/glossary/#point) from each [series](/influxdb/v0.13/concepts/glossary/#series) in the specified measurement.
+* `LIMIT <N>` 返回指定measurement中每个[series](/influxdb/v0.13/concepts/glossary/#series)开始的第 <N> [points](/influxdb/v0.13/concepts/glossary/#point)
 * `SLIMIT <N>` returns every point from \<N> series in the specified measurement.
 * `LIMIT <N>` followed by `SLIMIT <N>` returns the first \<N> points from \<N> series in the specified measurement.
 
 ### Limit the number of results returned per series with `LIMIT`
 ---
-Use `LIMIT <N>` with `SELECT` and `GROUP BY *` to return the first \<N> points from each series.
+使用 `LIMIT <N>`、`SELECT` 和 `GROUP BY *` 返回每个series的第<N>个 points。
 
-Return the three oldest points from each series associated with the measurement `h2o_feet`:
+返回`h2o_feet`中每个series最早的3个point:
+
 ```sql
 > SELECT water_level FROM h2o_feet GROUP BY * LIMIT 3
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 tags: location=coyote_creek
@@ -695,13 +698,14 @@ time			              water_level
 2015-08-18T00:12:00Z	2.028
 ```
 
-> **Note:** If \<N> is greater than the number of points in the series, InfluxDB returns all points in the series.
+> **Note:** 如果<N>大于series中point的数量，InfluxDB返回series中的所有点。
 
 ### Limit the number of series returned with `SLIMIT`
 ---
-Use `SLIMIT <N>` with `SELECT` and `GROUP BY *` to return every point from \<N> series.
+使用 `SLIMIT <N>` 、 `SELECT` 和 `GROUP BY *` 返回 <N> 个series中的所有point
 
-Return everything from one of the series associated with the measurement `h2o_feet`:
+查询measurement `h2o_feet`中的第一个series中的所有的point：
+
 ```sql
 > SELECT water_level FROM h2o_feet GROUP BY * SLIMIT 1
 ```
