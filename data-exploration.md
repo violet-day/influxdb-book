@@ -1201,5 +1201,5 @@ time			               level description	    location	     water_level
 2015-08-18T00:06:00Z	 below 3 feet		        santa_monica	 2.116
 ```
 
-可以在[the WHERE clause](/influxdb/v0.13/query_language/data_exploration/#the-where-clause) 看到如何通过正则表达式查询tag有值和没有值的例子。
+可以在[the WHERE clause](#the-where-clause) 看到如何通过正则表达式查询tag有值和没有值的例子。
 
