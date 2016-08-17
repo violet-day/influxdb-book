@@ -687,7 +687,7 @@ time                      max
 2015-08-29T07:24:00Z     9.964
 ```
 
-* Select the maximum `water_level` in the measurement `h2o_feet` and output the relevant `location` tag:
+* 查询 measurement `h2o_feet` 中最大`water_level`并显示相关的`location` tag：
 
 ```
 > SELECT MAX(water_level),location FROM h2o_feet
