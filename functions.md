@@ -517,7 +517,7 @@ time                           bottom
 2015-08-18T04:06:00Z     4.055
 ```
 
-* Select the smallest two values of `water_level` between August 18, 2015 at 4:00:00 and August 18, 2015 at 4:18:00 in `santa_monica`:
+* 查询2015-08-18T04:00:00Z和2015-08-18T04:24:00Z `water_level`上最小的两个值
 
 ```
 > SELECT BOTTOM(water_level,2) FROM h2o_feet WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' AND location = 'santa_monica'
@@ -533,7 +533,7 @@ time                           bottom
 2015-08-18T04:06:00Z     4.055
 ```
 
-Note that in the raw data, `water_level` equals `4.055` at `2015-08-18T04:06:00Z` and at `2015-08-18T04:12:00Z`. In the case of a tie, InfluxDB returns the value with the earlier timestamp.
+注意，在返回结果中，`water_level＝4.005`在`2015-08-18T04:06:00Z` 和 `2015-08-18T04:12:00Z`存在，相同情况下，InfluxDB返回更小的时间戳
 
 ## **FIRST\(\)**
 
