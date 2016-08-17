@@ -758,7 +758,7 @@ time                           min
 2015-08-29T14:30:00Z     -0.61
 ```
 
-* Select the minimum `water_level` in the measurement `h2o_feet` and output the relevant `location` tag:
+* 查询 measurement `h2o_feet`中`water_level`最小值，同时显示`location` tag：
 
 ```
 > SELECT MIN(water_level),location FROM h2o_feet
@@ -771,10 +771,9 @@ name: h2o_feet
 --------------
 time                          min      location
 2015-08-29T14:30:00Z    -0.61    coyote_creek
-
 ```
 
-* Select the minimum `water_level` in the measurement `h2o_feet` between August 18, 2015 at midnight and August 18, at 00:48 grouped at 12 minute intervals and by the `location` tag:
+* 根据12min interval和`location` tag 分组，查询 measurement `h2o_feet` 中的`water_level`在`2015-08-18T00:00:00Z`和`2015-08-18T00:54:00Z`之间的最小值：
 
 ```
 > SELECT MIN(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:54:00Z' GROUP BY time(12m), location
@@ -806,7 +805,7 @@ time                             min
 
 ## **PERCENTILE\(\)**
 
-Returns the `N`th percentile value for the sorted values of a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be of type int64 or float64. The percentile `N` must be an integer or floating point number between 0 and 100, inclusive.
+返回指定字段排序后的百分之`N` ，字段类型必须为 int64 或者 float64。百分比 `N` 必须是 integer 或 floating，介于0和100之间，包含0和100。
 
 ```
 SELECT PERCENTILE(<field_key>, <N>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -814,7 +813,7 @@ SELECT PERCENTILE(<field_key>, <N>)[,<tag_key(s)>] FROM <measurement_name> [WHER
 
 Examples:
 
-* Calculate the fifth percentile of the field `water_level` where the tag `location` equals `coyote_creek`:
+* 查询`location`  等于 `coyote_creek` field `water_level` 前5%的值：
 
 ```
 > SELECT PERCENTILE(water_level,5) FROM h2o_feet WHERE location = 'coyote_creek'
@@ -829,7 +828,7 @@ time                           percentile
 2015-09-09T11:42:00Z     1.148
 ```
 
-The value `1.148` is larger than 5% of the values in `water_level` where `location` equals `coyote_creek`.
+`1.148` 大于 `water_level` 中5% 数值 `location` equals `coyote_creek`.
 
 * Calculate the fifth percentile of the field `water_level` and output the relevant `location` tag:
 
