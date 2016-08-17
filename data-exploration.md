@@ -521,14 +521,14 @@ time			               mean
 SELECT <field_key> INTO <different_measurement> FROM <current_measurement> [WHERE <stuff>] [GROUP BY <stuff>]
 ```
 
-将``
-Write the field `water_level` in `h2o_feet` to a new measurement (`h2o_feet_copy`) in the same database:
+将`h2o_feet`中的`water_level`写入位于相同database的新measurement(`h2o_feet_copy`)中：
+
 
 ```sql
 > SELECT water_level INTO h2o_feet_copy FROM h2o_feet WHERE location = 'coyote_creek'
 ```
 
-The CLI response shows the number of points that InfluxDB wrote to `h2o_feet_copy`:
+The CLI 返回了多少写入至 `h2o_feet_copy`的point的数量:
 
 ```
 name: result
@@ -537,12 +537,14 @@ time			               written
 1970-01-01T00:00:00Z	 7604
 ```
 
-Write the field `water_level` in `h2o_feet` to a new measurement (`h2o_feet_copy`) and to the retention policy `default` in the [already-existing](/influxdb/v0.13/query_language/database_management/#create-a-database-with-create-database) database `where_else`:
+将`h2o_feet`中的`water_level` 写入到已经存在 database `where_else`的`default` retention policy中：
+
 ```sql
 > SELECT water_level INTO where_else."default".h2o_feet_copy FROM h2o_feet WHERE location = 'coyote_creek'
 ```
 
 CLI response:
+
 ```bash
 name: result
 ------------
@@ -550,9 +552,7 @@ time			               written
 1970-01-01T00:00:00Z	 7604
 ```
 
-> **Note**: If you use `SELECT *` with `INTO`, the query converts tags in the current measurement to fields in the new measurement.
-This can cause InfluxDB to overwrite points that were previously differentiated by a tag value.
-Use `GROUP BY <tag_key>` to preserve tags as tags.
+> **Note**: 如果使用 `SELECT *` with `INTO`, query 会将当前 measurment 中的 tags 转换为新 measurement 中的 fields。这会导致InfludxDB在写入时区和之前的tag值有所不同。可以使用 `GROUP BY <tag_key>` 保留tag。
 
 ### Downsample data
 Combine the `INTO` clause with an InfluxQL [function](/influxdb/v0.13/query_language/functions/) and a `GROUP BY` clause to write the lower precision query results to a different measurement:
