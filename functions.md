@@ -517,7 +517,7 @@ time                           bottom
 2015-08-18T04:06:00Z     4.055
 ```
 
-* 查询2015-08-18T04:00:00Z和2015-08-18T04:24:00Z `water_level`上最小的两个值
+* 查询`2015-08-18T04:00:00Z`和`2015-08-18T04:24:00Z` `water_level`上最小的两个值
 
 ```
 > SELECT BOTTOM(water_level,2) FROM h2o_feet WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' AND location = 'santa_monica'
@@ -537,7 +537,7 @@ time                           bottom
 
 ## **FIRST\(\)**
 
-Returns the oldest value \(determined by the timestamp\) of a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field).
+根据时间戳，返回单个字段最早的值。
 
 ```
 SELECT FIRST(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -545,7 +545,7 @@ SELECT FIRST(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>]
 
 Examples:
 
-* Select the oldest value of the field `water_level` where the `location` is `santa_monica`:
+* 查询`location` = `santa_monica`中 field `water_level` 最早的值：
 
 ```
 > SELECT FIRST(water_level) FROM h2o_feet WHERE location = 'santa_monica'
