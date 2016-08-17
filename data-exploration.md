@@ -916,13 +916,14 @@ time			               water_level
 第一个series由measurement `h2o_feet`、tag key `location`和tag value `coyote_creek`组成，
 第二个由measurement `h2o_feet`、tag key `location`和tag value `santa_monica`组成。
 
-The following query automatically merges those two series when it calculates the [average](/influxdb/v0.13/query_language/functions/#mean) `water_level`:
+下面的查询在计算`water_level`的[average](/influxdb/v0.13/query_language/functions/#mean)时自动合并了两个series：
 
 ```sql
 > SELECT MEAN(water_level) FROM h2o_feet
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 --------------
@@ -930,12 +931,14 @@ time			               mean
 1970-01-01T00:00:00Z	 4.319097913525821
 ```
 
-If you only want the `MEAN()` `water_level` for the first series, specify the tag set in the `WHERE` clause:
+如果你只是想计算第一个series的`MEAN()`，你需要在`WHERE`中指定tag set：
+
 ```sql
 > SELECT MEAN(water_level) FROM h2o_feet WHERE location = 'coyote_creek'
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 --------------
@@ -943,45 +946,44 @@ time			               mean
 1970-01-01T00:00:00Z	 5.296914449406493
 ```
 
-> **NOTE:** In InfluxDB, [epoch 0](https://en.wikipedia.org/wiki/Unix_time) (`1970-01-01T00:00:00Z`) is often used as a null timestamp equivalent.
-If you request a query that has no timestamp to return, such as an aggregation function with an unbounded time range, InfluxDB returns epoch 0 as the timestamp.
+> **NOTE:** 在InfluxDB中, [epoch 0](https://en.wikipedia.org/wiki/Unix_time) (`1970-01-01T00:00:00Z`) 通常用来表示空字符串。如果你的请求的查询没有时间戳返回(例如没有时间范围的聚合函数)，InfluxDB返回epoch 0作为时间戳。
 
-## Time syntax in queries  
-InfluxDB is a time series database so, unsurprisingly, InfluxQL has a lot to do with specifying time ranges.
-If you do not specify start and end times in your query, they default to epoch 0 (`1970-01-01T00:00:00Z`) and `now()`.
-The following sections detail how to specify different start and end times in queries.
+## Time syntax in queries
+
+InfluxDB是一种时间序列数据库，不出意料的，InfluxDB在时间范围上面做了很多。如果不指定时间，默认是从epoch 0 (`1970-01-01T00:00:00Z`)到`now()`。下面的内容将会介绍不同的时间查询姿势。
 
 ### Relative time
 ---
-`now()` is the Unix time of the server at the time the query is executed on that server.
-Use `now()` to calculate a timestamp relative to the server's
-current timestamp.
+`now()` 当前查询所执行的server上的对应Unix时间戳。使用`now()`可以用来计算server上当前时间的相对时间
 
-Query data starting an hour ago and ending `now()`:
+查询一小时之前至今的数据：
+
 ```sql
 > SELECT water_level FROM h2o_feet WHERE time > now() - 1h
 ```
 
-Query data that occur between epoch 0 and 1,000 days from `now()`:  
+查询epoch 0和`now()`后1000d之间的数据：
+
 ```sql
 > SELECT "level description" FROM h2o_feet WHERE time < now() + 1000d
 ```
 
-* Note the whitespace between the operator and the time duration.
-Leaving that whitespace out can cause InfluxDB to return no results or an `error parsing query` error .
+* 注意，操作符和time duration之间的空白符。如果没有空白符，会导致`error parsing query`的错误。
 
-The other options for specifying time durations with `now()` are listed below.  
-`u` microseconds  
-`ms` milliseconds  
-`s` seconds  
-`m` minutes  
-`h` hours  
-`d` days  
-`w` weeks   
+time durations 和 `now()` 使用时可以用的单位如下：
+
+* `u` microseconds  
+* `ms` milliseconds  
+* `s` seconds  
+* `m` minutes  
+* `h` hours  
+* `d` days  
+* `w` weeks   
 
 ### Absolute time
 ---
 #### Date time strings
+
 Specify time with date time strings.
 Date time strings can take two formats: `YYYY-MM-DD HH:MM:SS.nnnnnnnnn` and  `YYYY-MM-DDTHH:MM:SS.nnnnnnnnnZ`, where the second specification is [RFC3339](https://www.ietf.org/rfc/rfc3339.txt).
 Nanoseconds (`nnnnnnnnn`) are optional in both formats.
