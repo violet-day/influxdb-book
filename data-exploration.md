@@ -987,16 +987,17 @@ time durations 和 `now()` 使用时可以用的单位如下：
 
 Examples:
 
-Query data between August 18, 2015 23:00:01.232000000 and September 19, 2015 00:00:00 with the timestamp syntax `YYYY-MM-DD HH:MM:SS.nnnnnnnnn` and  `YYYY-MM-DDTHH:MM:SS.nnnnnnnnnZ`:
+用语法 `YYYY-MM-DD HH:MM:SS.nnnnnnnnn` 和 `YYYY-MM-DDTHH:MM:SS.nnnnnnnnnZ`查询 August 18, 2015 23:00:01.232000000 和 September 19, 2015 00:00:00 之间的数据：
 
 ```sql
 > SELECT water_level FROM h2o_feet WHERE time > '2015-08-18 23:00:01.232000000' AND time < '2015-09-19'
 ```
+
 ```sql
 > SELECT water_level FROM h2o_feet WHERE time > '2015-08-18T23:00:01.232000000Z' AND time < '2015-09-19'
 ```
 
-Query data that occur 6 minutes after September 18, 2015 21:24:00:
+查询September 18, 2015 21:24:00 6分之后之后：
 
 ```sql
 > SELECT water_level FROM h2o_feet WHERE time > '2015-09-18T21:24:00Z' + 6m
