@@ -665,8 +665,8 @@ Use [fill()](/influxdb/v0.13/query_language/data_exploration/#the-group-by-claus
 InfluxQL supports two different clauses to limit your query results:
 
 * `LIMIT <N>` 返回指定measurement中每个[series](/influxdb/v0.13/concepts/glossary/#series)开始的第 <N> [points](/influxdb/v0.13/concepts/glossary/#point)
-* `SLIMIT <N>` returns every point from \<N> series in the specified measurement.
-* `LIMIT <N>` followed by `SLIMIT <N>` returns the first \<N> points from \<N> series in the specified measurement.
+* `SLIMIT <N>` 返回measurement中第 <N> 个 series 中的所有point
+* `LIMIT <N>` 后使用 `SLIMIT <N>` 后表示返回measurement中第 <N> 个series中的前 <N> 个points
 
 ### Limit the number of results returned per series with `LIMIT`
 ---
@@ -711,6 +711,7 @@ time			              water_level
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 tags: location=coyote_creek
@@ -725,18 +726,20 @@ time			              water_level
 2015-09-18T16:24:00Z	3.235
 ```
 
-> **Note:** If \<N> is greater than the number of series associated with the specified measurement, InfluxDB returns all points from every series.
+> **Note:** 如果<N>大于measurement中的所有series的数量，InfluxDB会返回所有series中的所有point。
 
 ### Limit the number of points and series returned with `LIMIT` and `SLIMIT`
 ---
-Use `LIMIT <N1>` followed by `SLIMIT <N2>` with `GROUP BY *` to return \<N1> points from \<N2> series.
+`GROUP BY *` 的查询中，在 `LIMIT <N1>` 后使用 `SLIMIT <N2>`返回前 <N2> series的前 <N1> points。
 
-Return the three oldest points from one of the series associated with the measurement `h2o_feet`:
+查询measurement `h2o_feet`中相关series中最旧的三个point：
+
 ```sql
 > SELECT water_level FROM h2o_feet GROUP BY * LIMIT 3 SLIMIT 1
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 tags: location=coyote_creek
@@ -747,8 +750,8 @@ time			               water_level
 2015-08-18T00:12:00Z	 7.887
 ```
 
-> **Note:** If \<N1> is greater than the number of points in the series, InfluxDB returns all points in the series.
-If \<N2> is greater than the number of series associated with the specified measurement, InfluxDB returns points from every series.
+> **Note:** 注意，如果<N1> 大于series中point的数量, InfluxDB返回series中的所有point。
+如果 <N2> 大于measurement中的series数量, InfluxDB 返回所有 series。
 
 ## Sort query returns with ORDER BY time DESC
 By default, InfluxDB returns results in ascending time order - so the first points that are returned are the oldest points by timestamp.
