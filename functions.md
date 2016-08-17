@@ -703,7 +703,7 @@ time                           max     location
 
 ```
 
-* Select the maximum `water_level` in the measurement `h2o_feet` between August 18, 2015 at midnight and August 18, 2015 at 00:48 grouped at 12 minute intervals and by the `location` tag:
+* 根据12min interval和`location` tag 分组，查询 measurement `h2o_feet` 中的`water_level`在`2015-08-18T00:00:00Z`和`2015-08-18T00:54:00Z`之间的最大值：
 
 ```
 > SELECT MAX(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:54:00Z' GROUP BY time(12m), location
