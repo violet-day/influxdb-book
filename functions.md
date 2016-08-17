@@ -196,7 +196,7 @@ See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) fo
 
 ## **MEAN\(\)**
 
-Returns the arithmetic mean \(average\) for the values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field type must be int64 or float64.
+返回单个field的平均值，该字段必须是int64 或 float64.
 
 ```
 SELECT MEAN(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -204,7 +204,7 @@ SELECT MEAN(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuf
 
 Examples:
 
-* Calculate the average value of the `water_level` field:
+* 计算 `water_level` field的平均值：
 
 ```
 > SELECT MEAN(water_level) FROM h2o_feet
@@ -221,10 +221,9 @@ time                           mean
 
 > **Notes:**
 > 
-> * Aggregation functions return epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then they return the lower bound as the timestamp.
 > * Executing `mean()` on the same set of float64 points may yield slightly different results. InfluxDB does not sort points before it applies the function which results in those small discrepancies.
 
-* Calculate the average value in the field `water_level` at four-day intervals:
+* 4d为interval，计算 `water_level` 的平均值：
 
 ```
 > SELECT MEAN(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-09-18T17:00:00Z' GROUP BY time(4d)
@@ -249,17 +248,17 @@ time                           mean
 
 ## **MEDIAN\(\)**
 
-Returns the middle value from the sorted values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field values must be of type int64 or float64.
+返回单个字段的中间值，字段类型必须为 int64 或 float64。
 
 ```
 SELECT MEDIAN(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
 ```
 
-> **Note:** `MEDIAN()` is nearly equivalent to `PERCENTILE(field_key, 50)`, except `MEDIAN()` returns the average of the two middle values if the field contains an even number of points.
+> **Note:** `MEDIAN()` 基本和 `PERCENTILE(field_key, 50)` 一致，除了存在两个中间值时 `MEDIAN()` 返回它们的平均值。
 
 Examples:
 
-* Select the median value in the field `water_level`:
+* 查询 `water_level`字段的中间值：
 
 ```
 > SELECT MEDIAN(water_level) from h2o_feet
@@ -274,9 +273,7 @@ time                           median
 1970-01-01T00:00:00Z     4.124
 ```
 
-> **Note:** Aggregation functions return epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then they return the lower bound as the timestamp.
-
-* Select the median value of `water_level` between August 18, 2015 at 00:00:00 and August 18, 2015 at 00:30:00 grouped by the `location` tag:
+* Select the median value of `water_level` 查询  2015-08-18T00:00:00Z 和 2015-08-18T00:36:00Z时间范围内，根据 `location` tag 分组后`water_level`的中间值
 
 ```
 > SELECT MEDIAN(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' AND time < '2015-08-18T00:36:00Z' GROUP BY location
