@@ -512,18 +512,24 @@ time			               mean
 > **Note:** 如果 `GROUP(ing) BY` 使用了多个字段(比如包含tags 和 time interval) `fill()` 必须位于 `GROUP BY` 的最后。
 
 ## The INTO clause
+
 ### Relocate data
-Copy data to another database, retention policy, and measurement with the `INTO` clause:
+
+使用`INTO`将数据复制至另外的database，retention policy和measurement：
+
 ```sql
 SELECT <field_key> INTO <different_measurement> FROM <current_measurement> [WHERE <stuff>] [GROUP BY <stuff>]
 ```
 
+将``
 Write the field `water_level` in `h2o_feet` to a new measurement (`h2o_feet_copy`) in the same database:
+
 ```sql
 > SELECT water_level INTO h2o_feet_copy FROM h2o_feet WHERE location = 'coyote_creek'
 ```
 
 The CLI response shows the number of points that InfluxDB wrote to `h2o_feet_copy`:
+
 ```
 name: result
 ------------
