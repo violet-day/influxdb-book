@@ -556,11 +556,11 @@ CLI response:
 ```
 name: h2o_feet
 --------------
-time                           first
+time                     first
 2015-08-18T00:00:00Z     2.064
 ```
 
-* Select the oldest value of the field `water_level` between `2015-08-18T00:42:00Z` and `2015-08-18T00:54:00Z`, and output the relevant `location` tag:
+* 查询`2015-08-18T00:42:00Z` 和 `2015-08-18T00:54:00Z` 之间 field `water_level` 最早的值，同时显示`location` tag:
 
 ```
 > SELECT FIRST(water_level),location FROM h2o_feet WHERE time >= '2015-08-18T00:42:00Z' and time <= '2015-08-18T00:54:00Z'
@@ -573,10 +573,9 @@ name: h2o_feet
 --------------
 time                           first     location
 2015-08-18T00:42:00Z     7.234   coyote_creek
-
 ```
 
-* Select the oldest values of the field `water_level` grouped by the `location` tag:
+* 根据`location` tag分组，查询field `water_level` 最早的值：
 
 ```
 > SELECT FIRST(water_level) FROM h2o_feet GROUP BY location
@@ -600,7 +599,7 @@ time                           first
 
 ## **LAST\(\)**
 
-Returns the newest value \(determined by the timestamp\) of a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field).
+根据时间戳，返回单个字段最近的值。
 
 ```
 SELECT LAST(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -608,7 +607,7 @@ SELECT LAST(<field_key>)[,<tag_key(s)>] FROM <measurement_name> [WHERE <stuff>] 
 
 Examples:
 
-* Select the newest value of the field `water_level` where the `location` is `santa_monica`:
+* 查询 `location` ＝ `santa_monica`中field `water_level`最新的值：
 
 ```
 > SELECT LAST(water_level) FROM h2o_feet WHERE location = 'santa_monica'
