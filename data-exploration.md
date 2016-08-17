@@ -664,9 +664,9 @@ Use [fill()](/influxdb/v0.13/query_language/data_exploration/#the-group-by-claus
 
 InfluxQL supports two different clauses to limit your query results:
 
-* `LIMIT <N>` 返回指定measurement中每个[series](/influxdb/v0.13/concepts/glossary/#series)开始的第 <N> [points](/influxdb/v0.13/concepts/glossary/#point)
-* `SLIMIT <N>` 返回measurement中第 <N> 个 series 中的所有point
-* `LIMIT <N>` 后使用 `SLIMIT <N>` 后表示返回measurement中第 <N> 个series中的前 <N> 个points
+* `LIMIT <N>` 返回指定measurement中每个[series](/influxdb/v0.13/concepts/glossary/#series)开始的第`<N>`[points](/influxdb/v0.13/concepts/glossary/#point)
+* `SLIMIT <N>` 返回measurement中第`<N>`个 series 中的所有point
+* `LIMIT <N>` 后使用 `SLIMIT <N>` 后表示返回measurement中第`<N>`个series中的前`<N>`个points
 
 ### Limit the number of results returned per series with `LIMIT`
 ---
@@ -698,11 +698,11 @@ time			              water_level
 2015-08-18T00:12:00Z	2.028
 ```
 
-> **Note:** 如果<N>大于series中point的数量，InfluxDB返回series中的所有点。
+> **Note:** 如果`<N>`大于series中point的数量，InfluxDB返回series中的所有点。
 
 ### Limit the number of series returned with `SLIMIT`
 ---
-使用 `SLIMIT <N>` 、 `SELECT` 和 `GROUP BY *` 返回 <N> 个series中的所有point
+使用 `SLIMIT <N>` 、 `SELECT` 和 `GROUP BY *` 返回`<N>`个series中的所有point
 
 查询measurement `h2o_feet`中的第一个series中的所有的point：
 
@@ -726,13 +726,13 @@ time			              water_level
 2015-09-18T16:24:00Z	3.235
 ```
 
-> **Note:** 如果<N>大于measurement中的所有series的数量，InfluxDB会返回所有series中的所有point。
+> **Note:** 如果`<N>`大于measurement中的所有series的数量，InfluxDB会返回所有series中的所有point。
 
 ### Limit the number of points and series returned with `LIMIT` and `SLIMIT`
 ---
-`GROUP BY *` 的查询中，在 `LIMIT <N1>` 后使用 `SLIMIT <N2>`返回前 <N2> series的前 <N1> points。
+`GROUP BY *` 的查询中，在 `LIMIT <N1>` 后使用 `SLIMIT <N2>`返回前 <N2> series的前`<N1>`points。
 
-查询measurement `h2o_feet`中相关series中最旧的三个point：
+查询measurement `h2o_feet`中相关series中最早的三个point：
 
 ```sql
 > SELECT water_level FROM h2o_feet GROUP BY * LIMIT 3 SLIMIT 1
@@ -750,8 +750,8 @@ time			               water_level
 2015-08-18T00:12:00Z	 7.887
 ```
 
-> **Note:** 注意，如果<N1> 大于series中point的数量, InfluxDB返回series中的所有point。
-如果 <N2> 大于measurement中的series数量, InfluxDB 返回所有 series。
+> **Note:** 注意，如果`<N1>`大于series中point的数量, InfluxDB返回series中的所有point。
+如果`<N2>`大于measurement中的series数量, InfluxDB 返回所有 series。
 
 ## Sort query returns with ORDER BY time DESC
 InfluxDB默认按照time升序返回，所以第一个point即为最早的point。使用 `ORDER BY time DESC` 可以看到最近的point。
@@ -800,6 +800,7 @@ time			water_level
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 tags: location=santa_monica
@@ -826,13 +827,14 @@ time			               water_level
 
 ### Use `OFFSET` to paginate the results returned
 ---
-For example, get the first three points written to a series:
+比如，查询series前3个point：
 
 ```sql
 > SELECT water_level FROM h2o_feet WHERE location = 'coyote_creek' LIMIT 3
 ```
 
 CLI response:  
+
 ```bash
 name: h2o_feet
 ----------
@@ -842,13 +844,14 @@ time			               water_level
 2015-08-18T00:12:00Z	 7.887
 ```
 
-Then get the second three points from that same series:
+然后，获取第二组三个point：
 
 ```sql
 > SELECT water_level FROM h2o_feet WHERE location = 'coyote_creek' LIMIT 3 OFFSET 3
 ```
 
 CLI response:
+
 ```bash
 name: h2o_feet
 ----------
@@ -861,12 +864,14 @@ time			               water_level
 ### Use `SOFFSET` to paginate the series returned
 ---
 
-For example, get the first three points from a single series:
+比如，从一个series中返回前3个point：
+
 ```
 > SELECT water_level FROM h2o_feet GROUP BY * LIMIT 3 SLIMIT 1
 ```
 
 CLI response:
+
 ```
 name: h2o_feet
 tags: location=coyote_creek
@@ -877,12 +882,14 @@ time			               water_level
 2015-08-18T00:12:00Z	 7.887
 ```
 
-Then get the first three points from the next series:
+然后，从下一个series中返回前3个point：
+
 ```
 > SELECT water_level FROM h2o_feet GROUP BY * LIMIT 3 SLIMIT 1 SOFFSET 1
 ```
 
 CLI response:
+
 ```
 name: h2o_feet
 tags: location=santa_monica
@@ -895,10 +902,8 @@ time			               water_level
 
 ## Multiple statements in queries
 
-Separate multiple statements in a query with a semicolon.
-For example:
-<br>
-<br>
+用分号分隔多个语句。比如：
+
 ```sql
 > SELECT mean(water_level) FROM h2o_feet WHERE time > now() - 2w GROUP BY location,time(24h) fill(none); SELECT count(water_level) FROM h2o_feet WHERE time > now() - 2w GROUP BY location,time(24h) fill(80)
 ```
