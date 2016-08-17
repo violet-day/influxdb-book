@@ -396,7 +396,7 @@ time                           sum
 
 ## **BOTTOM\(\)**
 
-Returns the smallest `N` values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field type must be int64 or float64.
+返回单个field的最小的 `N` ，字段类型必须是 int64 或 float64.
 
 ```
 SELECT BOTTOM(<field_key>[,<tag_keys>],<N>)[,<tag_keys>] FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
