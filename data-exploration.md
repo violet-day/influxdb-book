@@ -754,15 +754,16 @@ time			               water_level
 如果 <N2> 大于measurement中的series数量, InfluxDB 返回所有 series。
 
 ## Sort query returns with ORDER BY time DESC
-By default, InfluxDB returns results in ascending time order - so the first points that are returned are the oldest points by timestamp.
-Use `ORDER BY time DESC` to see the newest points by timestamp.
+InfluxDB默认按照time升序返回，所以第一个point即为最早的point。使用 `ORDER BY time DESC` 可以看到最近的point。
 
-Return the oldest five points from one series **without** `ORDER BY time DESC`:  
+查询一个series中最早的5个points **without** `ORDER BY time DESC`:  
+
 ```sql
 > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' LIMIT 5
 ```
 
 CLI response:  
+
 ```bash
 name: h2o_feet
 ----------
@@ -774,12 +775,13 @@ time			water_level
 2015-08-18T00:24:00Z	2.041
 ```
 
-Now include  `ORDER BY time DESC` to get the newest five points from the same series:  
+现在使用 `ORDER BY time DESC` 获取最近的5个points:  
 ```sql
 > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' ORDER BY time DESC LIMIT 5
 ```
 
 CLI response:  
+
 ```bash
 name: h2o_feet
 ----------
@@ -791,7 +793,8 @@ time			water_level
 2015-09-18T21:18:00Z	5.072
 ```
 
-Finally, use `GROUP BY` with `ORDER BY time DESC` to return the last five points from each series:  
+最后，使用 `GROUP BY` 和 `ORDER BY time DESC` 查询每个series的最近5个points：
+
 ```sql
 > SELECT water_level FROM h2o_feet GROUP BY location ORDER BY time DESC LIMIT 5
 ```
