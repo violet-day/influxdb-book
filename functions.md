@@ -1096,11 +1096,11 @@ time                           derivative
 (2.116 - 2.064) / (360s / 1s)
 ```
 
-The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in seconds \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `360s`\) divided by `unit` \(`1s`\). This returns the rate of change per second from `2015-08-18T00:00:00Z` to `2015-08-18T00:06:00Z`.
+分子是按照时间顺序field value之间的差值，分母是时间差值 \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `360s`\) 除以 `unit` \(`1s`\)，也就是 `2015-08-18T00:00:00Z` 到 `2015-08-18T00:06:00Z`每秒的变化率
 
-* `DERIVATIVE()` with two arguments:
+* `DERIVATIVE()` 中使用2个参数：
 
-  Calculate the rate of change per six minutes
+  计算每6分钟的变化率：
 
 
 ```
@@ -1120,18 +1120,17 @@ time                           derivative
 2015-08-18T00:30:00Z     0.010000000000000231
 ```
 
-The calculation of the first value in the `derivative` column looks like this:
+`derivative` 列的计算公式为：
 
 ```
 (2.116 - 2.064) / (6m / 6m)
-
 ```
 
-The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in minutes \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `6m`\) divided by `unit` \(`6m`\). This returns the rate of change per six minutes from `2015-08-18T00:00:00Z` to `2015-08-18T00:06:00Z`.
+分子是按照时间顺序field value之间的差值，分母是时间差 \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `6m`\) 除以 `unit` \(`6m`\)，也就是 `2015-08-18T00:00:00Z` 到 `2015-08-18T00:06:00Z`每6min的变化率
 
-* `DERIVATIVE()` with two arguments:
+* `DERIVATIVE()` 中使用2个参数：
 
-  Calculate the rate of change per 12 minutes
+  计算每12分钟的变化率
 
 
 ```
@@ -1151,20 +1150,19 @@ time                           derivative
 2015-08-18T00:30:00Z     0.020000000000000462
 ```
 
-The calculation of the first value in the `derivative` column looks like this:
+`derivative` 的计算公式为：
 
 ```
 (2.116 - 2.064 / (6m / 12m)
-
 ```
 
-The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in minutes \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `6m`\) divided by `unit` \(`12m`\). This returns the rate of change per 12 minutes from `2015-08-18T00:00:00Z` to `2015-08-18T00:06:00Z`.
+分子是按照时间顺序field value之间的差值， 分母是时间差 \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `6m`\) 除以 `unit` \(`12m`\)，也就是 `2015-08-18T00:00:00Z` 到 `2015-08-18T00:06:00Z`每12分钟的变化率
 
-> **Note:** Specifying `12m` as the `unit` **does not** mean that InfluxDB calculates the rate of change for every 12 minute interval of data. Instead, InfluxDB calculates the rate of change per 12 minutes for each interval of valid data.
+> **Note: ** `12m` 作为单位 `unit` 并不 意味着 InfluxDB 每12分钟计算一次变化率，而是对于每个时间间隔之间的数据，计算每12分钟对应的变化。
 
-* `DERIVATIVE()` with one argument, a function, and a `GROUP BY time()` clause:
+* `DERIVATIVE()` 使用一个参数并和 `GROUP BY time()` clause：
 
-  Select the `MAX()` value at 12 minute intervals and calculate the rate of change per 12 minutes
+  以12分钟作为interval，得到 `MAX()` 后计算每12分钟的变化率。
 
 
 ```
@@ -1181,29 +1179,28 @@ time                           derivative
 2015-08-18T00:24:00Z     -0.07499999999999973
 ```
 
-To get those results, InfluxDB first aggregates the data by calculating the `MAX()` `water_level` at the time interval specified in the `GROUP BY time()` clause \(`12m`\). Those results look like this:
+InfluxDB 首先使用`GROUP BY time()` clause \(`12m`\) 分组计算`MAX()` `water_level`：
 
 ```
 name: h2o_feet
 --------------
-time                           max
+time                      max
 2015-08-18T00:00:00Z     2.116
 2015-08-18T00:12:00Z     2.126
 2015-08-18T00:24:00Z     2.051
 ```
 
-Second, InfluxDB calculates the rate of change per `12m` \(the same interval as the `GROUP BY time()` interval\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this:
+然后, InfluxDB 计算每 `12m` \(和 `GROUP BY time()` interval相同\) 的变化率作为`derivative` 列。 第一个`derivative`的计算为：
 
 ```
 (2.126 - 2.116) / (12m / 12m)
-
 ```
 
-The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in minutes \(`2015-08-18T00:12:00Z` - `2015-08-18T00:00:00Z` = `12m`\) divided by `unit` \(`12m`\). This returns rate of change per 12 minutes for the aggregated data from `2015-08-18T00:00:00Z` to `2015-08-18T00:12:00Z`.
+分子是按照时间顺序field value之间的差值，分母是时间差\(`2015-08-18T00:12:00Z` - `2015-08-18T00:00:00Z` = `12m`\) 除以 `unit` \(`12m`\)，也就是`2015-08-18T00:00:00Z` 到 `2015-08-18T00:12:00Z`之间聚合之后的数据每12分钟的变化率。
 
-* `DERIVATIVE()` with two arguments, a function, and a `GROUP BY time()` clause:
+* `DERIVATIVE()` 使用2个参数，并和 `GROUP BY time()` clause一起使用：
 
-  Aggregate the data to 18 minute intervals and calculate the rate of change per six minutes
+  以18min作为interval分组，计算每6分钟的变化率
 
 
 ```
@@ -1219,7 +1216,7 @@ time                           derivative
 2015-08-18T00:18:00Z     0.0033333333333332624
 ```
 
-To get those results, InfluxDB first aggregates the data by calculating the `SUM()` of `water_level` at the time interval specified in the `GROUP BY time()` clause \(`18m`\). The aggregated results look like this:
+InfluxDB 首先使用`GROUP BY time()` clause \(`18m`\) 通过`SUM()` 聚合`water_level`：
 
 ```
 name: h2o_feet
@@ -1229,38 +1226,35 @@ time                           sum
 2015-08-18T00:18:00Z     6.218
 ```
 
-Second, InfluxDB calculates the rate of change per `unit` \(`6m`\) to get the results in the `derivative` column above. The calculation of the first value in the `derivative` column looks like this:
+然后， InfluxDB 每 `unit` \(`6m`\) 计算 `derivative` 。计算如下：
 
 ```
-(6.218 - 6.208) / (18m / 6m)
-
+(6.218 - 6.208) / (18m / 6m) 
 ```
 
-The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in minutes \(`2015-08-18T00:18:00Z` - `2015-08-18T00:00:00Z` = `18m`\) divided by `unit` \(`6m`\). This returns the rate of change per six minutes for the aggregated data from `2015-08-18T00:00:00Z` to `2015-08-18T00:18:00Z`.
+分子是按照时间顺序field value之间的差值，分母是时间差 \(`2015-08-18T00:18:00Z` - `2015-08-18T00:00:00Z` = `18m`\) 除以 `unit` \(`6m`\)，也就是`2015-08-18T00:00:00Z` 到 `2015-08-18T00:18:00Z`之间聚合之后的数据，每6分钟的变化率。
 
 ## **DIFFERENCE\(\)**
 
-Returns the difference between consecutive chronological values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field type must be int64 or float64.
+按照时间顺序，就计算单个字段的差值，字段类型必须是int64 或 float64。
 
-The basic `DIFFERENCE()` query:
+基本的 `DIFFERENCE()` 查询：
 
 ```
 SELECT DIFFERENCE(<field_key>) FROM <measurement_name> [WHERE <stuff>]
-
 ```
 
-The `DIFFERENCE()` query with a nested function and a `GROUP BY time()` clause:
+使用`GROUP BY time() `，` DIFFERENCE()` 内部嵌套函数：
 
 ```
-SELECT DIFFERENCE(<function>(<field_key>)) FROM <measurement_name> WHERE <stuff> GROUP BY time(<time_interval>)
-
+SELECT DIFFERENCE(<function>(<field_key>)) FROM <measurement_name> WHERE <stuff> GROUP BY time(<time_interval>) 
 ```
 
-Functions that work with `DIFFERENCE()` include `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`, `MIN()`,`MAX()`, and `PERCENTILE()`.
+可以和 `DIFFERENCE()` 一起使用的有： `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`, `MIN()`,`MAX()`, 和`PERCENTILE()`.
 
 Examples:
 
-The following examples focus on the field `water_level` in `santa_monica` between `2015-08-18T00:00:00Z` and `2015-08-18T00:36:00Z`:
+下面的例子主要关注`2015-08-18T00:00:00Z` 到 `2015-08-18T00:36:00Z`之间，`santa_monica`的`water_level`字段：
 
 ```
 > SELECT water_level FROM h2o_feet WHERE location='santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z'
@@ -1273,15 +1267,13 @@ time                            water_level
 2015-08-18T00:18:00Z      2.126
 2015-08-18T00:24:00Z      2.041
 2015-08-18T00:30:00Z      2.051
-2015-08-18T00:36:00Z      2.067
-
+2015-08-18T00:36:00Z      2.067 
 ```
 
-* Calculate the difference between `water_level` values:
+* 计算`water_level`间的差值：
 
 ```
 > SELECT DIFFERENCE(water_level) FROM h2o_feet WHERE location='santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z'
-
 ```
 
 CLI response:
@@ -1295,17 +1287,15 @@ time                            difference
 2015-08-18T00:18:00Z      0.09799999999999986
 2015-08-18T00:24:00Z      -0.08499999999999996
 2015-08-18T00:30:00Z      0.010000000000000231
-2015-08-18T00:36:00Z      0.016000000000000014
-
+2015-08-18T00:36:00Z      0.016000000000000014 
 ```
 
-The first value in the `difference` column is `2.116 - 2.064`, and the second value in the `difference` column is`2.028 - 2.116`. Please note that the extra decimal places are the result of floating point inaccuracies.
+`difference` 列的第一个值是 `2.116 - 2.064，`第二个是`2.028 - 2.116`。请注意，额外的小数位是因为浮点性计算导致的。
 
-* Select the minimum `water_level` values at 12 minute intervals and calculate the difference between those values:
+* 每12分钟计算`water_level`最小值，并计算最小值之间的差值 ：
 
 ```
-> SELECT DIFFERENCE(MIN(water_level)) FROM h2o_feet WHERE location='santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
-
+> SELECT DIFFERENCE(MIN(water_level)) FROM h2o_feet WHERE location='santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' GROUP BY time(12m) 
 ```
 
 CLI response:
@@ -1320,7 +1310,7 @@ time                            difference
 
 ```
 
-To get the values in the `difference` column, InfluxDB first selects the `MIN()` values at 12 minute intervals:
+为了得到 `difference` ，InfluxDB 首先根据12分钟分组，查询 `MIN()` values：
 
 ```
 > SELECT MIN(water_level) FROM h2o_feet WHERE location='santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
@@ -1334,7 +1324,7 @@ time                            min
 
 ```
 
-It then uses those values to calculate the difference between chronological values; the first value in the `difference`column is `2.028 - 2.064`.
+在这这结果中，根据时间序列计算差值。第一个值为 `difference` 为 `2.028 - 2.064`.
 
 ## **ELAPSED\(\)**
 
