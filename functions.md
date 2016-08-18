@@ -914,7 +914,7 @@ time                           top     location
 2015-08-29T07:30:00Z     9.954   coyote_creek
 ```
 
-* 查询每个 `location`tag中最大的`water_level `value：
+* 查询每个 `location`tag中最大的`water_level`value：
 
 ```
 > SELECT TOP(water_level,location,2) FROM h2o_feet
@@ -994,7 +994,7 @@ time                           top
 2015-08-18T04:18:00Z     4.124
 ```
 
-* Select the largest two values of `water_level` between August 18, 2015 at 4:00:00 and August 18, 2015 at 4:18:00 in `santa_monica`:
+* 查询`2015-08-18T04:00:00Z`和`2015-08-18T04:24:00Z`时间段内 tag `santa_monica` 内`water_level` 最大的两个值：
 
 ```
 > SELECT TOP(water_level,2) FROM h2o_feet WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' AND location = 'santa_monica'
