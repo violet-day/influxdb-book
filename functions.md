@@ -1024,13 +1024,13 @@ See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) fo
 
 返回series中的某个field的变化率。InfluxDB每`unit`根据时间顺序计算field value之间的变化率。 `unit` 参数为可选的，默认值为`1s`
 
-The basic `DERIVATIVE()` query:
+基本 `DERIVATIVE()` 查询：
 
 ```
 SELECT DERIVATIVE(<field_key>, [<unit>]) FROM <measurement_name> [WHERE <stuff>]
 ```
 
-Valid time specifications for `unit` are:
+可用的 `unit` ：
 
 `u` microseconds
 
@@ -1044,9 +1044,9 @@ Valid time specifications for `unit` are:
 
 `w` weeks
 
-`DERIVATIVE()` also works with a nested function coupled with a `GROUP BY time()` clause. For queries that include those options, InfluxDB first performs the aggregation, selection, or transformation across the time interval specified in the `GROUP BY time()` clause. It then calculates the difference between chronological field values and converts those results into the rate of change per `unit`. The `unit` argument is optional and, if not specified, defaults to the same interval as the `GROUP BY time()` interval.
+`DERIVATIVE()` 也可以配合 `GROUP BY time()` 子句使用前套函数。这种情况下，InfluxDB 首先根据指定的`GROUP BY time()`执行 aggregation、selection或者transformation 函数，然后以`unit`为单位计算根据时间计算之前结果的变化率。`unit` 参数可选，如果没有指定，则和 `GROUP BY time()` 中指定的invterval一致。
 
-The `DERIVATIVE()` query with an aggregation function and `GROUP BY time()` clause:
+`DERIVATIVE()` 、 aggregation 函数 和 `GROUP BY time()` 一起使用：
 
 ```
 SELECT DERIVATIVE(AGGREGATION_FUNCTION(<field_key>),[<unit>]) FROM <measurement_name> WHERE <stuff> GROUP BY time(<aggregation_interval>)
@@ -1054,7 +1054,7 @@ SELECT DERIVATIVE(AGGREGATION_FUNCTION(<field_key>),[<unit>]) FROM <measurement_
 
 Examples:
 
-The following examples work with the first six observations of the `water_level` field in the measurement `h2o_feet`with the tag set `location = santa_monica`:
+下面的例子查询了`location = santa_monica`时measurement `h2o_feet`中`water_level` field 变化率：
 
 ```
 name: h2o_feet
@@ -1068,9 +1068,9 @@ time                           water_level
 2015-08-18T00:30:00Z     2.051
 ```
 
-* `DERIVATIVE()` with a single argument:
+* `DERIVATIVE()` 仅使用一个参数：
 
-  Calculate the rate of change per one second
+  计算单个指标每秒的变化率
 
 
 ```
@@ -1090,11 +1090,10 @@ time                           derivative
 2015-08-18T00:30:00Z     2.777777777777842e-05
 ```
 
-Notice that the first field value \(`0.00014`\) in the `derivative` column is **not** `0.052` \(the difference between the first two field values in the raw data: `2.116` - `2.604` = `0.052`\). Because the query does not specify the `unit` option, InfluxDB automatically calculates the rate of change per one second, not the rate of change per six minutes. The calculation of the first value in the `derivative` column looks like this:
+注意，`derivative`列中的第一个值 \(`0.00014`\) **不是** `0.052` \(原始数据中两个值的差为: `2.116` - `2.604` = `0.052`\)。之所以这样的原因是查询中没有指定 `unit` , InfluxDB 自动计算了每秒的变化，而不是每6分钟。`derivative`列的计算公式为：
 
 ```
 (2.116 - 2.064) / (360s / 1s)
-
 ```
 
 The numerator is the difference between chronological field values. The denominator is the difference between the relevant timestamps in seconds \(`2015-08-18T00:06:00Z` - `2015-08-18T00:00:00Z` = `360s`\) divided by `unit` \(`1s`\). This returns the rate of change per second from `2015-08-18T00:00:00Z` to `2015-08-18T00:06:00Z`.
