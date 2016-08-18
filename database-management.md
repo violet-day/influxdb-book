@@ -25,7 +25,7 @@ InfluxQL 提供了完整的 administrative commands。
 
 如果你在寻找 `SHOW` 查询 \(比如, `SHOW DATABASES` 或者 `SHOW RETENTION POLICIES`\), 见 [Schema Exploration](/schema-exploration.md).
 
-这片文章中的例子使用 InfluxDB 的 [Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/introduction/getting_started) 。你还可以通过HTTP API之行这些命令，向`/query `endpoint中发送 `GET` 请求，命令放在URL参数 `q `中，见 [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) 中更多使用 HTTP API的例子。
+这片文章中的例子使用 InfluxDB 的 [Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/introduction/getting_started) 。你还可以通过HTTP API之行这些命令，向`/query`endpoint中发送 `GET` 请求，命令放在URL参数 `q`中，见 [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) 中更多使用 HTTP API的例子。
 
 > **Note:** 当认证开启时，仅admin可以执行这篇文章中的大部分命令，更多信息见 [authentication and authorization](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/authentication_and_authorization)
 
@@ -71,9 +71,9 @@ When specifying a retention policy you can include one or more of the attributes
 DROP DATABASE [IF EXISTS] <database_name>
 ```
 
-> **Note:** The `IF EXISTS` clause does nothing, is deprecated, and will be removed in InfluxDB version 1.0.
+> **Note:** `IF EXISTS` 同上，没鸟用
 
-Drop the database NOAA\_water\_database:
+删除 database NOAA\_water\_database:
 
 ```
 > DROP DATABASE NOAA_water_database
@@ -86,9 +86,9 @@ A successful `DROP DATABASE` query returns an empty result. If you attempt to dr
 
 ---
 
-The `DROP SERIES` query deletes all points from a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) in a database, and it drops the series from the index.
+`DROP SERIES` 通过索引删除 [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) 中的所有point。
 
-> **Note:** `DROP SERIES` does not support time intervals in the `WHERE` clause. See `DELETE` for that functionality.
+> **Note:** `DROP SERIES` 在 `WHERE` clause中不支持time interval， 如需这样的功能，见 [`DELETE`](#delete-series-with-delete) 。
 
 The query takes the following form, where you must specify either the `FROM` clause or the `WHERE` clause:
 
