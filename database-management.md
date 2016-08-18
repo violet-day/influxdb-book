@@ -157,25 +157,25 @@ DELETE FROM <measurement_name> WHERE [<tag_key>='<tag_value>'] | [<time interval
 
 ---
 
-The `DROP MEASUREMENT` query deletes all data and series from the specified [measurement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#measurement) and deletes the measurement from the index.
+`DROP MEASUREMENT` 删除了指定measurement的所有的数据和series，并且删除了索引。
 
-The query takes the following form:
+语法如下：
 
 ```
 DROP MEASUREMENT <measurement_name>
 ```
 
-Delete the measurement `h2o_feet`:
+删除measurement `h2o_feet`:
 
 ```
 > DROP MEASUREMENT h2o_feet
 ```
 
-> **Note:** `DROP MEASUREMENT` drops all data and series in the measurement. It does not drop the associated continuous queries.
+> **Note:** `DROP MEASUREMENT` 删除measurement中的所有data和series。但是并不删除相关联的continuous queries。
 
-A successful `DROP MEASUREMENT` query returns an empty result.
+`DROP MEASUREMENT` 执行成功后返回结果为空。
 
-Currently, InfluxDB does not support regular expressions with `DROP MEASUREMENTS`. See GitHub Issue [\#4275](https://github.com/influxdb/influxdb/issues/4275) for more information.
+目前，InfluxDB 使用`DROP MEASUREMENTS`不支持正则表达式。详见GitHub Issue [\#4275](https://github.com/influxdb/influxdb/issues/4275)
 
 ### **Delete a shard with DROP SHARD**
 
