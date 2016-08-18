@@ -88,9 +88,9 @@ A successful `DROP DATABASE` query returns an empty result. If you attempt to dr
 
 `DROP SERIES` 通过索引删除 [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) 中的所有point。
 
-> **Note:** `DROP SERIES` 在 `WHERE` clause中不支持time interval， 如需这样的功能，见 [`DELETE`](#delete-series-with-delete) 。
+> **Note:** `DROP SERIES` 在 `WHERE` clause中不支持time interval， 如需这样的功能，见 `DELETE` 。
 
-The query takes the following form, where you must specify either the `FROM` clause or the `WHERE` clause:
+查询与法如下，你必须指定 `FROM` clause 或者 `WHERE` clause：
 
 ```
 DROP SERIES FROM <measurement_name[,measurement_name]> WHERE <tag_key>='<tag_value>'
