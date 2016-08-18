@@ -925,7 +925,7 @@ CLI response:
 ```
 name: h2o_feet
 --------------
-time                           top     location
+time                      top     location
 2015-08-29T03:54:00Z     7.205   santa_monica
 2015-08-29T07:24:00Z     9.964   coyote_creek
 ```
