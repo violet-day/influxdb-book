@@ -96,66 +96,62 @@ A successful `DROP DATABASE` query returns an empty result. If you attempt to dr
 DROP SERIES FROM <measurement_name[,measurement_name]> WHERE <tag_key>='<tag_value>'
 ```
 
-Drop all series from a single measurement:
+删除指定measurement中所有的series：
 
 ```
 > DROP SERIES FROM h2o_feet
 ```
 
-Drop series with a specific tag pair from a single measurement:
+删除指定measurement中的单个series：
 
 ```
 > DROP SERIES FROM h2o_feet WHERE location = 'santa_monica'
 ```
 
-Drop all points in the series that have a specific tag pair from all measurements in the database:
+删除database中指定tag的所有series：
 
 ```
 > DROP SERIES WHERE location = 'santa_monica'
 ```
 
-A successful `DROP SERIES` query returns an empty result.
+`DROP SERIES` 执行成功之后返回空结果。
 
 ### **Delete series with DELETE**
 
 ---
 
-The `DELETE` query deletes all points from a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) in a database. Unlike `DROP SERIES`, it does not drop the series from the index and it supports time intervals in the `WHERE` clause.
+`DELETE` 删除series中的所有point。和`DROP SERIES`不一样，它不从series中删除索引，并且在`WHERE`中支持time interval。
 
-The query takes the following form where you must include either the `FROM` clause or the `WHERE` clause, or both:
+查询必须包含 `FROM` clause 或者 `WHERE` clause：
 
 ```
 DELETE FROM <measurement_name> WHERE [<tag_key>='<tag_value>'] | [<time interval>]
-
 ```
 
-Delete all data associated with the measurement `h2o_feet`:
+删除 measurement `h2o_feet`相关的所有数据：
 
 ```
 > DELETE FROM h2o_feet
-
 ```
 
-Delete all data associated with the measurement `h2o_quality` and where the tag `randtag` equals `3`:
+删除measurement `h2o_quality` 中所有`randtag=3` 的point：
 
 ```
 > DELETE FROM h2o_quality WHERE randtag = '3'
-
 ```
 
-Delete all data in the database that occur before January 01, 2016:
+删除`2016-01-01`之前的所有的point：
 
 ```
-> DELETE WHERE time < '2016-01-01'
-
+> DELETE WHERE time < '2016-01-01' 
 ```
 
-A successful `DELETE` query returns an empty result.
+`DELETE` 查询成功之后返回为空：
 
-Things to note about `DELETE`:
+关于 `DELETE`值得注意的：
 
-* `DELETE` supports [regular expressions](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#regular-expressions-in-queries) in the `FROM` clause when specifying measurement names and in the `WHERE`clause when specifying tag values.
-* `DELETE` does not support [fields](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field) in the `WHERE` clause.
+* `DELETE` 当指定measurement name并且`WHERE`中指定tag时，`FROM` clause中可以使用正则表达式
+* `DELETE` 的`WHERE` clause不支持field
 
 ### **Delete measurements with DROP MEASUREMENT**
 
