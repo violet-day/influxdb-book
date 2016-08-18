@@ -1244,7 +1244,7 @@ time                           sum
 SELECT DIFFERENCE(<field_key>) FROM <measurement_name> [WHERE <stuff>]
 ```
 
-使用`GROUP BY time() `，` DIFFERENCE()` 内部嵌套函数：
+使用`GROUP BY time()`，`DIFFERENCE()` 内部嵌套函数：
 
 ```
 SELECT DIFFERENCE(<function>(<field_key>)) FROM <measurement_name> WHERE <stuff> GROUP BY time(<time_interval>) 
@@ -1328,20 +1328,18 @@ time                            min
 
 ## **ELAPSED\(\)**
 
-Returns the difference between subsequent timestamps in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The `unit` argument is an optional [duration literal](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/spec/#durations) and, if not specified, defaults to one nanosecond.
+返回时间戳的差值，`unit` 参数可选，默认值为纳秒。
 
 ```
 SELECT ELAPSED(<field_key>, <unit>) FROM <measurement_name> [WHERE <stuff>]
-
 ```
 
 Examples:
 
-* Calculate the difference \(in nanoseconds\) between the timestamps in the field `h2o_feet`:
+* 以纳秒形式计算 field `h2o_feet `的差值：
 
 ```
 > SELECT ELAPSED(water_level) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:24:00Z'
-
 ```
 
 CLI Response:
@@ -1357,11 +1355,10 @@ time                            elapsed
 
 ```
 
-* Calculate the number of one minute intervals between the timestamps in the field `h2o_feet`:
+* 以1分钟为interval，计算 field `h2o_feet`的时间戳差：
 
 ```
-> SELECT ELAPSED(water_level,1m) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:24:00Z'
-
+> SELECT ELAPSED(water_level,1m) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:24:00Z' 
 ```
 
 CLI Response:
@@ -1377,7 +1374,7 @@ time                            elapsed
 
 ```
 
-> **Note:** InfluxDB returns `0` if `unit` is greater than the difference between the timestamps. For example, the timestamps in `h2o_feet` occur at six minute intervals. If the query asks for the number of one hour intervals between the timestamps, InfluxDB returns `0`:
+> **Note:** 如果 `unit` 大于 timestamps查值时，InfluxDB 返回 `0`  。比如，在 `h2o_feet` 按照6分钟为interval出现，如果你查询参数中为`1h`，InfluxDB returns `0`:
 > 
 > ```
 > SELECT ELAPSED(water_level,1h) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:24:00Z'
@@ -1405,27 +1402,25 @@ See GitHub Issue [\#5930](https://github.com/influxdb/influxdb/issues/5930) for 
 
 ## **MOVING\_AVERAGE\(\)**
 
-Returns the moving average across a `window` of consecutive chronological field values for a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field type must be int64 or float64.
+返回连续一段`window`中的某个字段的均线，字段类型必须是int64 或 float64。
 
-The basic `MOVING_AVERAGE()` query:
+基本的 `MOVING_AVERAGE()` 查询：
 
 ```
 SELECT MOVING_AVERAGE(<field_key>,<window>) FROM <measurement_name> [WHERE <stuff>]
-
 ```
 
-The `MOVING_AVERAGE()` query with a nested function and a `GROUP BY time()` clause:
+配合`GROUP BY time()` ，`MOVING_AVERAGE()` 可以嵌套函数使用
 
 ```
-SELECT MOVING_AVERAGE(<function>(<field_key>),<window>) FROM <measurement_name> WHERE <stuff> GROUP BY time(<time_interval>)
-
+SELECT MOVING_AVERAGE(<function>(<field_key>),<window>) FROM <measurement_name> WHERE <stuff> GROUP BY time(<time_interval>) 
 ```
 
-Functions that work with `MOVING_AVERAGE()` include `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`,`MIN()`, `MAX()`, and `PERCENTILE()`.
+可以和 `MOVING_AVERAGE()` 和一起使用有： `COUNT()`, `MEAN()`, `MEDIAN()`, `SUM()`, `FIRST()`, `LAST()`,`MIN()`, `MAX()`, 和 `PERCENTILE()`
 
 Examples:
 
-The following examples focus on the field `water_level` in `santa_monica` between `2015-08-18T00:00:00Z` and `2015-08-18T00:36:00Z`:
+下面的例子主要`2015-08-18T00:00:00Z` 到 `2015-08-18T00:36:00Z`范围内关注 `santa_monica`中的field `water_level`：
 
 ```
 > SELECT water_level FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z'
@@ -1438,15 +1433,13 @@ time                            water_level
 2015-08-18T00:18:00Z      2.126
 2015-08-18T00:24:00Z      2.041
 2015-08-18T00:30:00Z      2.051
-2015-08-18T00:36:00Z      2.067
-
+2015-08-18T00:36:00Z      2.067 
 ```
 
-* Calculate the moving average across every 2 field values:
+* 每2个值计算均线：
 
 ```
-> SELECT MOVING_AVERAGE(water_level,2) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z'
-
+> SELECT MOVING_AVERAGE(water_level,2) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' 
 ```
 
 CLI response:
@@ -1464,13 +1457,12 @@ time                            moving_average
 
 ```
 
-The first value in the `moving_average` column is the average of `2.064` and `2.116`, the second value in the`moving_average` column is the average of `2.116` and `2.028`.
+在`moving_average` 列中的第一个值是 `2.064` 和 `2.116 `的平均值，第二个值是 `2.116` 和 `2.028`的平均值
 
 * Select the minimum `water_level` at 12 minute intervals and calculate the moving average across every 2 field values:
 
 ```
-> SELECT MOVING_AVERAGE(MIN(water_level),2) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' GROUP BY time(12m)
-
+> SELECT MOVING_AVERAGE(MIN(water_level),2) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:36:00Z' GROUP BY time(12m) 
 ```
 
 CLI response:
@@ -1485,7 +1477,7 @@ time                            moving_average
 
 ```
 
-To get those results, InfluxDB first selects the `MIN()` `water_level` for every 12 minute interval:
+InfluxDB 首先根据12分钟的interval计算`water_level`的`MIN()` ：
 
 ```
 name: h2o_feet
@@ -1498,45 +1490,23 @@ time                            min
 
 ```
 
-It then uses those values to calculate the moving average across every 2 field values; the first result in the`moving_average` column the average of `2.064` and `2.028`, and the second result is the average of `2.028` and`2.041`.
+然后用这些数据，每2个值计算平均值。`moving_average` 第一个值是 `2.064` 和 `2.028`的平均值，第二个是 `2.028` 和`2.041。`
 
 ## **NON\_NEGATIVE\_DERIVATIVE\(\)**
 
-Returns the non-negative rate of change for the values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field) in a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series). InfluxDB calculates the difference between chronological field values and converts those results into the rate of change per `unit`. The `unit` argument is optional and, if not specified, defaults to one second \(`1s`\).
+返回series中某个field的非负变化率。InfluxDB每`unit`根据时间顺序计算field value之间的变化率。 `unit` 参数为可选的，默认值为`1s`
 
-The basic `NON_NEGATIVE_DERIVATIVE()` query:
+基本查询语法 `NON_NEGATIVE_DERIVATIVE()` ：
 
 ```
 SELECT NON_NEGATIVE_DERIVATIVE(<field_key>, [<unit>]) FROM <measurement_name> [WHERE <stuff>]
 ```
 
-Valid time specifications for `unit` are:
-
-`u` microseconds
-
-`s` seconds
-
-`m` minutes
-
-`h` hours
-
-`d` days
-
-`w` weeks
-
-`NON_NEGATIVE_DERIVATIVE()` also works with a nested function coupled with a `GROUP BY time()` clause. For queries that include those options, InfluxDB first performs the aggregation, selection, or transformation across the time interval specified in the `GROUP BY time()` clause. It then calculates the difference between chronological field values and converts those results into the rate of change per `unit`. The `unit` argument is optional and, if not specified, defaults to the same interval as the `GROUP BY time()` interval.
-
-The `NON_NEGATIVE_DERIVATIVE()` query with an aggregation function and `GROUP BY time()` clause:
-
-```
-SELECT NON_NEGATIVE_DERIVATIVE(AGGREGATION_FUNCTION(<field_key>),[<unit>]) FROM <measurement_name> WHERE <stuff> GROUP BY time(<aggregation_interval>)
-```
-
-See `DERIVATIVE()` for example queries. All query results are the same for `DERIVATIVE()` and`NON_NEGATIVE_DERIVATIVE` except that `NON_NEGATIVE_DERIVATIVE()` returns only the positive values.
+用法同`DERIVATIVE`
 
 ## **STDDEV\(\)**
 
-Returns the standard deviation of the values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field). The field must be of type int64 or float64.
+返回某个field的标准差，字段类型必须是int64 或 float64.
 
 ```
 SELECT STDDEV(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <stuff>]
@@ -1544,7 +1514,7 @@ SELECT STDDEV(<field_key>) FROM <measurement_name> [WHERE <stuff>] [GROUP BY <st
 
 Examples:
 
-* Calculate the standard deviation for the `water_level` field in the measurement `h2o_feet`:
+* 计算measurement `h2o_feet` 中的`water_level` field：
 
 ```
 > SELECT STDDEV(water_level) FROM h2o_feet
@@ -1559,12 +1529,7 @@ time                           stddev
 1970-01-01T00:00:00Z     2.279144584196145
 ```
 
-> **Notes:**
-> 
-> * `stddev()` returns epoch 0 \(`1970-01-01T00:00:00Z`\) as the timestamp unless you specify a lower bound on the time range. Then it returns the lower bound as the timestamp.
-> * Executing `stddev()` on the same set of float64 points may yield slightly different results. InfluxDB does not sort points before it applies the function which results in those small discrepancies.
-
-* Calculate the standard deviation for the `water_level` field between August 18, 2015 at midnight and September 18, 2015 at noon grouped at one week intervals and by the `location` tag:
+* 根据1周和`location` 分组，计算`2015-08-18T00:00:00Z`和 `2015-09-18T12:06:00Z`之间`water_level`的标准差：
 
 ```
 > SELECT STDDEV(water_level) FROM h2o_feet WHERE time >= '2015-08-18T00:00:00Z' and time < '2015-09-18T12:06:00Z' GROUP BY time(1w), location
@@ -1598,9 +1563,9 @@ time                           stddev
 
 ## **Include multiple functions in a single query**
 
-Separate multiple functions in one query with a `,`.
+查询中的多个function通过 `,`分隔
 
-Calculate the [minimum](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#min) `water_level` and the [maximum](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#max) `water_level` with a single query:
+在一个查询中计算`water_level`的 [minimum](#min) 和  [maximum ：](#max)
 
 ```
 > SELECT MIN(water_level), MAX(water_level) FROM h2o_feet
@@ -1617,13 +1582,13 @@ time                           min     max
 
 ## **Change the value reported for intervals with no data with **`fill()`
 
-By default, queries with an InfluxQL function report `null` values for intervals with no data. Append `fill()` to the end of your query to alter that value. For a complete discussion of `fill()`, see [Data Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#the-group-by-clause-and-fill).
+在interval中，没有数据的情况下，默认返回 `null` 。可以通过在查询最后添加 `fill()` 来改变。完整的讲解件： [Data Exploration](/data-exploration.md).
 
-> **Note:** `fill()` works differently with `COUNT()`. See [the documentation on ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count-and-controlling-the-values-reported-for-intervals-with-no-data)`COUNT()` for a function-specific use of`fill()`.
+> **Note:** `fill()` 在`COUNT()`的处理有一些不一致。见 [the documentation on ](#count)`COUNT()` 对`fill() `的用法
 
 ## **Rename the output column's title with **`AS`
 
-By default, queries that include a function output a column that has the same name as that function. If you'd like a different column name change it with an `AS` clause.
+查询结果默认使用function name作为列名，如果你想使用其他名称，可以使用 `AS` clause。
 
 Before:
 
