@@ -1010,7 +1010,7 @@ time                           top
 2015-08-18T04:18:00Z     4.124
 ```
 
-Note that in the raw data, `water_level` equals `4.055` at `2015-08-18T04:06:00Z` and at `2015-08-18T04:12:00Z`. In the case of a tie, InfluxDB returns the value with the earlier timestamp.
+注意，在原本的数据中， `water_level`  在 `2015-08-18T04:06:00Z` 和 `2015-08-18T04:12:00Z`都等于 `4.055`。相同情况下，InfluxDB返回更早的时间戳。
 
 # **Transformations**
 
