@@ -914,7 +914,7 @@ time                           top     location
 2015-08-29T07:30:00Z     9.954   coyote_creek
 ```
 
-* Select the largest value of `water_level` within each tag value of `location`:
+* 查询每个 `location`tag中最大的`water_level `value：
 
 ```
 > SELECT TOP(water_level,location,2) FROM h2o_feet
@@ -930,9 +930,9 @@ time                      top     location
 2015-08-29T07:24:00Z     9.964   coyote_creek
 ```
 
-The output shows the top values of `water_level` for each tag value of `location` \(`santa_monica` and `coyote_creek`\).
+结果展示了每个`location`tag（`santa_monica` and `coyote_creek`）中的`water_level`最大值。
 
-> **Note:** Queries with the syntax `SELECT TOP(<field_key>,<tag_key>,<N>)`, where the tag has `X` distinct values, return `N` or `X` field values, whichever is smaller, and each returned point has a unique tag value. To demonstrate this behavior, see the results of the above example query where `N` equals `3` and `N` equals `1`.
+> **Note:** 使用 `SELECT TOP(<field_key>,<tag_key>,<N>)`时, 假设tag有 `X` 个不一样的值，结果则返回 `N` 或 `X` 个值。基本上是，每个点都有唯一的tag value。为了演示，看下面 `N` ＝ `3` 和 `N` ＝ `1`和时的查询例子：
 > 
 > * `N` = `3`
 > 
@@ -950,7 +950,7 @@ The output shows the top values of `water_level` for each tag value of `location
 > 2015-08-29T07:24:00Z     9.964   coyote_creek
 > ```
 > 
-> InfluxDB returns two values instead of three because the `location` tag has only two values \(`santa_monica` and`coyote_creek`\).
+> InfluxDB 仅返回了2个值而不是3个，是因为`location` tag  \(`santa_monica` and`coyote_creek`\)仅有2个值
 > 
 > * `N` = `1`
 > 
@@ -967,9 +967,9 @@ The output shows the top values of `water_level` for each tag value of `location
 > 2015-08-29T07:24:00Z     9.964   coyote_creek
 > ```
 > 
-> InfluxDB compares the top values of `water_level` within each tag value of `location` and returns the larger value of `water_level`.
+> InfluxDB 比较了每个`location` tag中的`water_level` 的最大值，返回了其中更大的结果。
 
-* Select the largest two values of `water_level` between August 18, 2015 at 4:00:00 and August 18, 2015 at 4:18:00 for every tag value of `location`:
+* 查询`2015-08-18T04:00:00Z`和`2015-08-18T04:24:00Z`时间段内每个tag `location`中`water_level`最大的两个值：
 
 ```
 > SELECT TOP(water_level,2) FROM h2o_feet WHERE time >= '2015-08-18T04:00:00Z' AND time < '2015-08-18T04:24:00Z' GROUP BY location
