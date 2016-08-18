@@ -1,22 +1,22 @@
 使用InfluxQL functions 来聚合、查询、转化数据。
 
-| **AggregationsSelectorsTransformations** |  |  |
+| **Aggregations** | **Selectors** | **Transformations** |
 | --- | --- | --- |
-| [COUNT\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#count) | [BOTTOM\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#bottom) | [CEILING\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#ceiling) |
-| [DISTINCT\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#distinct) | [FIRST\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#first) | [DERIVATIVE\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#derivative) |
-| [INTEGRAL\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#integral) | [LAST\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#last) | [DIFFERENCE\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#difference) |
-| [MEAN\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#mean) | [MAX\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#max) | [ELAPSED\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#elapsed) |
-| [MEDIAN\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#median) | [MIN\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#min) | [FLOOR\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#floor) |
-| [SPREAD\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#spread) | [PERCENTILE\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#percentile) | [HISTOGRAM\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#histogram) |
-| [SUM\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#sum) | [TOP\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#top) | [MOVING\_AVERAGE\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#moving-average) |
-|  |  | [NON\_NEGATIVE\_DERIVATIVE\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#non-negative-derivative) |
-|  |  | [STDDEV\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#stddev) |
+| [COUNT\(\)](#count) | [BOTTOM\(\)](#bottom) | [CEILING\(\)](#ceiling) |
+| [DISTINCT\(\)](#distinct) | [FIRST\(\)](#first) | [DERIVATIVE\(\)](#derivative) |
+| [INTEGRAL\(\)](#integral) | [LAST\(\)](#last) | [DIF](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#difference)[FERENC](#difference)[E\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#difference) |
+| [MEAN\(\)](#mean) | [MAX\(\)](#max) | [ELAPSED\(\)](#elapsed) |
+| [MEDIAN\(\)](#median) | [MIN\(\)](#min) | [FLOOR\(\)](#floor) |
+| [SPREAD\(\)](#spread) | [PERCENTILE\(\)](#percentile) | [HISTOGRAM\(\)](#histogram) |
+| [SUM\(\)](#sum) | [TOP\(\)](#top) | [MOVING\_AVERAGE\(\)](#movingaverage) |
+|  |  | [NON\_NEGATIVE\_DERIVATIVE\(\)](#nonnegativederivative) |
+|  |  | [STDDEV\(\)](#stddev) |
 
 Useful InfluxQL for functions:
 
-* [Include multiple functions in a single query](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#include-multiple-functions-in-a-single-query)
-* [Change the value reported for intervals with no data with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#change-the-value-reported-for-intervals-with-no-data-with-fill)`fill()`
-* [Rename the output column's title with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#rename-the-output-column-s-title-with-as)`AS`
+* [Include multiple functions in a single query](#include-multiple-functions-in-a-single-query)
+* [Change the value reported for intervals with no data with ](#change-the-value-reported-for-intervals-with-no-data-with-fill)`fill()`
+* [Rename the output column's title with ](#rename-the-output-columns-title-with-as)`AS`
 
 The examples below query data using [InfluxDB's Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/tools/shell). See the [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) guide for how to query data directly using the HTTP API.
 
@@ -188,13 +188,13 @@ time                           count
 1970-01-01T00:00:00Z     3
 ```
 
-## **INTEGRAL\(\)**
+## **INTEGRAL\(\)** {#integral}
 
 `INTEGRAL()` is not yet functional.
 
 See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) for more information.
 
-## **MEAN\(\)**
+## **MEAN\(\)** {#mean}
 
 返回单个field的平均值，该字段必须是int64 或 float64.
 
@@ -1336,7 +1336,7 @@ SELECT ELAPSED(<field_key>, <unit>) FROM <measurement_name> [WHERE <stuff>]
 
 Examples:
 
-* 以纳秒形式计算 field `h2o_feet `的差值：
+* 以纳秒形式计算 field `h2o_feet`的差值：
 
 ```
 > SELECT ELAPSED(water_level) FROM h2o_feet WHERE location = 'santa_monica' AND time >= '2015-08-18T00:00:00Z' and time <= '2015-08-18T00:24:00Z'
@@ -1457,7 +1457,7 @@ time                            moving_average
 
 ```
 
-在`moving_average` 列中的第一个值是 `2.064` 和 `2.116 `的平均值，第二个值是 `2.116` 和 `2.028`的平均值
+在`moving_average` 列中的第一个值是 `2.064` 和 `2.116`的平均值，第二个值是 `2.116` 和 `2.028`的平均值
 
 * Select the minimum `water_level` at 12 minute intervals and calculate the moving average across every 2 field values:
 
@@ -1584,7 +1584,7 @@ time                           min     max
 
 在interval中，没有数据的情况下，默认返回 `null` 。可以通过在查询最后添加 `fill()` 来改变。完整的讲解件： [Data Exploration](/data-exploration.md).
 
-> **Note:** `fill()` 在`COUNT()`的处理有一些不一致。见 [the documentation on ](#count)`COUNT()` 对`fill() `的用法
+> **Note:** `fill()` 在`COUNT()`的处理有一些不一致。见 [the documentation on ](#count)`COUNT()` 对`fill()`的用法
 
 ## **Rename the output column's title with **`AS`
 
