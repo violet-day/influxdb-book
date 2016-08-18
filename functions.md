@@ -1022,7 +1022,7 @@ See GitHub Issue [\#5930](https://github.com/influxdata/influxdb/issues/5930) fo
 
 ## **DERIVATIVE\(\)**
 
-Returns the rate of change for the values in a single [field](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field) in a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series). InfluxDB calculates the difference between chronological field values and converts those results into the rate of change per `unit`. The `unit` argument is optional and, if not specified, defaults to one second \(`1s`\).
+返回series中的某个field的变化率。InfluxDB每`unit`根据时间顺序计算field value之间的变化率。 `unit` 参数为可选的，默认值为`1s`
 
 The basic `DERIVATIVE()` query:
 
