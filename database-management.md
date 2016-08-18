@@ -1,29 +1,29 @@
-InfluxQL offers a full suite of administrative commands.
+InfluxQL 提供了完整的 administrative commands。
 
-* [Data management](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#data-management)
+* [Data management](#data-management)
 
-   ◦ [Create a database with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-a-database-with-create-database)[`CREATE DATABASE`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-a-database-with-create-database)
+  ◦ [Create a database with ](#create-a-database-with-create-database)`CREATE DATABASE`
 
-   ◦ [Delete a database with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-a-database-with-drop-database)[`DROP DATABASE`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-a-database-with-drop-database)
+  ◦ [Delete a database with ](#delete-a-database-with-drop-database)`DROP DATABASE`
 
-   ◦ [Drop series from the index with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#drop-series-from-the-index-with-drop-series)[`DROP SERIES`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#drop-series-from-the-index-with-drop-series)
+  ◦ [Drop series from the index with ](#drop-series-from-the-index-with-drop-series)`DROP SERIES`
 
-   ◦ [Delete series with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-series-with-delete)[`DELETE`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-series-with-delete)
+  ◦ [Delete series with ](#delete-series-with-delete)`DELETE`
 
-   ◦ [Delete measurements with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-measurements-with-drop-measurement)[`DROP MEASUREMENT`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-measurements-with-drop-measurement)
+  ◦ [Delete measurements with ](#delete-measurements-with-drop-measurement)`DROP MEASUREMENT`
 
-   ◦ [Delete a shard with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-a-shard-with-drop-shard)[`DROP SHARD`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-a-shard-with-drop-shard)
+  ◦ [Delete a shard with ](#delete-a-shard-with-drop-shard)`DROP SHARD`
 
-* [Retention policy management](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management)
+* [Retention policy management](#retention-policy-management)
 
-   ◦ [Create retention policies with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-retention-policies-with-create-retention-policy)[`CREATE RETENTION POLICY`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-retention-policies-with-create-retention-policy)
+  ◦ [Create retention policies with ](#create-retention-policies-with-create-retention-policy)`CREATE RETENTION POLICY`
 
-   ◦ [Modify retention policies with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#modify-retention-policies-with-alter-retention-policy)[`ALTER RETENTION POLICY`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#modify-retention-policies-with-alter-retention-policy)
+  ◦ [Modify retention policies with ](#modify-retention-policies-with-alter-retention-policy)`ALTER RETENTION POLICY`
 
-   ◦ [Delete retention policies with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-retention-policies-with-drop-retention-policy)[`DROP RETENTION POLICY`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-retention-policies-with-drop-retention-policy)
+  ◦ [Delete retention policies with ](#delete-retention-policies-with-drop-retention-policy)`DROP RETENTION POLICY`
 
 
-If you're looking for `SHOW` queries \(for example, `SHOW DATABASES` or `SHOW RETENTION POLICIES`\), see [Schema Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/schema_exploration).
+If you're looking for `SHOW` queries \(for example, `SHOW DATABASES` or `SHOW RETENTION POLICIES`\), see [Schema Exploration](/schema-exploration.md).
 
 The examples in the sections below use InfluxDB's [Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/introduction/getting_started). You can also execute the commands using the HTTP API; simply send a `GET` request to the `/query` endpoint and include the command in the URL parameter `q`. See the [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) guide for more on using the HTTP API.
 
@@ -88,7 +88,7 @@ A successful `DROP DATABASE` query returns an empty result. If you attempt to dr
 
 The `DROP SERIES` query deletes all points from a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) in a database, and it drops the series from the index.
 
-> **Note:** `DROP SERIES` does not support time intervals in the `WHERE` clause. See [`DELETE`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#delete-series-with-delete) for that functionality.
+> **Note:** `DROP SERIES` does not support time intervals in the `WHERE` clause. See `DELETE` for that functionality.
 
 The query takes the following form, where you must specify either the `FROM` clause or the `WHERE` clause:
 
@@ -120,7 +120,7 @@ A successful `DROP SERIES` query returns an empty result.
 
 ---
 
-The `DELETE` query deletes all points from a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) in a database. Unlike [`DROP SERIES`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#drop-series-from-the-index-with-drop-series), it does not drop the series from the index and it supports time intervals in the `WHERE` clause.
+The `DELETE` query deletes all points from a [series](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#series) in a database. Unlike `DROP SERIES`, it does not drop the series from the index and it supports time intervals in the `WHERE` clause.
 
 The query takes the following form where you must include either the `FROM` clause or the `WHERE` clause, or both:
 
@@ -179,11 +179,7 @@ Delete the measurement `h2o_feet`:
 
 A successful `DROP MEASUREMENT` query returns an empty result.
 
-
-
 Currently, InfluxDB does not support regular expressions with `DROP MEASUREMENTS`. See GitHub Issue [\#4275](https://github.com/influxdb/influxdb/issues/4275) for more information.
-
-
 
 ### **Delete a shard with DROP SHARD**
 
@@ -232,18 +228,11 @@ CREATE RETENTION POLICY <retention_policy_name> ON <database_name> DURATION <dur
   `INF` infinite
 
 
-
-  Currently, the `DURATION` attribute supports only single units. For example, you cannot express the duration`7230m` as `120h 30m`. See GitHub Issue [\#3634](https://github.com/influxdb/influxdb/issues/3634) for more information.
-
+Currently, the `DURATION` attribute supports only single units. For example, you cannot express the duration`7230m` as `120h 30m`. See GitHub Issue [\#3634](https://github.com/influxdb/influxdb/issues/3634) for more information.
 
 * `REPLICATION` determines how many independent copies of each point are stored in the cluster, where `n` is the number of data nodes.
 
-
-
-
 Replication factors do not serve a purpose with single node instances.
-
-
 
 * `SHARD DURATION` determines the time range covered by a shard group. The options for specifying the duration of the shard group are listed below. The default shard group duration depends on your retention policy's `DURATION`.
 
@@ -262,10 +251,7 @@ Replication factors do not serve a purpose with single node instances.
   `w` weeks
 
 
-
 Currently, the `SHARD DURATION` attribute supports only single units. For example, you cannot express the duration`7230m` as `120h 30m`.
-
-
 
 * `DEFAULT` sets the new retention policy as the default retention policy for the database.
 
@@ -297,11 +283,7 @@ The `ALTER RETENTION POLICY` query takes the following form, where you must decl
 ALTER RETENTION POLICY <retention_policy_name> ON <database_name> DURATION <duration> REPLICATION <n> SHARD DURATION <duration> DEFAULT
 ```
 
-
-
 Replication factors do not serve a purpose with single node instances.
-
-
 
 First, create the retention policy `what_is_time` with a `DURATION` of two days:
 
