@@ -23,11 +23,11 @@ InfluxQL 提供了完整的 administrative commands。
   ◦ [Delete retention policies with ](#delete-retention-policies-with-drop-retention-policy)`DROP RETENTION POLICY`
 
 
-If you're looking for `SHOW` queries \(for example, `SHOW DATABASES` or `SHOW RETENTION POLICIES`\), see [Schema Exploration](/schema-exploration.md).
+如果你在寻找 `SHOW` 查询 \(比如, `SHOW DATABASES` 或者 `SHOW RETENTION POLICIES`\), 见 [Schema Exploration](/schema-exploration.md).
 
-The examples in the sections below use InfluxDB's [Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/introduction/getting_started). You can also execute the commands using the HTTP API; simply send a `GET` request to the `/query` endpoint and include the command in the URL parameter `q`. See the [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) guide for more on using the HTTP API.
+这片文章中的例子使用 InfluxDB 的 [Command Line Interface \(CLI\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/introduction/getting_started) 。你还可以通过HTTP API之行这些命令，向`/query `endpoint中发送 `GET` 请求，命令放在URL参数 `q `中，见 [Querying Data](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/querying_data) 中更多使用 HTTP API的例子。
 
-> **Note:** When authentication is enabled, only admin users can execute most of the commands listed on this page. See the documentation on [authentication and authorization](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/authentication_and_authorization) for more information.
+> **Note:** 当认证开启时，仅admin可以执行这篇文章中的大部分命令，更多信息见 [authentication and authorization](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/authentication_and_authorization)
 
 ## **Data Management**
 
@@ -35,37 +35,37 @@ The examples in the sections below use InfluxDB's [Command Line Interface \(CLI\
 
 ---
 
-The `CREATE DATABASE` query takes the following form:
+`CREATE DATABASE` 的语法如下：
 
 ```
 CREATE DATABASE [IF NOT EXISTS] <database_name> [WITH [DURATION <duration>] [REPLICATION <n>] [SHARD DURATION <duration>] [NAME <retention-policy-name>]]
 ```
 
-> **Note:** The `IF NOT EXISTS` clause does nothing, is deprecated, and will be removed in InfluxDB version 1.0.
+> **Note:** `IF NOT EXISTS` 现在没什么鸟用，将在 InfluxDB version 1.0移除。
 
-Create the database `NOAA_water_database`:
+创建 database `NOAA_water_database`：
 
 ```
 > CREATE DATABASE NOAA_water_database
 >
 ```
 
-Create the database `NOAA_water_database` with a new `DEFAULT` retention policy called `liquid`:
+创建 database `NOAA_water_database` 同时使用名为`liquid`的`DEFAULT` retention policy：
 
 ```
 > CREATE DATABASE NOAA_water_database WITH DURATION 3d REPLICATION 3 SHARD DURATION 30m NAME liquid
 >
 ```
 
-When specifying a retention policy you can include one or more of the attributes `DURATION`, `REPLICATION`, `SHARD DURATION`, and `NAME`. For more on retention policies, see [Retention Policy Management](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management)
+When specifying a retention policy you can include one or more of the attributes `DURATION`, `REPLICATION`, `SHARD DURATION`, and `NAME`. For more on retention policies, see [Retention Policy Management](#retention-policy-management)
 
-A successful `CREATE DATABASE` query returns an empty result. If you attempt to create a database that already exists, InfluxDB does not return an error.
+`CREATE DATABASE` 执行成功之后不返回任何结果，如果你想尝试已经存在的database，InfluxDB不会返回错误。
 
 ### **Delete a database with DROP DATABASE**
 
 ---
 
-The `DROP DATABASE` query deletes all of the data, measurements, series, continuous queries, and retention policies from the specified database. The query takes the following form:
+`DROP DATABASE` 删除指定database中所有的 data, measurements, series, continuous queries 和 retention policies 。语法如下：
 
 ```
 DROP DATABASE [IF EXISTS] <database_name>
