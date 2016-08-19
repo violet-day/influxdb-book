@@ -60,9 +60,9 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 2. `WHERE` clause: 因为 CQs 按照时间递增的规律运行，所以你不需要也不应该在 `WHERE` clause中指定时间范围。如果使用 `WHERE` clause，可以对 tags 进行一些过滤。
 
 
-> **Note:** If you include a tag in the CQ's `SELECT` clause, InfluxDB changes the tag in `<current_measurement>` to a field in `<different_measurement>`. To preserve a tag in `<different_measurement>`, only include the tag key in the CQ's `GROUP BY` clause.
+> **Note:** 如果在 CQ's `SELECT` clause使用了tag，InfluxDB 将`<current_measurement>` 中的tag转换为`<different_measurement>`中的filed。如果想在`<different_measurement>`保留tag，在CQ中的 `GROUP BY`添加 tag key即可。
 > 
-> If you specify a tag in the CQ's `SELECT` clause **and** in the CQ's `GROUP BY` clause, you will not be able to query the data in `<different_measurement>`. See GitHub Issue [\#4630](https://github.com/influxdata/influxdb/issues/4630) for more information.
+> 如果同时在 `SELECT` clause 和`GROUP BY` clause中使用相同的tag，你将不能查询`<different_measurement>`. 更多见GitHub Issue [\#4630](https://github.com/influxdata/influxdb/issues/4630)
 
 #### **CQ examples:**
 
