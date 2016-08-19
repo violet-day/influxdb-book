@@ -199,19 +199,19 @@ A successful `DROP SHARD` query returns an empty result. InfluxDB does not retur
 
 ## **Retention Policy Management**
 
-The following sections cover how to create, alter, and delete retention policies. Note that when you create a database, InfluxDB automatically creates a retention policy named `default` which has infinite retention. You may disable that auto-creation in the configuration file.
+下面的部分讲介绍如何create、alter和delete retention policies。注意，当你创建了database之后，InfluxDB会自动创建一个`default` rentention policy，这个RP保留数据无限时长，你可以通过在配置文件中禁用自动创建RP。
 
 ### **Create retention policies with CREATE RETENTION POLICY**
 
 ---
 
-The `CREATE RETENTION POLICY` query takes the following form:
+`CREATE RETENTION POLICY` 查询语法如下：
 
 ```
 CREATE RETENTION POLICY <retention_policy_name> ON <database_name> DURATION <duration> REPLICATION <n> [SHARD DURATION <duration>] [DEFAULT]
 ```
 
-* `DURATION` determines how long InfluxDB keeps the data. The options for specifying the duration of the retention policy are listed below. Note that the minimum retention period is one hour.
+* `DURATION` 决定了InfluxDB保留数据多久。可选项如下，注意最小的保留时长为1小时
 
   `m` minutes
 
@@ -224,9 +224,9 @@ CREATE RETENTION POLICY <retention_policy_name> ON <database_name> DURATION <dur
   `INF` infinite
 
 
-Currently, the `DURATION` attribute supports only single units. For example, you cannot express the duration`7230m` as `120h 30m`. See GitHub Issue [\#3634](https://github.com/influxdb/influxdb/issues/3634) for more information.
+目前 `DURATION` 仅仅支持单个units。比如，你不能讲 duration`7230m` 表示为 `120h 30m`. 更多信息见 GitHub Issue [\#3634](https://github.com/influxdb/influxdb/issues/3634)
 
-* `REPLICATION` determines how many independent copies of each point are stored in the cluster, where `n` is the number of data nodes.
+* `REPLICATION` 决定了每个point在集群中存在多少个副本，`n` 表示节点数量。
 
 Replication factors do not serve a purpose with single node instances.
 
@@ -247,9 +247,9 @@ Replication factors do not serve a purpose with single node instances.
   `w` weeks
 
 
-Currently, the `SHARD DURATION` attribute supports only single units. For example, you cannot express the duration`7230m` as `120h 30m`.
+目前 `SHARD DURATION` 仅仅支持单个units。比如，你不能讲 duration`7230m` 表示为 `120h 30m`
 
-* `DEFAULT` sets the new retention policy as the default retention policy for the database.
+* `DEFAULT` 用来表示 retention policy 是否作为database的默认RP
 
 Create a retention policy called `one_day_only` for the database `NOAA_water_database` with a one day duration and a replication factor of one:
 
@@ -267,13 +267,13 @@ Create the same retention policy as the one in the example above, but set it as 
 
 A successful `CREATE RETENTION POLICY` query returns an empty response. If you attempt to create a retention policy that already exists, InfluxDB does not return an error.
 
-> **Note:** You can also specify a new retention policy in the `CREATE DATABASE` query. See [Create a database with CREATE DATABASE](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-a-database-with-create-database).
+> **Note: ** `CREATE DATABASE` 的同时可以创建retention policy。见 See [Create a database with CREATE DATABASE](#create-a-database-with-create-database).
 
 ### **Modify retention policies with ALTER RETENTION POLICY**
 
 ---
 
-The `ALTER RETENTION POLICY` query takes the following form, where you must declare at least one of the retention policy attributes `DURATION`, `REPLICATION`, `SHARD DURATION`, or `DEFAULT`:
+`ALTER RETENTION POLICY` 的语法如下，你必须指定以下的至少一个属性 `DURATION`, `REPLICATION`, `SHARD DURATION `或者 `DEFAULT`：
 
 ```
 ALTER RETENTION POLICY <retention_policy_name> ON <database_name> DURATION <duration> REPLICATION <n> SHARD DURATION <duration> DEFAULT

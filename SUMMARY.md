@@ -1,6 +1,7 @@
 # Summary
 
 * [Introduction](README.md)
+* [Guide](guide.md)
 * [Query Language](query-language.md)
     * [Data Exploration](data-exploration.md)
     * [Schema Exploration](schema-exploration.md)
