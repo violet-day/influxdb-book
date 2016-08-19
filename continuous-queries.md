@@ -259,7 +259,3 @@ WHERE sensor_id="EG-21442" AND time >= '2015-12-14 00:05:20' AND time < '2015-12
 GROUP BY time(5m)
 ```
 
-## **Further reading**
-
-Now that you know how to create CQs with InfluxDB, check out [Downsampling and Data Retention](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/downsampling_and_retention) for how to combine CQs with retention policies to automatically downsample data and expire unnecessary data.
-
