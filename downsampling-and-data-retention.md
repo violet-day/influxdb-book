@@ -40,7 +40,7 @@ CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，Influx
 
 ### **Working with CQs**
 
-下面的内容仅对创建CQ提供了简单的说明，更多信息可以参见 [Continuous Queries](/continuous-queries.md) 
+下面的内容仅对创建CQ提供了简单的说明，更多信息可以参见 [Continuous Queries](/continuous-queries.md)
 
 ## **Combining RPs and CQs - a casestudy**
 
@@ -60,7 +60,7 @@ CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，Influx
 
 #### **Create a new **`DEFAULT`** RP**
 
-When we initially [created the database](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#create-a-database-with-create-database) `food_data`, InfluxDB automatically generated an RP called `default` with an infinite duration and a replication factor set to one. `default` is also the `DEFAULT` RP for `food_data`; if we do not supply an explicit RP when we write a point to the database, InfluxDB writes the point to `default` and it keeps those data forever.
+当我们初始化 [created the database](/database-management.md) `food_data`时，InfluxDB自动生成了RP`default` ， `default`也是`food_data`的`DEFAULT` RP。如果没有指定RP的情况下，所有的point都会写入 `default`中并一直保存下去。
 
 We want the `DEFAULT` RP on `food_data` to be a two hour policy. To create our new RP, we enter the following command:
 
