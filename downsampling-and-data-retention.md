@@ -87,35 +87,35 @@ two_hours     2h0m0s           1                true
 > CREATE CONTINUOUS QUERY cq_30m ON food_data BEGIN SELECT mean(website) AS mean_website,mean(phone) AS mean_phone INTO food_data."default".downsampled_orders FROM orders GROUP BY time(30m) END
 ```
 
-That CQ makes InfluxDB automatically and periodically calculate the 30 minute average from the 10 second website order data and the 30 minute average from the 10 second phone order data. InfluxDB 同时将数据写入至 CQ的结果写入至 measurement `downsampled_orders` 和 RP `default`中。InfluxDB 会在in`downsampled_orders`中一直保存这些聚合过的数据。
+CQ让InfluxDB 自动定期计算phone和website每30分钟的平均值。InfluxDB 同时将数据写入至 CQ的结果写入至 measurement `downsampled_orders` 和 RP `default`中。InfluxDB 会在in`downsampled_orders`中一直保存这些聚合过的数据。
 
 > **Note:** 你必需在`INTO` clause 中指定RP，而非`DEFAULT` RP。在上面的CQ 中，我们通过`<database_name>."<retention_policy>".<measurement_name>`全名的形式将结果写入`default` RP，如果不通过这种形式，InfluxDB则会将数据写入保留2小时的 `DEFAULT`RP
 
-更多 `CREATE CONTINUOUS QUERY` 的语法见见 [Continuous Queries](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries)
+更多 `CREATE CONTINUOUS QUERY` 的语法见 [Continuous Queries](/continuous-queries.md)
 
 ### **Write the data to InfluxDB and see the results**
 
-Now that we've prepped `food_data`, we start writing the data to InfluxDB and let things run for a bit. After a while, we see that the database has two measurements: `orders` and `downsampled_orders`.
+准备好`food_data`之后， 开始将数据写入 InfluxDB 中。过了一段时间之后，我们看到database中有两个measurement： `orders` and `downsampled_orders`。
 
-A sample of the oldest data in `orders` - these are the raw 10 second data subject to the `two_hours` RP:
+一份 `orders` 的最早的样例数据 - 这些每10s一次的数据由 `two_hours` RP控制：
 
 ```
 > SELECT * FROM orders LIMIT 5
 name: orders
 -----------------
-time                                    phone   website
-2015-12-04T20:00:11Z     1       6
+time                       phone  website
+2015-12-04T20:00:11Z        1        6
 2015-12-04T20:00:20Z        9        10
 2015-12-04T20:00:30Z        2        17
 2015-12-04T20:00:40Z        3        10
 2015-12-04T20:00:50Z        1        15
 ```
 
-We submitted this query on 12\/04\/2015 at 22:08:19 UTC - notice that the oldest data have timestamps that are no older than around two hours ago.
+我们于 12\/04\/2015 at 22:08:19 UTC 提交了这些数据 - 请注意，最早的数据保留时间不超过2小时。
 
-> **Note:** By default, InfluxDB checks to enforce an RP every 30 minutes so you may have data that are older than two hours between checks. The rate at which InfluxDB checks to enforce an RP is a configurable setting, see[Database Configuration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/config/#retention).
+> **Note:** InfluxDB默认每30分钟强制chechk RP，在check过程中可能会存在2小时之前的数据。InfluxDB的RP check的频率是可以配置的，详见[Database Configuration](/database-management.md)
 
-A sample of the oldest data in `downsampled_orders` - these are the aggregated data subject to the `default` RP:
+`downsampled_orders`中最早的一些数据的示例 - 这些数据被聚合至 `default` RP中：
 
 ```
 > SELECT * FROM food_data."default".downsampled_orders LIMIT 5
@@ -129,9 +129,7 @@ time                           mean_phone              mean_website
 2015-12-04T00:30:00Z     4.788888888888889   9.383333333333333
 ```
 
-Notice that the timestamps in `downsampled_orders` occur at 30 minute intervals and that the measurement has timestamps that are older than those in the `orders` measurement. The data in `downsampled_orders` aren't subject to the `two_hours` RP.
+注意到 `downsampled_orders` 中的数据每30分钟出现一次，当中的时间戳比 `orders` measurement还小，可见 `downsampled_orders` 中的数据并没有受`two_hours` RP的影响
 
-> **Note:** You must specify the RP in your query to select data that are subject to an RP other than the `DEFAULT` RP. In the second `SELECT` statement, we get the CQ results by fully qualifying the measurement. To fully qualify a measurement, specify its database and RP with `<database_name>."<retention_policy>".<measurement_name>`.
-
-Using a combination of RPs and CQs, we've made InfluxDB automatically downsample data and expire old data. Now that you have a general understanding of how these features can work together, we recommend looking at the detailed documentation on [CQs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries) and [RPs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management) to see all that they can do for you.
+将RPs 和 CQs组合使用，我们让InfluxDB自动 downsample data 和 expire old data。现在你已经对这些功能有了一个简单的了解，更多详细的内容建议阅读 [CQs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries) 和 [RPs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management)
 
