@@ -223,11 +223,11 @@ _Example:_
 
 ## **Backfilling**
 
-CQs do not backfill data, that is, they do not compute results for data written to the database before the CQ existed. Instead, users can backfill data with the `INTO` clause. Unlike CQs, backfill queries require a `WHERE` clause with a`time` restriction.
+CQs 并不backfill数据，在CQ存在之前，它们不会计算数据。然而，用户可以使用 `INTO` clause回填数据。和CQ不一样的是，回填的查询需要 `WHERE` clause 和`time` 限制
 
 ### **Examples**
 
-Here is a basic backfill example:
+基本的backfill的例子：
 
 ```
 > SELECT min(temp) as min_temp, max(temp) as max_temp INTO "reading.minmax.5m" FROM reading
@@ -235,7 +235,7 @@ WHERE time >= '2015-12-14 00:05:20' AND time < '2015-12-15 00:05:20'
 GROUP BY time(5m)
 ```
 
-Tags \(`sensor_id` in the example below\) can be used optionally in the same way as in CQs:
+Tags \(下例为`sensor_id`\) 可以和CQs一样作为可选项使用：
 
 ```
 > SELECT min(temp) as min_temp, max(temp) as max_temp INTO "reading.minmax.5m" FROM reading
@@ -243,7 +243,7 @@ WHERE time >= '2015-12-14 00:05:20' AND time < '2015-12-15 00:05:20'
 GROUP BY time(5m), sensor_id
 ```
 
-To prevent the backfill from creating a huge number of "empty" points containing only `null` values, [fill\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#the-group-by-clause-and-fill) can be used at the end of the query:
+为了避免backfill时大量仅包含`null` values的 "empty" points , 可以在query的最后使用[fill\(\)](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#the-group-by-clause-and-fill)
 
 ```
 > SELECT min(temp) as min_temp, max(temp) as max_temp INTO "reading.minmax.5m" FROM reading
@@ -251,7 +251,7 @@ WHERE time >= '2015-12-14 00:05:20' AND time < '2015-12-15 00:05:20'
 GROUP BY time(5m), fill(none)
 ```
 
-If you would like to further break down the queries and run them with even more control, you can add additional`WHERE` clauses:
+如果你想更细一步的在执行query，可以添加`WHERE` clauses：
 
 ```
 > SELECT min(temp) as min_temp, max(temp) as max_temp INTO "reading.minmax.5m" FROM reading
