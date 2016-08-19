@@ -40,21 +40,21 @@ CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，Influx
 
 ### **Working with CQs**
 
-The section below offers a very brief introduction to creating CQs. See [Continuous Queries](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries) for a detailed discussion on how to create and manage CQs.
+下面的内容仅对创建CQ提供了简单的说明，更多信息可以参见 [Continuous Queries](/continuous-queries.md) 
 
 ## **Combining RPs and CQs - a casestudy**
 
-We have real-time data that track the number of food orders to a restaurant via phone and via website at 10 second intervals. In the long run, we're only interested in the average number of orders by phone and by website at 30 minute intervals. In the next steps, we use RPs and CQs to make InfluxDB:
+我们有一份实时数据，记录了餐厅内每10s来自不同phone和不同website的订单量。长时间来看，我们只关心每30分钟的每个phone和webstie的平均值。下面，我们在InfluxDB中使用RPs和CQs实现以下步骤：
 
-* automatically delete the raw 10 second level data that are older than two hours
-* automatically aggregate the 10 second level data to 30 minute level data
-* keep the 30 minute level data forever
+* 自动删除2小时前10s一次的数据
+* 自动将10s级别的数据聚合成30分钟
+* 将30分钟的数据永久保存
 
-The following steps work with a fictional [database](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#database) called `food_data` and the [measurement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#measurement) `orders`. `orders` has two[fields](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field), `phone` and `website`, which store the number of orders that arrive via each channel every 10 seconds.
+下面的步骤中使用了虚构的database `food_data` 、 [measurement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#measurement) `orders。` `orders` 有两个field， `phone` 和 `website`, 记录了每10s来自各个渠道的订单数量。
 
 ### **Prepare the database**
 
-Before writing the data to the database `food_data`, we perform the following steps.
+在写入数据至 database `food_data`之前，我们做以下步骤。
 
 > **Note:** We do this before inserting any data because InfluxDB only performs CQs on new data, that is, data with timestamps that occur after the time at which we create the CQ.
 
