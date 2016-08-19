@@ -66,7 +66,7 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 
 #### **CQ examples:**
 
-* Create a CQ with one function:
+* 创建CQ使用一个function：
 
   ```
   > CREATE CONTINUOUS QUERY minnie ON world BEGIN SELECT min(mouse) INTO min_mouse FROM zoo GROUP BY time(30m) END
@@ -139,7 +139,7 @@ _CQ backreferencing example:_
 > CREATE CONTINUOUS QUERY elsewhere ON fantasy BEGIN SELECT mean(value) INTO reality."default".:MEASUREMENT FROM /elf/ GROUP BY time(10m) END
 ```
 
-The CQ `elsewhere` automatically calculates the 10 minute average of the field `value` in each `elf` measurement in the database `fantasy`. It writes the results to the already-existing database `reality`, preserving all of the measurement names in `fantasy`.
+CQ `elsewhere` 每10分钟自动计算database `fantasy`中`elf` measurement的field `value`的平均值。它将计算的结果写入已经存在的database`reality`，并在`fantasy`保留了measurement name。
 
 A sample of the data in `fantasy`:
 
