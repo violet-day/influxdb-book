@@ -68,9 +68,9 @@ CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，Influx
 > CREATE RETENTION POLICY two_hours ON food_data DURATION 2h REPLICATION 1 DEFAULT
 ```
 
-That query makes the `two_hours` RP the `DEFAULT` RP in `food_data`. When we write data to the database and do not supply an RP in the write, InfluxDB automatically stores those data in the `two_hours` RP. Once those data have timestamps that are older than two hours, InfluxDB deletes those data. For a more detailed discussion on the `CREATE RETENTION POLICY` syntax, see [Database Management](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management).
+上面命令，创建了`two_hours` RP 作为`food_data` 的`DEFAULT` RP 。当写入的时候没有指定其他RP的时候，InfluxDB默认将数据存储至`two_hours` RP。一旦存储数据的时间戳大于2小时，InfluxDB就会删除这些数据。更多关于`CREATE RETENTION POLICY` 的语法，见 [Database Management](/database-management.md).
 
-To clarify, we've included the results from the `SHOW RETENTION POLICIES` query below. Notice that there are two RPs in `food_data` \(`default` and `two_hours`\) and that the third column identifies `two_hours` as the `DEFAULT` RP.
+为了表述的更清楚一下，使用`SHOW RETENTION POLICIES` 看一下RP。注意到，有2个在`food_data` \(`default` 和`two_hours`\) 中，并且`two_hours` 的第三列意味着它是`DEFAULT` RP。
 
 ```
 > SHOW RETENTION POLICIES ON food_data
@@ -81,17 +81,17 @@ two_hours     2h0m0s           1                true
 
 #### **Create the CQ**
 
-Now we create a CQ that automatically downsamples the 10 second level data to 30 minute level data:
+现在创建CQ来自动的将10s的数据聚合到30分钟：
 
 ```
 > CREATE CONTINUOUS QUERY cq_30m ON food_data BEGIN SELECT mean(website) AS mean_website,mean(phone) AS mean_phone INTO food_data."default".downsampled_orders FROM orders GROUP BY time(30m) END
 ```
 
-That CQ makes InfluxDB automatically and periodically calculate the 30 minute average from the 10 second website order data and the 30 minute average from the 10 second phone order data. InfluxDB also writes the CQ's results into the measurement `downsampled_orders` and to the RP `default`; InfluxDB stores the aggregated data in`downsampled_orders` forever.
+That CQ makes InfluxDB automatically and periodically calculate the 30 minute average from the 10 second website order data and the 30 minute average from the 10 second phone order data. InfluxDB 同时将数据写入至 CQ的结果写入至 measurement `downsampled_orders` 和 RP `default`中。InfluxDB 会在in`downsampled_orders`中一直保存这些聚合过的数据。
 
-> **Note:** You must specify the RP in the `INTO` clause to write the results of the query to an RP other than the`DEFAULT` RP. In the CQ above, we write the results of the query to the infinite RP `default` by fully qualifying the measurement. To fully qualify a measurement, specify its database and RP with `<database_name>."<retention_policy>".<measurement_name>`. If you do not fully qualify the measurement, InfluxDB writes the results of the query to the two hour RP `DEFAULT`.
+> **Note:** 你必需在`INTO` clause 中指定RP，而非`DEFAULT` RP。在上面的CQ 中，我们通过`<database_name>."<retention_policy>".<measurement_name>`全名的形式将结果写入`default` RP，如果不通过这种形式，InfluxDB则会将数据写入保留2小时的 `DEFAULT`RP
 
-For a more detailed discussion on the `CREATE CONTINUOUS QUERY` syntax, see [Continuous Queries](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries).
+更多 `CREATE CONTINUOUS QUERY` 的语法见见 [Continuous Queries](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries)
 
 ### **Write the data to InfluxDB and see the results**
 
