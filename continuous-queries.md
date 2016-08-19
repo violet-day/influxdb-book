@@ -15,15 +15,15 @@
 
 ## **CQ definition**
 
-A CQ is an InfluxQL query that the system runs automatically and periodically within a database. InfluxDB stores the results of the CQ in a specified [measurement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#measurement). CQs require a function in the `SELECT` clause and must include a `GROUP BY time()` clause.
+CQ是在database中定期自动执行的InfluxQL query。 InfluxDB 将查询结果存储至指定的 [measurement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#measurement). CQs的 `SELECT` clause需要包含函数，并且必须包含 `GROUP BY time()` clause
 
-CQs do not maintain any state. Each execution of a CQ is a standalone query that resamples all points in the database matching the conditions of the query.
+CQs 并不维持状态。每个CQ的执行都是独立的，会对匹配的点做采样。
 
-The time ranges of the CQ results have round-number boundaries that are set internally by the database. There is currently no way for users to alter the start or end times of the intervals.
+CQ的执行由database内部调度，目前么有办法让用户自己控制开始或者结束的时间。
 
-Only admin users are allowed to work with continuous queries. For more on user privileges, see [Authentication and Authorization](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/authentication_and_authorization/#user-types-and-their-privileges).
+仅 admin users 允许使用 continuous queries。更多关于用户权限的信息，见 [Authentication and Authorization](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/administration/authentication_and_authorization/#user-types-and-their-privileges).
 
-> **Note:** CQs only execute on data received after the CQ's creation. If you'd like to downsample data written to InfluxDB before the CQ was created, see the examples in [Data Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#downsample-data).
+> **Note:** CQs 仅仅对CQ创建之后的data做处理。如果你想对在CQ创建之前的数据做采样，见 [Data Exploration](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/data_exploration/#downsample-data)
 
 ## **InfluxQL for creating a CQ**
 
@@ -33,33 +33,31 @@ Only admin users are allowed to work with continuous queries. For more on user p
 CREATE CONTINUOUS QUERY <cq_name> ON <database_name> [RESAMPLE [EVERY <interval>] [FOR <interval>]] BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measurement> FROM <current_measurement> [WHERE <stuff>] GROUP BY time(<interval>)[,<stuff>] END
 ```
 
-The `CREATE CONTINUOUS QUERY` statement is essentially an InfluxQL query surrounded by `CREATE CONTINUOUS QUERY [...] BEGIN` and `END`. The following discussion breaks the CQ statement into its meta portion \(everything between`CREATE` and `BEGIN`\) and query portion \(everything between `BEGIN` and `END`\).
+`CREATE CONTINUOUS QUERY` statement 本质上是被`CREATE CONTINUOUS QUERY [...] BEGIN` 和 `END` 包裹的 InfluxQL query 。下面会将CQ statement 分成 meta \(`CREATE` 和 `BEGIN`之间\) 和 query \(`BEGIN` 和 `END`\)。
 
-A successful `CREATE CONTINUOUS QUERY` statement returns an empty response. If you attempt to create a continuous query that already exists, InfluxDB does not return an error.
+`CREATE CONTINUOUS QUERY` 执行成功之后，返回为空。如果你想创建一个已经存在的CQ，InfluxDB并不会返回任何错误
 
 #### **Meta syntax:**
 
 ```
-CREATE CONTINUOUS QUERY ON <database_name> [RESAMPLE [EVERY <interval>] [FOR <interval>]]
-
+CREATE CONTINUOUS QUERY ON <database_name> [RESAMPLE [EVERY <interval>] [FOR <interval>]] 
 ```
 
-A CQ belongs to a database. Specify the database where you want the CQ to live with `ON <database_name>`.
+CQ 属于某个database。通过`<database_name>` 指定属于的database
 
 The optional `RESAMPLE` clause determines how often InfluxDB runs the CQ \(`EVERY <interval>`\) and the time range over which InfluxDB runs the CQ \(`FOR <interval>`\). If included, the `RESAMPLE` clause must specify either `EVERY`, or`FOR`, or both. Without the `RESAMPLE` clause, InfluxDB runs the CQ at the same interval as the `GROUP BY time()`interval and it calculates the query for the most recent `GROUP BY time()` interval \(that is, where time is between`now()` and `now()` minus the `GROUP BY time()` interval\).
 
 #### **Query syntax:**
 
 ```
-BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measurement> FROM <current_measurement> [WHERE <stuff>] GROUP BY time(<interval>)[,<stuff>] END
-
+BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measurement> FROM <current_measurement> [WHERE <stuff>] GROUP BY time(<interval>)[,<stuff>] END 
 ```
 
-The query portion of the statement differs from a typical `SELECT [...] GROUP BY (time)` statement in two ways:
+上述的query部分和一般的 `SELECT [...] GROUP BY (time)` 有下面两个区别：
 
-1. The `INTO` clause: This is where you specify the destination measurement for the query results.
+1. `INTO` clause：这里指定了查询结果所存放的measurement
 
-2. The optional `WHERE` clause: Because CQs run on regularly incremented time intervals you don't need to \(and shouldn't!\) specify a time range in the `WHERE` clause. When included, the CQ's `WHERE` clause should filter information about tags.
+2. `WHERE` clause: 因为 CQs 按照时间递增的规律运行，所以你不需要也不应该在 `WHERE` clause中指定时间范围。如果使用 `WHERE` clause，可以对 tags 进行一些过滤。
 
 
 > **Note:** If you include a tag in the CQ's `SELECT` clause, InfluxDB changes the tag in `<current_measurement>` to a field in `<different_measurement>`. To preserve a tag in `<different_measurement>`, only include the tag key in the CQ's `GROUP BY` clause.
