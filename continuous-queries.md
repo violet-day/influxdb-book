@@ -11,7 +11,6 @@
 * [List CQs with ](#list-cqs-with-show)`SHOW`
 * [Delete CQs with ](#delete-cqs-with-drop)`DROP`
 * [Backfilling](#backfilling)
-* [Further reading](#further-reading)
 
 ## **CQ definition**
 
