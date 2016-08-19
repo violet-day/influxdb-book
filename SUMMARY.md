@@ -8,5 +8,6 @@
     * [Schema Exploration](schema-exploration.md)
     * [Database Management](database-management.md)
     * [Functions](functions.md)
+    * [Continuous Queries](continuous-queries.md)
 * [Key Concepts](key-concepts.md)
 

@@ -36,7 +36,7 @@ continuous query \(CQ\) 是一个 InfluxQL query，可以在database中定期自
 
 ### **Purpose**
 
-CQs are optimal for regularly downsampling data - once you implement the CQ, InfluxDB automatically and periodically runs the query, and, instead of simply returning the results like a normal query, InfluxDB stores the results of a CQ in a measurement for future use.
+CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，InfluxDB 定期自动执行query，和之前返回结果不一样，Influx将结果存储至指定的measurement中。
 
 ### **Working with CQs**
 
@@ -70,7 +70,7 @@ We want the `DEFAULT` RP on `food_data` to be a two hour policy. To create our n
 
 That query makes the `two_hours` RP the `DEFAULT` RP in `food_data`. When we write data to the database and do not supply an RP in the write, InfluxDB automatically stores those data in the `two_hours` RP. Once those data have timestamps that are older than two hours, InfluxDB deletes those data. For a more detailed discussion on the `CREATE RETENTION POLICY` syntax, see [Database Management](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management).
 
-To clarify, we've included the results from the [`SHOW RETENTION POLICIES`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/schema_exploration/#explore-retention-policies-with-show-retention-policies) query below. Notice that there are two RPs in `food_data` \(`default` and `two_hours`\) and that the third column identifies `two_hours` as the `DEFAULT` RP.
+To clarify, we've included the results from the `SHOW RETENTION POLICIES` query below. Notice that there are two RPs in `food_data` \(`default` and `two_hours`\) and that the third column identifies `two_hours` as the `DEFAULT` RP.
 
 ```
 > SHOW RETENTION POLICIES ON food_data
@@ -134,6 +134,4 @@ Notice that the timestamps in `downsampled_orders` occur at 30 minute intervals 
 > **Note:** You must specify the RP in your query to select data that are subject to an RP other than the `DEFAULT` RP. In the second `SELECT` statement, we get the CQ results by fully qualifying the measurement. To fully qualify a measurement, specify its database and RP with `<database_name>."<retention_policy>".<measurement_name>`.
 
 Using a combination of RPs and CQs, we've made InfluxDB automatically downsample data and expire old data. Now that you have a general understanding of how these features can work together, we recommend looking at the detailed documentation on [CQs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries) and [RPs](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/database_management/#retention-policy-management) to see all that they can do for you.
-
-
 
