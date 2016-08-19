@@ -62,7 +62,7 @@ CQs 是定期 downsampling data 不错的解决方案，创建 CQ之后，Influx
 
 当我们初始化 [created the database](/database-management.md) `food_data`时，InfluxDB自动生成了RP`default` ， `default`也是`food_data`的`DEFAULT` RP。如果没有指定RP的情况下，所有的point都会写入 `default`中并一直保存下去。
 
-We want the `DEFAULT` RP on `food_data` to be a two hour policy. To create our new RP, we enter the following command:
+我们希望`food_data`中的`DEFAULT` 仅保留2小时，命令如下：
 
 ```
 > CREATE RETENTION POLICY two_hours ON food_data DURATION 2h REPLICATION 1 DEFAULT
