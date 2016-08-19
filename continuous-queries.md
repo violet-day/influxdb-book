@@ -127,7 +127,7 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 
 ### **CQs with backreferencing**
 
-Use `:MEASUREMENT` in the `INTO` statement to backreference measurement names:
+在`INTO` statement 中使用 `:MEASUREMENT` 来反向引用measurement names：
 
 ```
 CREATE CONTINUOUS QUERY <cq_name> ON <database_name> BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <database_name>.<retention_policy>.:MEASUREMENT FROM </relevant_measurement(s)/> [WHERE <stuff>] GROUP BY time(<interval>)[,<stuff>] END
@@ -204,11 +204,11 @@ name             query
 elsewhere    CREATE CONTINUOUS QUERY elsewhere ON fantasy BEGIN SELECT mean(value) INTO reality."default".:MEASUREMENT FROM fantasy."default"./cpu/ WHERE cpu = 'cpu-total' GROUP BY time(10m) END
 ```
 
-The output shows that the database `reality` has no CQs and the database `fantasy` has one CQ called `elsewhere`.
+结果显示了 database `reality` 没有 CQs，database `fantasy` 有一个CQ`elsewhere`.
 
 ## **Delete CQs with **`DROP`
 
-Delete a CQ from a specific database with:
+从指定的database删除CQ：
 
 ```
 DROP CONTINUOUS QUERY <cq_name> ON <database_name>
@@ -221,7 +221,7 @@ _Example:_
 >
 ```
 
-A successful `DROP CONTINUOUS QUERY` returns an empty response.
+`DROP CONTINUOUS QUERY`执行成功之后返回结果为空
 
 ## **Backfilling**
 
