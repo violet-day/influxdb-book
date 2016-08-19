@@ -43,9 +43,7 @@ CREATE CONTINUOUS QUERY <cq_name> ON <database_name> [RESAMPLE [EVERY <interval>
 CREATE CONTINUOUS QUERY ON <database_name> [RESAMPLE [EVERY <interval>] [FOR <interval>]] 
 ```
 
-CQ 属于某个database。通过`<database_name>` 指定属于的database
-
-The optional `RESAMPLE` clause determines how often InfluxDB runs the CQ \(`EVERY <interval>`\) and the time range over which InfluxDB runs the CQ \(`FOR <interval>`\). If included, the `RESAMPLE` clause must specify either `EVERY`, or`FOR`, or both. Without the `RESAMPLE` clause, InfluxDB runs the CQ at the same interval as the `GROUP BY time()`interval and it calculates the query for the most recent `GROUP BY time()` interval \(that is, where time is between`now()` and `now()` minus the `GROUP BY time()` interval\).
+CQ 属于某个database。通过`<database_name>` 指定属于的database，`RESAMPLE` clause决定了执行的频率，通过`FOR <interval>`决定执行时间范围。如果需要包含 `RESAMPLE` clause，则必须指定  `EVERY`或`FOR`或全部。没有`RESAMPLE` clause,时，InfluxDB 执行的间隔同 `GROUP BY time()`interval 一致，并且计算最近的`GROUP BY time()` 区间 \(即`now()` 和 `now()`减去 `GROUP BY time()` interval之间的部分\)。
 
 #### **Query syntax:**
 
@@ -108,21 +106,21 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 
   如果没有 `RESAMPLE EVERY 15m`, `vampires` 将会每30分钟运行一次，和 `GROUP BY time()`interval一致
 
-* Create a CQ with a 30 minute `GROUP BY time()` interval that runs every 30 minutes and computes the query for all `GROUP BY time()` intervals within the last hour:
+* 创建CQ 时使用 30分钟 `GROUP BY time()` 作为interval ，30分钟运行一次，对1小时之前的数据做 `GROUP BY time()` 并计算：
 
   ```
   > CREATE CONTINUOUS QUERY vampires_1 ON transylvania RESAMPLE FOR 60m BEGIN SELECT count(dracula) INTO vampire_populations_1 FROM raw_vampires GROUP BY time(30m) END
   ```
 
-  InfluxDB runs `vampires_1` every 30 minutes \(the same interval as the `GROUP BY time()` interval\) and it computes two queries per run: one where time is between `now()` and `now() - 30m` and one where time is between `now() - 30m` and `now() - 60m`. Without the `RESAMPLE` clause, InfluxDB would compute the query for only one 30 minute interval, that is, where time is between `now()` and `now() - 30m`.
+  InfluxDB 每30分钟执行 `vampires_1` 一次， \(和`GROUP BY time()` interval一致\) ，但是每次其实是执行两次查询，第一次是 `now()` 和 `now() - 30m` 之间，第二次是 `now() - 30m` 和 `now() - 60m`之间。没有 `RESAMPLE` clause的情况下， InfluxDB将30分钟执行一次，查询范围为`now()` 和 `now() - 30m`之间
 
-* Create a CQ with a 30 minute `GROUP BY time()` interval that runs every 15 minutes and computes the query for all `GROUP BY time()` intervals within the last hour:
+* 创建CQ 时使用 30分钟 `GROUP BY time()` 作为interval，每15分钟运行一次，计算最近1小时内的每个`GROUP BY time()` ：
 
   ```
   > CREATE CONTINUOUS QUERY vampires_2 ON transylvania RESAMPLE EVERY 15m FOR 60m BEGIN SELECT count(dracula) INTO vampire_populations_2 FROM raw_vampires GROUP BY time(30m) END
   ```
 
-  `vampires_2` runs every 15 minutes and computes two queries per run: one where time is between `now()` and`now() - 30m` and one where time is between `now() - 30m` and `now() - 60m`
+  `vampires_2` 15分钟运行一次，每次查询2次，一次是 `now()` 和`now() - 30m` 之间，第二次是 `now() - 30m` 和 `now() - 60m`
 
 
 ### **CQs with backreferencing**
