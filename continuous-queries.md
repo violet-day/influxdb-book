@@ -66,7 +66,7 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 
 #### **CQ examples:**
 
-* 创建CQ使用一个function：
+* 创建CQ时使用一个function：
 
   ```
   > CREATE CONTINUOUS QUERY minnie ON world BEGIN SELECT min(mouse) INTO min_mouse FROM zoo GROUP BY time(30m) END
@@ -74,39 +74,39 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
 
   执行之后， InfluxDB会自动计算 measurement`zoo`的field `mouse`每30分钟内的最小值，并将结果写入measurement `min_mouse`。请注意CQ `minnie` 仅存在于database `world`中
 
-* Create a CQ with one function and write the results to another [retention policy](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#retention-policy-rp):
+* 创建CQ时使用一个function 并将结果卸乳另外一个 [retention policy](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#retention-policy-rp)
 
   ```
   > CREATE CONTINUOUS QUERY minnie_jr ON world BEGIN SELECT min(mouse) INTO world."7days".min_mouse FROM world."1day".zoo GROUP BY time(30m) END
   ```
 
-  The CQ `minnie_jr` acts in the same way as the CQ `minnie`, however, InfluxDB calculates the 30 minute minimum of the field `mouse` in the measurement `zoo` and under the retention policy `1day`, and it automatically writes the results of the query to the measurement `min_mouse` under the retention policy `7days`.
+  CQ `minnie_jr` 的作用方式和CQ `minnie`一样，InfluxDB用于计算的measurement `zoo`位于retention policy `1day` ，计算的结果位于 retention policy `7days`.
 
-  Combining CQs and retention policies provides a useful way to automatically downsample data and expire the unnecessary raw data. For a complete discussion on this topic, see [Downsampling and Data Retention](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/downsampling_and_retention).
+  将CQs 和 retention policies组合使用提供了自动的方式对数据取样并使没有必要的原始数据自动过期。关于这种方式的更多信息，见 [Downsampling and Data Retention](/downsampling-and-data-retention.md).
 
-* Create a CQ with two functions:
+* 创建CQ时使用2个function：
 
   ```
   > CREATE CONTINUOUS QUERY minnie_maximus ON world BEGIN SELECT min(mouse),max(imus) INTO min_max_mouse FROM zoo GROUP BY time(30m) END
   ```
 
-  The CQ `minnie_maximus` automatically calculates the 30 minute minimum of the field `mouse` and the 30 minute maximum of the field `imus` \(both fields are in the measurement `zoo`\), and it writes the results to the measurement `min_max_mouse`.
+  CQ `minnie_maximus` 每30分钟自动计算了 field `mouse` 和 field `imus` \(字段都在 measurement `zoo`中\)，并将结果写入 measurement `min_max_mouse`
 
-* Create a CQ with two functions and personalize the [field keys](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#field-key) in the results:
+* 创建CQ时使用2个function，并在结果自定义field key：
 
   ```
   > CREATE CONTINUOUS QUERY minnie_maximus_1 ON world BEGIN SELECT min(mouse) AS minuscule,max(imus) AS monstrous INTO min_max_mouse FROM zoo GROUP BY time(30m) END
   ```
 
-  The CQ `minnie_maximus_1` acts in the same way as `minnie_maximus`, however, InfluxDB names field keys`miniscule` and `monstrous` in the destination measurement instead of `min` and `max`. For more on `AS`, see[Functions](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions/#rename-the-output-column-s-title-with-as).
+  CQ `minnie_maximus_1` 的方式和 `minnie_maximus`一样, 然而InfluxDB 使用`miniscule` 和 `monstrous` 作为目标 measurement name。更多 `AS`信息，见[Functions](/functions.md)
 
-* Create a CQ with a 30 minute `GROUP BY time()` interval that runs every 15 minutes:
+* 创建CQ 时使用 30分钟 `GROUP BY time()` 作为interval ，15分钟运行一次：
 
   ```
   > CREATE CONTINUOUS QUERY vampires ON transylvania RESAMPLE EVERY 15m BEGIN SELECT count(dracula) INTO vampire_populations FROM raw_vampires GROUP BY time(30m) END
   ```
 
-  Without `RESAMPLE EVERY 15m`, `vampires` would run every 30 minutes - the same interval as the `GROUP BY time()`interval.
+  如果没有 `RESAMPLE EVERY 15m`, `vampires` 将会每30分钟运行一次，和 `GROUP BY time()`interval一致
 
 * Create a CQ with a 30 minute `GROUP BY time()` interval that runs every 30 minutes and computes the query for all `GROUP BY time()` intervals within the last hour:
 
