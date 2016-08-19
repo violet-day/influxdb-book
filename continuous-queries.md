@@ -72,7 +72,7 @@ BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <different_measureme
   > CREATE CONTINUOUS QUERY minnie ON world BEGIN SELECT min(mouse) INTO min_mouse FROM zoo GROUP BY time(30m) END
   ```
 
-  Once executed, InfluxDB automatically calculates the 30 minute minimum of the field `mouse` in the measurement`zoo`, and it writes the results to the measurement `min_mouse`. Note that the CQ `minnie` only exists in the database `world`.
+  执行之后， InfluxDB会自动计算 measurement`zoo`的field `mouse`每30分钟内的最小值，并将结果写入measurement `min_mouse`。请注意CQ `minnie` 仅存在于database `world`中
 
 * Create a CQ with one function and write the results to another [retention policy](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/concepts/glossary/#retention-policy-rp):
 
