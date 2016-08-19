@@ -9,5 +9,6 @@
     * [Database Management](database-management.md)
     * [Functions](functions.md)
     * [Continuous Queries](continuous-queries.md)
+* Concepts
 * [Key Concepts](key-concepts.md)
 
