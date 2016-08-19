@@ -1,17 +1,17 @@
-When writing large amounts of data to InfluxDB, you may often want to downsample the raw data, that is, use `GROUP BY time()` with an InfluxQL [function](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions) to change the high frequency data into lower frequency data. Repeatedly running the same queries by hand can be tedious. InfluxDB's continuous queries \(CQ\) simplify the downsampling process; CQs run automatically and write the query results to another measurement.
+当InfluxDB中写入了大量的数据之后，你可能会对原始数据做一些采样。通过`GROUP BY time()` 和 InfluxQL [function](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/functions) 讲一些高频的数据转化为低频的数据。一直重复的通过query执行这些操作略蠢。InfluxDB 的 continuous queries \(CQ\) 很容易处理这样的事情，CQs会定期自动将查询结果写至另外一个measurement。
 
-* [CQ definition](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#cq-definition)
-* [InfluxQL for creating a CQ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#influxql-for-creating-a-cq)
+* [CQ definition](#cq-definition)
+* [InfluxQL for creating a CQ](#influxql-for-creating-a-cq)
 
-   ◦ [The ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#the-create-continuous-query-statement)[`CREATE CONTINUOUS QUERY`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#the-create-continuous-query-statement)[ statement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#the-create-continuous-query-statement)
+  ◦ [The ](#the-create-continuous-query-statement)`CREATE CONTINUOUS QUERY`[ statement](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#the-create-continuous-query-statement)
 
-   ◦ [CQs with backreferencing](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#cqs-with-backreferencing)
+  ◦ [CQs with backreferencing](#cqs-with-backreferencing)
 
 
-* [List CQs with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#list-cqs-with-show)[`SHOW`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#list-cqs-with-show)
-* [Delete CQs with ](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#delete-cqs-with-drop)[`DROP`](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#delete-cqs-with-drop)
-* [Backfilling](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#backfilling)
-* [Further reading](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/query_language/continuous_queries/#further-reading)
+* [List CQs with ](#list-cqs-with-show)`SHOW`
+* [Delete CQs with ](#delete-cqs-with-drop)`DROP`
+* [Backfilling](#backfilling)
+* [Further reading](#further-reading)
 
 ## **CQ definition**
 
@@ -135,11 +135,7 @@ Use `:MEASUREMENT` in the `INTO` statement to backreference measurement names:
 CREATE CONTINUOUS QUERY <cq_name> ON <database_name> BEGIN SELECT <function>(<stuff>)[,<function>(<stuff>)] INTO <database_name>.<retention_policy>.:MEASUREMENT FROM </relevant_measurement(s)/> [WHERE <stuff>] GROUP BY time(<interval>)[,<stuff>] END
 ```
 
-_CQ backreferencing example:_ 
-
-
-
-
+_CQ backreferencing example:_
 
 ```
 > CREATE CONTINUOUS QUERY elsewhere ON fantasy BEGIN SELECT mean(value) INTO reality."default".:MEASUREMENT FROM /elf/ GROUP BY time(10m) END
@@ -270,6 +266,4 @@ GROUP BY time(5m)
 ## **Further reading**
 
 Now that you know how to create CQs with InfluxDB, check out [Downsampling and Data Retention](https://github.com/influxdata/docs.influxdata.com/blob/master/influxdb/v0.13/guides/downsampling_and_retention) for how to combine CQs with retention policies to automatically downsample data and expire unnecessary data.
-
-
 
