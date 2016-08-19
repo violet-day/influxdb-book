@@ -184,7 +184,7 @@ time                           mean
 
 ## **List CQs with **`SHOW`
 
-List every CQ by database with:
+显示database中的CQ：
 
 ```
 SHOW CONTINUOUS QUERIES
